@@ -359,6 +359,17 @@ const EXTRAS = [
   ".shadow-sm { box-shadow: var(--shadow-sm); }",
   ".shadow-md { box-shadow: var(--shadow-md); }",
   ".shadow-lg { box-shadow: var(--shadow-lg); }",
+  // Elevation 시맨틱 유틸 (2026-07-03 — card/raised/overlay 층위)
+  ".shadow-card { box-shadow: var(--shadow-card) }",
+  ".shadow-raised { box-shadow: var(--shadow-raised) }",
+  ".shadow-overlay { box-shadow: var(--shadow-overlay) }",
+  // Text hierarchy · numeric font · display xl — tokens.css 문서에 명시돼 있으나 frozen 스냅샷에 누락됐던 유틸 (2026-07-05)
+  ".text-primary { color: var(--color-text-primary); }",
+  ".text-secondary { color: var(--color-text-secondary); }",
+  ".text-tertiary { color: var(--color-text-tertiary); }",
+  ".text-disabled { color: var(--color-text-disabled); }",
+  ".font-numeric { font-family: var(--font-family-numeric); }",
+  ".text-xl { font-size: var(--text-xl); }",
 ];
 for (const e of EXTRAS) if (!cssLines.includes(e)) cssLines.push(e);
 
