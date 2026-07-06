@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Change Log" />
+
+# Change Log — Denyx Design Language
+
+> 디자인 시스템의 **소비자에게 영향이 있는 변경**을 기록합니다. (토큰·컴포넌트 API·정책)
+> 최신 항목이 위. 상세 절차·거버넌스는 [tokens.md](/design-system/tokens.md) § 토큰 거버넌스 참조.
+
+---
+
+## 2026-07-06 — 색 토큰 일반 작명 리네이밍 (brand-blue → primary · denyx-* → accent)
+
+도메인명(`denyx`)·색상값(`blue`)이 토큰명에 노출되던 것을 General 작명으로 전환했습니다. **색 값 변경은 0** — 렌더 결과는 이전과 동일합니다 (Chromatic 363 스냅샷 diff 0 검증).
+
+| 신규 (표준) | 구명 (@deprecated alias) | 값 |
+|---|---|---|
+| `--color-primary` | `--color-brand-blue` | `#296CF2` |
+| `--color-primary-strong` | `--color-brand-blue-deep` | `#1B5CD9` |
+| `--color-primary-soft` | `--color-brand-blue-soft` | `#3DA9FF` |
+| `--color-primary-bg` | `--color-brand-blue-bg` | `#D6E1FF` |
+| `--color-primary-bg-subtle` | `--color-brand-blue-bg-2` | `#C2D5FC` |
+| `--color-accent-start` | `--color-denyx-blue` | `#004BE0` |
+| `--color-accent` | `--color-denyx-purple` | `#8B52FF` |
+| `--color-accent-deep` | `--color-denyx-purple-deep` | `#4F5BD5` |
+
+**소비자 액션:**
+
+- 기존 코드는 **무중단** — 구명이 `var()` alias 로 유지되므로 그대로 동작합니다.
+- 신규 코드는 **신규 토큰명만** 사용하세요. 구명 alias 는 deprecation 기간(2주) 이후 **2026-07-20 부터 제거될 수 있습니다.**
+- 유틸 클래스명(`text-brand-blue` 등)은 소비자 API 이므로 **변경 없음** — 내부 정의만 신규 토큰을 참조합니다.
+
+**같이 변경된 것:** [Tokens/Color](?path=/docs/tokens-color--docs) 카탈로그의 Brand → **Primary**, Denyx Gradient → **Accent Gradient** 섹션 개편 · `docs/tokens.md` 리네이밍 표 신설.
+
+---
+
+## 2026-07-02 — Layout Scale 토큰 · 토큰 거버넌스 · 소스 raw 값 가드
+
+- **Layout Scale 토큰 (Global) 신설** — `--spacing-2xs~4xl`(2~32px) · `--radius-xs~2xl/full`(2~24px) · `--shadow-sm/md/lg`. `pnpm audit:tokens` 실측 빈도 기반. 기존 유틸(`gap-6px` 등)은 값 유지(비파괴) — 신규 컴포넌트의 인라인 스타일부터 토큰 참조.
+- **토큰 거버넌스 명문화** — 추가(실사용 3곳+ 근거) / 수정(영향 범위 + Chromatic) / 삭제(2주 deprecation) 절차. [tokens.md](/design-system/tokens.md) § 토큰 거버넌스.
+- **`pnpm lint:src` 신설** — DS 소스 내 inline hex·raw px 유입 가드 (baseline ratchet, `pnpm check` 포함).
+
+---
+
+## 2026-06-17 — 인라인 구조 금지 정책 · Primitives Parts 추출
+
+- **구조는 인라인 금지 (컴포넌트로 추출)** 글로벌 정책 신설 — 반복 인라인 구조 23종을 Primitives Parts 로 추출 (테이블 행·스텝·칩·메뉴 항목 등).
+- 프리셋 페이지 패턴 Stories 4종 (기본 대시보드 / AI 전용 / 목록 / 상세) 추가.
