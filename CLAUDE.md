@@ -243,6 +243,14 @@ AI 위젯 영역의 모든 컴포넌트는 다음 primitive 를 **반드시 comp
 
 스냅샷이 의도적 변경이면 `pnpm test -- -u` 로 업데이트.
 
+### 🔒 토큰 적용률 감사 — 항상 적용 (불변 규칙, 2026-07-06 신설)
+
+**토큰 또는 컴포넌트 스타일을 건드리는 모든 작업은 `pnpm audit:tokens` 를 검증 단계에 반드시 포함한다.** 예외 없음 — 값 변경이 없어 보이는 작업(리네이밍·리팩터링 포함)도 실측으로 증명한다.
+
+- **전후 비교**: 변경 전 기준 커밋에서 `git worktree add /tmp/<dir> <커밋>` 후 `node scripts/audit-tokens.mjs` 실행 → 변경 후 결과와 카테고리별 적용률(token refs / raw values / adoption %) 비교.
+- **회귀 판정**: 적용률 하락 또는 raw 값 증가 = 회귀 — 원인 해소 전 머지 금지.
+- **보고**: 비교 결과를 PR/검증 보고에 포함 (`--json` 으로 기계 비교 가능).
+
 ## Sidebar — 프로젝트 스위처 노출 규칙
 
 상단 프로젝트/조직 스위처(`productIcon` + `groupLabel` + `projectLabel` + chevron)는 **프로젝트 컨텍스트가 있을 때만 노출**한다.
