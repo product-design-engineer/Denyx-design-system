@@ -17,7 +17,7 @@
  *
  * ## Composition rules
  * - 이 컴포넌트는 카드가 아님 — 버튼 한 쌍만 렌더하며, 위 메시지 [[AiCard]] 와 형제로 배치.
- * - 색은 토큰 (`--color-brand-blue` · `--color-brand-blue-deep` · `--color-brand-blue-bg`) — 인라인 hex 금지.
+ * - 색은 토큰 (`--color-primary` · `--color-primary-strong` · `--color-primary-bg`) — 인라인 hex 금지.
  * - 실제 결정 로직은 부모가 `onClick` 으로 소유 — 버튼은 트리거만.
  *
  * @example

@@ -20,7 +20,7 @@
  * - **시간 헤더는 6시간 간격(0/6/12/18)만** 표기 — 24개 라벨은 셀 폭보다 넓어 겹침.
  *   빈 칸도 `<span>` 으로 자리를 채워 24열 정렬을 보존.
  * - `onToggle` 미지정이면 read-only (버튼 disabled). 지정 시 셀 클릭으로 토글.
- * - 색은 ON `--color-brand-blue`, OFF `--color-surface-100` 토큰 기반(테두리는 hex stub).
+ * - 색은 ON `--color-primary`, OFF `--color-surface-100` 토큰 기반(테두리는 hex stub).
  * - 각 셀은 `aria-pressed` + 한국어 `aria-label`(요일·시·수신여부)로 접근성 제공.
  *
  * @example
@@ -98,7 +98,7 @@ export default function WeekHourMatrix({
                 interactive ? "cursor-pointer hover-brightness-95" : "cursor-default"
               }`}
               style={{
-                background: on ? "var(--color-brand-blue)" : "var(--color-surface-100)",
+                background: on ? "var(--color-primary)" : "var(--color-surface-100)",
                 border: on ? "1px solid #1f57c8" : "1px solid #e0e1e3",
               }}
               aria-label={`${dayLabels[d]} ${String(h).padStart(2, "0")}시 ${on ? "수신" : "미수신"}`}
@@ -111,7 +111,7 @@ export default function WeekHourMatrix({
       {/* 범례 */}
       <div className="flex items-center gap-10px mt-4px">
         <span className="flex items-center gap-4px">
-          <span className="inline-block w-12px h-10px rounded-2px" style={{ background: "var(--color-brand-blue)", border: "1px solid #1f57c8" }} />
+          <span className="inline-block w-12px h-10px rounded-2px" style={{ background: "var(--color-primary)", border: "1px solid #1f57c8" }} />
           <span className="text-xs text-secondary">수신</span>
         </span>
         <span className="flex items-center gap-4px">

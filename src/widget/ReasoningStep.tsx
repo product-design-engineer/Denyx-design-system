@@ -45,7 +45,7 @@ export default function ReasoningStep({
         />
       ) : (
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0">
-          <circle cx="6" cy="6" r="5.4" fill="var(--color-brand-blue)" />
+          <circle cx="6" cy="6" r="5.4" fill="var(--color-primary)" />
           <path
             d="M3.5 6.1l1.8 1.8L8.5 4.5"
             stroke="#fff"

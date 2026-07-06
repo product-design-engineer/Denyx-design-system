@@ -23,7 +23,7 @@
  *   (`1000 × PLOT_H_PX`), SVG 는 plot 영역(`PAD_LEFT`/`PAD_RIGHT`/패딩)에만 absolute 배치.
  *   peak ▼/라벨은 동일 좌표계(`peakXRatio`/`peakYRatio`)로 찍어 폭과 무관하게 1:1 일치.
  * - stroke 는 `vectorEffect="non-scaling-stroke"` 로 1px 유지, area fill 은 color + alpha.
- * - 색은 토큰 (`color` 기본 `--color-brand-blue-soft`), 축선은 `--color-border-divider`.
+ * - 색은 토큰 (`color` 기본 `--color-primary-soft`), 축선은 `--color-border-divider`.
  * - `delay` 지정 시에만 stagger 진입 애니메이션 적용.
  *
  * @example
@@ -53,7 +53,7 @@ export default function MiniLineChart({
   markerAt = 0.08,
   showTopStat = false,
   /** line/area 색상 (기본 라이브 토큰 blue) */
-  color = "var(--color-brand-blue-soft)",
+  color = "var(--color-primary-soft)",
   /** Y축 및 peak 라벨에 붙는 단위 (예: "%", "K") */
   unit = "",
   /** stagger 진입 애니메이션 delay(ms). undefined면 애니메이션 없음 */

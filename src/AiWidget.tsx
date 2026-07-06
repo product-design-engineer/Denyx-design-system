@@ -31,7 +31,7 @@ const QUICK_ACTIONS = ["현재 상태 요약", "슬로우 트랜잭션 분석", 
  * - 헤더 안 AI 토글 버튼만 → [[AiAssistantButton]].
  *
  * ## Composition rules
- * - 색·그라데이션·경계는 토큰 binding (`--color-brand-blue` / `--color-brand-blue-deep` /
+ * - 색·그라데이션·경계는 토큰 binding (`--color-primary` / `--color-primary-strong` /
  *   `--color-border-*` 등). 환영 메시지/입력 영역은 정적 마크업(prop 외부화 없음).
  * - 빠른 액션은 모듈 상수 `QUICK_ACTIONS` 로 고정, `{userName}`/`{dashboardName}` 은 플레이스홀더 텍스트.
  * - `open` 으로 가시성 제어 — slide 는 `translate-x`, overlap 은 `opacity`/`pointer-events` 로 전환.
@@ -62,11 +62,11 @@ export default function AiWidget({ open = true, variant = "slide", onClose }: Ai
       {/* Header */}
       <div className="flex items-center justify-between h-47px px-2 shrink-0 bg-card border-b" style={{ borderColor: "var(--color-border-default)" }}>
         <div className="flex items-center gap-2 pl-1_5">
-          <div className="ai-symbol-anim flex items-center justify-center w-6 h-6 rounded-md" style={{ background: "linear-gradient(135deg, var(--color-brand-blue), var(--color-brand-blue-deep))" }}>
+          <div className="ai-symbol-anim flex items-center justify-center w-6 h-6 rounded-md" style={{ background: "linear-gradient(135deg, var(--color-primary), var(--color-primary-strong))" }}>
             <AiSymbol size={14} />
           </div>
           <span className="text-md font-bold" style={{ color: "var(--color-text-primary)" }}>Denyx AI</span>
-          <span className="px-1_5 py-0_5 rounded text-chart font-semibold tracking-wider" style={{ background: "var(--color-brand-blue-bg)", color: "var(--color-brand-blue-deep)" }}>
+          <span className="px-1_5 py-0_5 rounded text-chart font-semibold tracking-wider" style={{ background: "var(--color-primary-bg)", color: "var(--color-primary-strong)" }}>
             Beta
           </span>
         </div>
@@ -93,7 +93,7 @@ export default function AiWidget({ open = true, variant = "slide", onClose }: Ai
       <div className="flex-1 overflow-auto p-4 bg-card">
         {/* AI welcome message */}
         <div className="flex gap-2_5 mb-4">
-          <div className="size-7 rounded-full flex items-center justify-center flex-shrink-0 shadow-0_2px_8px_rgba-41-108-242-0_25" style={{ background: "linear-gradient(135deg, var(--color-brand-blue), var(--color-brand-blue-deep))" }}>
+          <div className="size-7 rounded-full flex items-center justify-center flex-shrink-0 shadow-0_2px_8px_rgba-41-108-242-0_25" style={{ background: "linear-gradient(135deg, var(--color-primary), var(--color-primary-strong))" }}>
             <AiSymbol size={14} />
           </div>
           <div className="flex-1 text-md leading-loose" style={{ color: "var(--color-text-body)" }}>
@@ -127,7 +127,7 @@ export default function AiWidget({ open = true, variant = "slide", onClose }: Ai
             placeholder="어떤 작업을 함께 할까요?"
           />
           <div className="flex items-center gap-1 px-1_5 text-sm" style={{ color: "var(--color-text-tertiary)" }}>
-            <span style={{ color: "var(--color-brand-blue)" }}>✦</span>
+            <span style={{ color: "var(--color-primary)" }}>✦</span>
             <span>Claude Opus 4</span>
             <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6 9l6 6 6-6" />
@@ -135,7 +135,7 @@ export default function AiWidget({ open = true, variant = "slide", onClose }: Ai
           </div>
           <button
             className="size-7 rounded-md flex items-center justify-center text-white cursor-pointer"
-            style={{ background: "var(--color-brand-blue)" }}
+            style={{ background: "var(--color-primary)" }}
             aria-label="보내기"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

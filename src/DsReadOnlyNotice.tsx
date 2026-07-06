@@ -30,7 +30,7 @@
  * <DsReadOnlyNotice
  *   open={showNotice}
  *   onClose={() => setShowNotice(false)}
- *   attemptedAction="토큰 --color-brand-blue 값 변경"
+ *   attemptedAction="토큰 --color-primary 값 변경"
  * />
  * ```
  */
@@ -225,7 +225,7 @@ export default function DsReadOnlyNotice({
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                color: "var(--color-brand-blue, #296CF2)",
+                color: "var(--color-primary, #296CF2)",
                 textDecoration: "none",
                 fontFamily: "var(--font-family-korean, sans-serif)",
               }}
@@ -237,7 +237,7 @@ export default function DsReadOnlyNotice({
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                color: "var(--color-brand-blue, #296CF2)",
+                color: "var(--color-primary, #296CF2)",
                 textDecoration: "none",
                 fontFamily: "var(--font-family-korean, sans-serif)",
               }}
@@ -251,7 +251,7 @@ export default function DsReadOnlyNotice({
             type="button"
             onClick={onClose}
             style={{
-              backgroundColor: "var(--color-brand-blue, #296CF2)",
+              backgroundColor: "var(--color-primary, #296CF2)",
               color: "#fff",
               border: "none",
               borderRadius: 6,

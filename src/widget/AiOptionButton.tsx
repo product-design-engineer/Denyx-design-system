@@ -16,7 +16,7 @@ import AiClickCursor from "./AiClickCursor";
  *
  * ## Composition rules
  * - 선택 잠금/상태 계산(`selected`/`dimmed`/`pending`/`locked`)은 부모가 결정해 props 로 주입 — 버튼은 표현용.
- * - 색은 토큰(`--color-brand-blue`) 사용 — 인라인 hex 신규 추가 금지.
+ * - 색은 토큰(`--color-primary`) 사용 — 인라인 hex 신규 추가 금지.
  * - `pending` 일 때 우측 상단에 [[AiClickCursor]] 손 인디케이터 표시.
  *
  * @example
@@ -67,9 +67,9 @@ export default function AiOptionButton({
         style={{
           fontFamily: "var(--font-family-korean)",
           fontWeight: "var(--font-weight-medium)",
-          background: selected ? "var(--color-brand-blue)" : "#fff",
-          color: selected ? "#fff" : "var(--color-brand-blue)",
-          borderColor: selected ? "var(--color-brand-blue)" : "var(--color-brand-blue)",
+          background: selected ? "var(--color-primary)" : "#fff",
+          color: selected ? "#fff" : "var(--color-primary)",
+          borderColor: selected ? "var(--color-primary)" : "var(--color-primary)",
           opacity: dimmed ? 0.4 : 1,
           pointerEvents: locked ? "none" : "auto",
           transition: "background 180ms, color 180ms, opacity 180ms, transform 120ms",

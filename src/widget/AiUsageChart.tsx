@@ -18,7 +18,7 @@
  * ## Composition rules
  * - 자체 카드 chrome(흰 배경/보더/라운드/패딩)을 보유 — [[AiCard]] 로 감싸지 않음.
  * - `values` 는 0~100 또는 `null`(데이터 없음) 배열. 통상 길이 24.
- * - 강조 막대 색은 토큰(`--color-brand-blue-soft`, `--color-surface-100`) 사용. 단,
+ * - 강조 막대 색은 토큰(`--color-primary-soft`, `--color-surface-100`) 사용. 단,
  *   비강조 막대는 인라인 hex(`#b7dbff`)가 남아 있어 토큰화는 차후 정리 대상.
  * - `caption` 은 상단 uppercase 라벨([[AiCaption]] 격).
  * - `delay` 는 부모 메시지 시퀀스의 stagger 지연(ms)이며 막대 스태거의 기준점.
@@ -82,7 +82,7 @@ export default function AiUsageChart({
                 background: v === null
                   ? "var(--color-surface-100)"
                   : isHigh
-                    ? "var(--color-brand-blue-soft)"
+                    ? "var(--color-primary-soft)"
                     : "#b7dbff",
                 animationDelay: `${barDelay}ms`,
               }}

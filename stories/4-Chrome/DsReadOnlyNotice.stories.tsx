@@ -66,7 +66,7 @@ export const WithAttemptedAction: Story = {
         <DsReadOnlyNotice
           open={open}
           onClose={() => setOpen(false)}
-          attemptedAction="--color-brand-blue 값을 #FF0000으로 override 시도"
+          attemptedAction="--color-primary 값을 #FF0000으로 override 시도"
         />
       </>
     );

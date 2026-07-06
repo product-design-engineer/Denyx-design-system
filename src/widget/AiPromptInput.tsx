@@ -10,7 +10,7 @@
  *
  * ## Composition (Figma 27087:3416 verbatim)
  * ```
- * ┌─ ai-input-wrapper (2px border, conditional var(--color-brand-blue-bg-2) / var(--color-brand-blue)) ─┐
+ * ┌─ ai-input-wrapper (2px border, conditional var(--color-primary-bg-subtle) / var(--color-primary)) ─┐
  * │ [첨부 chips 행 — attachments prop 있을 때만]                    │
  * │                                                                  │
  * │ <textarea>  placeholder 또는 입력 텍스트                         │
@@ -131,7 +131,7 @@ export default function AiPromptInput({
     <div className="flex flex-col items-center justify-center w-full">
       <div
         className="ai-input-wrapper relative bg-white flex flex-col gap-4px items-center justify-center p-12px shrink-0 rounded-8px transition-all duration-200 w-full"
-        style={{ border: hasInput ? "2px solid var(--color-brand-blue)" : "2px solid var(--color-brand-blue-bg-2)" }}
+        style={{ border: hasInput ? "2px solid var(--color-primary)" : "2px solid var(--color-primary-bg-subtle)" }}
       >
         {/* 첨부 chip 행 — Figma 27087:3416 */}
         {attachments && attachments.length > 0 && (

@@ -21,7 +21,7 @@ import type { OrgContext } from "./Sidebar";
  *
  * ## Composition rules
  * - 데이터(`OrgContext`)만 주입 — 행 외형(높이 40px · 보더 · 배경 · 타이포)은 이 컴포넌트가 책임.
- * - 색은 토큰 (`text-secondary` · `bg-card` · `--color-brand-blue-bg` 뱃지) — 인라인 hex 금지.
+ * - 색은 토큰 (`text-secondary` · `bg-card` · `--color-primary-bg` 뱃지) — 인라인 hex 금지.
  * - `icon` 생략 시 좌측은 **12px 스페이서** (빈 40px 박스 금지).
  * - `badge` 는 토큰 칩으로 렌더 — `bg-var-color-brand-blue-bg` + `text-color-var-color-brand-blue`.
  * - `collapsed=true` 면 아이콘만 40px 정사각으로 표시. `icon` 없으면 null 렌더.

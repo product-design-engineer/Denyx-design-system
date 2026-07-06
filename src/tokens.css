@@ -13,12 +13,20 @@
    이 블록은 소비자가 tokens.css 를 직접 import 할 때의 fallback.
    ────────────────────────────────────────────────────── */
 :root {
-  /* Brand primary */
-  --color-brand-blue: #296CF2;
-  --color-brand-blue-deep: #1B5CD9;
-  --color-brand-blue-soft: #3DA9FF;
-  --color-brand-blue-bg: #D6E1FF;
-  --color-brand-blue-bg-2: #C2D5FC;
+  /* Primary — 주요 강조색 (Semantic). 색상값·도메인명을 이름에 두지 않는 일반 작명.
+     2026-07-06 리네이밍: brand-blue 계열 → primary 계열. */
+  --color-primary: #296CF2;
+  --color-primary-strong: #1B5CD9;
+  --color-primary-soft: #3DA9FF;
+  --color-primary-bg: #D6E1FF;
+  --color-primary-bg-subtle: #C2D5FC;
+
+  /* @deprecated → --color-primary 계열 (2026-07-06 리네이밍, 2주 deprecation 후 제거) */
+  --color-brand-blue: var(--color-primary);
+  --color-brand-blue-deep: var(--color-primary-strong);
+  --color-brand-blue-soft: var(--color-primary-soft);
+  --color-brand-blue-bg: var(--color-primary-bg);
+  --color-brand-blue-bg-2: var(--color-primary-bg-subtle);
 
   /* Status */
   --color-status-success: #00B442;
@@ -47,13 +55,18 @@
   --color-border-strong: #E6E6E6;
   --color-border-divider: #ADADAD;
 
-  /* AI gradient (preserved for compat) */
-  --color-denyx-blue: #004BE0;
-  --color-denyx-purple: #8B52FF;
-  --color-denyx-purple-deep: #4F5BD5;
+  /* Accent — AI 그라데이션 stops (Semantic). 2026-07-06 리네이밍: denyx-* → accent 계열. */
+  --color-accent-start: #004BE0;
+  --color-accent: #8B52FF;
+  --color-accent-deep: #4F5BD5;
+
+  /* @deprecated → --color-accent 계열 (2026-07-06 리네이밍, 2주 deprecation 후 제거) */
+  --color-denyx-blue: var(--color-accent-start);
+  --color-denyx-purple: var(--color-accent);
+  --color-denyx-purple-deep: var(--color-accent-deep);
 
   /* Brand gradient · full radius · sm shadow · white (Switch/ThemeToggle 등 참조) */
-  --gradient-brand: linear-gradient(90deg, var(--color-brand-blue), var(--color-denyx-purple));
+  --gradient-brand: linear-gradient(90deg, var(--color-primary), var(--color-accent));
   --radius-full: 9999px;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
   --color-white: #fff;
@@ -406,7 +419,7 @@ html, body, #root {
  *  runtime 에 조립되는 variant×tone 색은 정적 유틸로 표현 불가하므로,
  *  컴포넌트는 .wds-btn class + inline `--wds-btn-{bg,fg,border,bg-hover}` 설정.
  *  이 global rule 이 그 변수를 적용 → background/color/border + :hover 정상 동작.
- *  토큰: --color-brand-blue / --color-status-warning / --color-status-error 가 binding.
+ *  토큰: --color-primary / --color-status-warning / --color-status-error 가 binding.
  * ────────────────────────────────────────────────────────────────────── */
 .wds-btn {
   background-color: var(--wds-btn-bg, transparent);
@@ -416,7 +429,7 @@ html, body, #root {
 
 /* Switch/ThemeToggle 키보드 포커스 링 (DS 공통 focus 톤). */
 .wds-switch:focus-visible {
-  outline: 2px solid var(--color-brand-blue);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 .wds-btn:hover:not(:disabled) {
@@ -470,10 +483,11 @@ html, body, #root {
   --color-text-muted: #B7BDC6;
   --color-text-subtle: #8B929C;
 
-  /* Brand tint surfaces + on-dark deep (텍스트로 쓰일 때 가독성 위해 밝힘) */
-  --color-brand-blue-bg: #1C2A46;
-  --color-brand-blue-bg-2: #233357;
-  --color-brand-blue-deep: #7FB0FF;
+  /* Primary tint surfaces + on-dark strong (텍스트로 쓰일 때 가독성 위해 밝힘).
+     구명 alias(brand-blue-*)는 :root 의 var() 체인으로 자동 추종. */
+  --color-primary-bg: #1C2A46;
+  --color-primary-bg-subtle: #233357;
+  --color-primary-strong: #7FB0FF;
 
   /* AI Surface (Intent) — 다크 모드 배경. 채도 유지 + 밝기 낮춤. */
   --color-surface-critical: #3A1C1C;

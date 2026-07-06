@@ -36,12 +36,12 @@ overview:
 
 colors:
 
-  # Brand
-  brand-blue:                "#296CF2"    # Color
-  brand-blue-deep:           "#1B5CD9"    # Color
-  brand-blue-soft:           "#3DA9FF"    # Color
-  brand-blue-bg:             "#D6E1FF"    # Color
-  brand-blue-bg-2:           "#C2D5FC"    # Color
+  # Primary (구 brand-blue 계열 — 2026-07-06 일반 작명 리네이밍)
+  primary:                   "#296CF2"    # Color
+  primary-strong:            "#1B5CD9"    # Color
+  primary-soft:              "#3DA9FF"    # Color
+  primary-bg:                "#D6E1FF"    # Color
+  primary-bg-subtle:         "#C2D5FC"    # Color
 
   # Status
   status-success:            "#00B442"    # Color
@@ -289,12 +289,12 @@ components:
 
   # ── Button ──
   button-primary:
-    backgroundColor:      "{colors.brand-blue}"             # Reference → #296CF2
+    backgroundColor:      "{colors.primary}"             # Reference → #296CF2
     textColor:            "#ffffff"                         # Color
     rounded:              "4px"                             # Dimension
 
   button-primary-hover:
-    backgroundColor:      "{colors.brand-blue-deep}"        # Reference → #1B5CD9
+    backgroundColor:      "{colors.primary-strong}"        # Reference → #1B5CD9
     textColor:            "#ffffff"                         # Color
 
   button-outline:
@@ -430,7 +430,7 @@ components:
     backgroundColor:      "{colors.surface-200}"           # Reference — 비활성
 
   ai-send-button-active:
-    backgroundColor:      "{colors.brand-blue}"            # Reference → #296CF2
+    backgroundColor:      "{colors.primary}"            # Reference → #296CF2
     textColor:            "#ffffff"                         # Color
 
   # ── AiInlinePrompt ──
@@ -507,7 +507,7 @@ Semantic (의미)  ─▶  Composite (12) — Foundation 1단계 조합
 |---|---|---|
 | **Color** | `#hex` sRGB | `"#296CF2"` |
 | **Dimension** | 숫자+단위 | `"12px"`, `"120ms"`, `"-0.1px"` |
-| **Reference** | `{section.path}` | `"{colors.brand-blue}"`, `"{typography.size-md}"` |
+| **Reference** | `{section.path}` | `"{colors.primary}"`, `"{typography.size-md}"` |
 | **Typography** | 객체 | `fontFamily` · `fontSize` · `fontWeight` · `lineHeight` · `letterSpacing` |
 
 ### 컴포넌트 토큰 규약
@@ -517,18 +517,18 @@ Semantic (의미)  ─▶  Composite (12) — Foundation 1단계 조합
 
 ```yaml
 button-primary:           # 기본 상태
-  backgroundColor: "{colors.brand-blue}"
+  backgroundColor: "{colors.primary}"
 button-primary-hover:     # hover 변형
-  backgroundColor: "{colors.brand-blue-deep}"
+  backgroundColor: "{colors.primary-strong}"
 ```
 
 ---
 
 ## Colors
 
-### Brand
+### Primary (구 Brand)
 
-`brand-blue (#296CF2)`가 Denyx의 주요 액센트. AI gradient(`#004BE0 → #8B52FF`)와 명확히 구분됩니다 — brand-blue는 일반 UI 강조, gradient는 AI 전용.
+`primary (#296CF2)`가 주요 강조색 (구 `brand-blue` — 2026-07-06 일반 작명 리네이밍). AI gradient(`accent-start #004BE0 → accent #8B52FF`)와 명확히 구분됩니다 — primary는 일반 UI 강조, accent gradient는 AI 전용.
 
 ### Text — 4단계가 충분한 이유
 

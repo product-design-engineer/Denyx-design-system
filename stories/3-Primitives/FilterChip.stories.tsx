@@ -19,7 +19,7 @@ const meta: Meta<typeof FilterChip> = {
         component:
           "**Interactive 필터 칩.** Chip 의 button 변형 — selected 토글 + count + closable 지원. " +
           "정적 라벨은 `Chip` 사용. 키보드 Enter/Space 토글, Tab focus. " +
-          "선택 시 brand-blue solid, 미선택 시 surface-100 soft.",
+          "선택 시 primary solid, 미선택 시 surface-100 soft.",
       },
     },
   },

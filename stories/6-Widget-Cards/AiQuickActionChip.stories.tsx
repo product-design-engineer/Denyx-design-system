@@ -12,7 +12,7 @@ const meta: Meta<typeof AiQuickActionChip> = {
       description: {
         component:
           "**[[AiWidget]] 본문의 빠른 액션 칩(pill 버튼) 한 개.** rounded-full pill + brand-blue 텍스트, " +
-          "hover 시 배경이 `--color-brand-blue-bg` 로 채워짐. 보통 AiWidget 의 `QUICK_ACTIONS.map` 안에서 렌더.",
+          "hover 시 배경이 `--color-primary-bg` 로 채워짐. 보통 AiWidget 의 `QUICK_ACTIONS.map` 안에서 렌더.",
       },
     },
   },

@@ -16,7 +16,7 @@ import type { TimelineStep } from "./AiStepsTimeline";
  *
  * ## Composition rules
  * - 데이터(`label` · `running`)만 주입 — 행 외형/마커/화살표는 이 컴포넌트가 책임 (표현용).
- * - 마커 색은 토큰만 사용 (완료 `--color-status-success` / 진행 `--color-brand-blue`) — 인라인 hex 금지.
+ * - 마커 색은 토큰만 사용 (완료 `--color-status-success` / 진행 `--color-primary`) — 인라인 hex 금지.
  * - 진행 중(`running: true`)이면 회전 spinner, 아니면 status-success 체크.
  *
  * @example

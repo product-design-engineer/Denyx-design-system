@@ -17,7 +17,7 @@ import Switch from "./Switch";
  * - 3개 이상 테마(시스템 포함) → 별도 SegmentedControl.
  *
  * ## Composition rules
- * - 색/치수는 [[Switch]] + tokens.css 토큰. 아이콘 색은 토큰(`--color-status-warning`/`--color-brand-blue`).
+ * - 색/치수는 [[Switch]] + tokens.css 토큰. 아이콘 색은 토큰(`--color-status-warning`/`--color-primary`).
  * - `applyTo` 로 `data-theme` 대상 지정(기본 `document.documentElement`). `null` 이면 속성 미세팅(소비자가 직접).
  * - controlled(`value`) / uncontrolled(`defaultValue`) 지원.
  *
@@ -117,7 +117,7 @@ export default function ThemeToggle({
         <span
           style={{
             display: "inline-flex",
-            color: mode === "dark" ? "var(--color-brand-blue)" : "var(--color-status-warning)",
+            color: mode === "dark" ? "var(--color-primary)" : "var(--color-status-warning)",
           }}
         >
           {mode === "dark" ? <MoonIcon s={iconSize} /> : <SunIcon s={iconSize} />}

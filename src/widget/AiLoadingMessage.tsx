@@ -17,7 +17,7 @@
  * ## Composition rules
  * - `text` 한 줄만 받음 — 멀티라인/마크업은 비대상.
  * - 카드 chrome 은 자체 보유 (보더/라운드/패딩) — [[AiCard]] 로 감싸지 말 것.
- * - 아이콘 그라데이션은 토큰 binding (`--color-denyx-blue` → `--color-denyx-purple`).
+ * - 아이콘 그라데이션은 토큰 binding (`--color-accent-start` → `--color-accent`).
  *
  * @example
  * ```tsx
@@ -50,8 +50,8 @@ function LoadingIcon() {
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="shrink-0">
       <defs>
         <linearGradient id="ai-loading-grad" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse">
-          <stop stopColor="var(--color-denyx-blue)" />
-          <stop offset="1" stopColor="var(--color-denyx-purple)" />
+          <stop stopColor="var(--color-accent-start)" />
+          <stop offset="1" stopColor="var(--color-accent)" />
         </linearGradient>
       </defs>
       <path

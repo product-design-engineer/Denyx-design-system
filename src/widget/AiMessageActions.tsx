@@ -117,8 +117,8 @@ function ActionBtn({
 
 /* ─── icons ─────────────────────────────────────────────── */
 function ThumbUpIcon({ filled }: { filled?: boolean }) {
-  const stroke = filled ? "var(--color-brand-blue)" : "var(--color-text-tertiary)";
-  const fill = filled ? "var(--color-brand-blue)" : "none";
+  const stroke = filled ? "var(--color-primary)" : "var(--color-text-tertiary)";
+  const fill = filled ? "var(--color-primary)" : "none";
   return (
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path

@@ -87,7 +87,7 @@ export const WithKnobContent: Story = {
           onChange={setOn}
           aria-label="knob content"
           knobContent={
-            <span style={{ fontSize: 10, color: "var(--color-brand-blue)" }}>{on ? "✓" : ""}</span>
+            <span style={{ fontSize: 10, color: "var(--color-primary)" }}>{on ? "✓" : ""}</span>
           }
         />
       );

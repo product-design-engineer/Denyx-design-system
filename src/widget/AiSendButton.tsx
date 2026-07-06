@@ -7,7 +7,7 @@
  *
  * ## Spec (실 위젯 마크업 1:1)
  * - 24×24, `rounded-4px` (squared) — 위젯 인라인 spec 그대로
- * - active:   배경 `var(--color-brand-blue)` (var(--color-brand-blue)) + 같은 색 1px 보더 + 흰 화살표
+ * - active:   배경 `var(--color-primary)` (var(--color-primary)) + 같은 색 1px 보더 + 흰 화살표
  * - inactive: 배경 `var(--color-surface-50)` (var(--color-surface-50)) + #d3d3d3 1px 보더 + 회색 화살표
  * - icon: 8→4/12 의 상향 화살표 (위로 올리는 송신)
  *
@@ -22,7 +22,7 @@
  *
  * ## Composition rules
  * - 24×24px, `rounded-4px` — 위젯 인라인 spec 1:1.
- * - active 색은 토큰 (`--color-brand-blue` 배경, 흰 화살표) — 인라인 hex 금지.
+ * - active 색은 토큰 (`--color-primary` 배경, 흰 화살표) — 인라인 hex 금지.
  * - inactive 색은 토큰 (`--color-surface-50` 배경, `#d3d3d3` 보더) — 보더만 예외적 hex(토큰화 대상).
  * - `showCursor` 는 시연 전용 — 프로덕션에서 사용 금지.
  * - [[AiPromptInput]] · [[AiInlinePrompt]] 가 내부에서 자동 렌더 — 단독 import 는 시연 시나리오 한정.
@@ -59,8 +59,8 @@ export default function AiSendButton({
           isDisabled ? "cursor-not-allowed" : "cursor-pointer"
         } ${className}`}
         style={{
-          backgroundColor: active ? "var(--color-brand-blue)" : "var(--color-surface-50)",
-          border: active ? "1px solid var(--color-brand-blue)" : "1px solid #d3d3d3",
+          backgroundColor: active ? "var(--color-primary)" : "var(--color-surface-50)",
+          border: active ? "1px solid var(--color-primary)" : "1px solid #d3d3d3",
         }}
         {...rest}
       >

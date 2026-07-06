@@ -23,7 +23,7 @@
  * - editable mode: `inputValue` 미지정이면 내부 state 로 사용자가 직접 입력, `onSubmit`
  *   은 입력값이 있을 때만 Enter(shift 제외)/전송 버튼으로 호출. `inputValue` 지정 시 readOnly 데모.
  * - `scrollSignal` 이 바뀔 때마다 본문을 부드럽게 최하단으로 자동 스크롤(메시지 추가 후 반영).
- * - 색·경계는 토큰 binding (`--color-brand-blue` / `--color-brand-blue-bg-2` 등). 토큰 pill 은 내부 TokenUsageBadge.
+ * - 색·경계는 토큰 binding (`--color-primary` / `--color-primary-bg-subtle` 등). 토큰 pill 은 내부 TokenUsageBadge.
  * - `showLanding=true` 일 때만 인사말+칩 렌더, `messages` 는 그 아래 시나리오 스택으로 누적.
  *
  * @example
@@ -274,7 +274,7 @@ export default function DenyxAiWidget({
         <div className="flex flex-col items-center justify-center px-16px shrink-0 w-full">
           <div
             className="ai-input-wrapper relative bg-card flex flex-col gap-4px items-center justify-center p-12px shrink-0 rounded-8px transition-all duration-200 w-full"
-            style={{ border: hasInput ? "2px solid var(--color-brand-blue)" : "2px solid var(--color-brand-blue-bg-2)" }}
+            style={{ border: hasInput ? "2px solid var(--color-primary)" : "2px solid var(--color-primary-bg-subtle)" }}
           >
             {/* 첨부 파일 칩 행 (Figma 27087:3416) */}
             {attachments && attachments.length > 0 && (
@@ -331,8 +331,8 @@ export default function DenyxAiWidget({
                   onClick={handleSubmit}
                   className="ai-send-btn flex items-center justify-center rounded-4px shrink-0 size-24px cursor-pointer transition-colors disabled-cursor-not-allowed"
                   style={{
-                    backgroundColor: hasInput ? "var(--color-brand-blue)" : "var(--color-surface-50)",
-                    border: hasInput ? "1px solid var(--color-brand-blue)" : "1px solid #d3d3d3",
+                    backgroundColor: hasInput ? "var(--color-primary)" : "var(--color-surface-50)",
+                    border: hasInput ? "1px solid var(--color-primary)" : "1px solid #d3d3d3",
                   }}
                   aria-label="전송"
                 >
