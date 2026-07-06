@@ -106,13 +106,16 @@ export type OrgContext = { label: string; icon?: string; badge?: string }; // ba
 | `profileMenu` | `ProfileMenuItem[]` | — | 우상단 **아바타 클릭 드롭다운**(계정 정보·엔터프라이즈 관리·전환·로그아웃 등). 미지정 시 정적 아바타 |
 | `roleBadge` | `string` | — | 프로필 드롭다운 **헤더**에 표시할 역할(예: `"OWNER"`) → "OWNER · 내 계정". **아바타 옆 독립 칩 아님** |
 | `notifications` | `NotificationItem[]` | — | **벨 빨간 점 + 드롭다운**. 1건↑일 때만 인디케이터 |
+| `hideAiToggle` | `boolean` | `false` | AI 위젯을 탑재하지 않는 콘솔용 — AI 토글만 숨김 |
+| `paddingX` | `number` | `8` | 좌우 패딩(px) — 본문 콘텐츠 패딩과 정렬용 |
+| `searchSlot` | `ReactNode` | — | 타이틀과 우측 액션 사이 **중앙 영역**에 배치할 검색 UI. 미지정 시 빈 공간(기존 2-그룹 레이아웃과 동일) |
 
 ```ts
 export type ProfileMenuItem = { label: string; onClick?: () => void };
 export type NotificationItem = { label: string; onClick?: () => void };
 ```
 
-타이틀 + AI 버튼 + Docs + 고객지원 + **bell(notifications 시 빨간 점)** + **avatar(profileMenu 드롭다운 · roleBadge 헤더)** 가 항상 한 줄에 모두 표시됩니다.
+타이틀 + AI 버튼 + Docs + (옵션)검색 슬롯 + 고객지원 + **bell(notifications 시 빨간 점)** + **avatar(profileMenu 드롭다운 · roleBadge 헤더)** 가 항상 한 줄에 모두 표시됩니다.
 
 **사용자 메뉴 정책:** 우상단 사용자 영역은 **아바타 드롭다운 1개**로 일원화. 역할(`roleBadge`)은 **드롭다운 헤더**로 표시하고, 아바타 옆에 별도 역할 칩(2번째 트리거)을 두지 않는다.
 

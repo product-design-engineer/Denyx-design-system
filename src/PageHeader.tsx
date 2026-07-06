@@ -3,8 +3,8 @@
  *
  * ## Purpose
  * 페이지 상단 48px 고정 바. 좌측은 페이지 타이틀 + Denyx AI 토글([[AiAssistantButton]])
- * + Docs 버튼, 우측은 고객지원 버튼 + 알림 벨(드롭다운) + 프로필 아바타(드롭다운).
- * [[Sidebar]] 의 48px 로고 헤더와 동일 높이로 chrome 의 최상단 행을 정렬.
+ * + Docs 버튼, 중앙은 선택적 검색 슬롯(`searchSlot`), 우측은 고객지원 버튼 + 알림 벨(드롭다운)
+ * + 프로필 아바타(드롭다운). [[Sidebar]] 의 48px 로고 헤더와 동일 높이로 chrome 의 최상단 행을 정렬.
  *
  * ## When to use
  * - [[DashboardLayout]] 의 `header` 슬롯에 들어가는 주 페이지 헤더.
@@ -20,6 +20,9 @@
  *   예외: Denyx AI 를 탑재하지 않는 콘솔(외부 어드민 등)은 `hideAiToggle` 로 AI 토글만
  *   숨길 수 있음 (Sidebar 의 `hideProjectSwitcher` 전례 — 컨텍스트 부재 시 미노출 원칙).
  *   기본 false 로 기존 호출처 동작 불변.
+ * - `searchSlot` 미지정 시 중앙 영역은 빈 flex-1 공간으로 기존 좌우 2-그룹 레이아웃과
+ *   시각적으로 동일(기존 호출처 동작 불변). 검색 UI 자체(입력창·자연어 처리 등)는
+ *   소비 앱 컴포넌트로 주입 — PageHeader 는 배치 슬롯만 제공하고 내부 로직을 갖지 않음.
  * - Denyx AI 토글은 인라인 마크업이 아니라 [[AiAssistantButton]] 채택 (토큰 binding dogfooding).
  * - 높이 48px 고정(`box-border`) — 페이지에서 inline `<div>` 로 재구현 금지.
  * - 배경/경계/텍스트 색은 토큰 (`--color-border-strong` · `--color-text-*` · `--color-brand-blue-bg`).
@@ -37,7 +40,7 @@
  * />
  * ```
  */
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import AiAssistantButton from "./widget/AiAssistantButton";
 import HeaderPillButton from "./HeaderPillButton";
 import { IcDocs, IcSupport } from "./icons/HeaderIcons";
@@ -56,6 +59,7 @@ export default function PageHeader({
   notifications,
   hideAiToggle = false,
   paddingX = 8,
+  searchSlot,
 }: {
   title: string;
   aiActive?: boolean;
@@ -70,13 +74,15 @@ export default function PageHeader({
   notifications?: NotificationItem[];
   /** 좌우 패딩(px) — 본문 콘텐츠 패딩과 정렬용. 기본 8 (기존 동작 불변). */
   paddingX?: number;
+  /** 타이틀과 우측 액션 사이 중앙 영역에 배치할 검색 UI. 미지정 시 빈 공간(기존 동작 불변). */
+  searchSlot?: ReactNode;
 }) {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifyOpen, setNotifyOpen] = useState(false);
   const hasNotify = !!notifications && notifications.length > 0;
   return (
     <div
-      className="flex items-center justify-between h-48px box-border bg-card border-b border-color-var-color-border-strong shrink-0"
+      className="flex items-center h-48px box-border bg-card border-b border-color-var-color-border-strong shrink-0"
       style={{ paddingLeft: paddingX, paddingRight: paddingX }}
     >
       {/* 좌측: 타이틀 + AI/Docs */}
@@ -94,6 +100,11 @@ export default function PageHeader({
           {!hideAiToggle && <AiAssistantButton aiActive={aiActive} onClick={onAiToggle} />}
           <HeaderPillButton icon={<IcDocs />}>Docs</HeaderPillButton>
         </div>
+      </div>
+
+      {/* 중앙: 검색 슬롯 — 미지정 시 빈 flex-1 공간 (기존 2-그룹 레이아웃과 동일) */}
+      <div className="flex-1 flex items-center" style={{ paddingInline: 24 }}>
+        {searchSlot}
       </div>
 
       {/* 우측: 고객지원 + 알림 + 아바타 */}

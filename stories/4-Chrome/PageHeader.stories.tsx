@@ -23,6 +23,7 @@ const meta: Meta<typeof PageHeader> = {
   argTypes: {
     title: { description: "페이지 타이틀 — 'K8s-GPU / GPU 트렌드' 같은 경로.", control: "text" },
     aiActive: { description: "Denyx AI 버튼의 active 상태.", control: "boolean" },
+    searchSlot: { description: "타이틀과 우측 액션 사이 중앙에 배치할 검색 UI. 미지정 시 빈 공간(기존 동작 불변)." },
   },
 };
 export default meta;
@@ -31,6 +32,29 @@ type Story = StoryObj<typeof PageHeader>;
 /** 기본 — GPU 트렌드 페이지 헤더. */
 export const Default: Story = {
   args: { title: "K8s-GPU / GPU 트렌드", aiActive: false },
+};
+
+/** 검색 슬롯 — 헤더 중앙에 검색 입력을 주입한 예. */
+export const WithSearchSlot: Story = {
+  args: {
+    title: "당발송금 / 전체거래",
+    hideAiToggle: true,
+    searchSlot: (
+      <input
+        type="text"
+        placeholder="거래 ID, 송금인명으로 검색 · ⌘K"
+        style={{
+          width: 360,
+          height: 32,
+          padding: "0 12px",
+          borderRadius: 6,
+          border: "1px solid var(--color-border-default)",
+          background: "var(--color-surface-50)",
+          fontSize: 13,
+        }}
+      />
+    ),
+  },
 };
 
 /** AI 위젯 활성 상태 — 버튼 강조. */
