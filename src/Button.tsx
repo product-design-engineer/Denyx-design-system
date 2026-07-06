@@ -24,7 +24,7 @@
  * - icon-only 압축 버튼 (size 16-20px) → 인라인 OK.
  *
  * ## Composition rules
- * - 모든 색은 토큰 (`var(--color-brand-blue)` 등) — 인라인 hex 금지.
+ * - 모든 색은 토큰 (`var(--color-primary)` 등) — 인라인 hex 금지.
  * - 사이즈는 spec 4 단계만 — custom px 금지.
  * - loading=true → 자동 disabled + spinner overlay.
  *
@@ -70,7 +70,7 @@ const SIZE_CLASS: Record<ButtonSize, string> = {
 
 /** tone → CSS color (main / hover / soft surface). */
 const TONE_COLORS: Record<ButtonTone, { main: string; hover: string; soft: string }> = {
-  primary:  { main: "var(--color-brand-blue)",     hover: "var(--color-brand-blue-deep)", soft: "var(--color-brand-blue-bg)" },
+  primary:  { main: "var(--color-primary)",     hover: "var(--color-primary-strong)", soft: "var(--color-primary-bg)" },
   warning:  { main: "var(--color-status-warning)", hover: "#E08A0E",                       soft: "#FFF4E5" },
   critical: { main: "var(--color-status-error)",   hover: "#D03333",                       soft: "#FDECEC" },
 };

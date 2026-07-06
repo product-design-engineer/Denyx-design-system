@@ -85,7 +85,7 @@ export default function DashboardBuildingProgress({
       <div
         className="size-36px rounded-full"
         style={{
-          background: "conic-gradient(from 90deg, var(--color-denyx-blue), var(--color-denyx-purple), var(--color-denyx-blue))",
+          background: "conic-gradient(from 90deg, var(--color-accent-start), var(--color-accent), var(--color-accent-start))",
           mask: "radial-gradient(circle 15px at center, transparent 98%, #000 100%)",
           WebkitMask: "radial-gradient(circle 15px at center, transparent 98%, #000 100%)",
           animation: "aiSymbolRotateSlow 1s linear infinite",

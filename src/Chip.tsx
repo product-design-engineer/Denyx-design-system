@@ -64,7 +64,7 @@ const SIZE = {
 } as const;
 
 const TONE_COLORS: Record<ChipTone, { main: string; soft: string; fgSoft: string }> = {
-  primary:  { main: "var(--color-brand-blue)",     soft: "var(--color-brand-blue-bg)", fgSoft: "var(--color-brand-blue-deep)" },
+  primary:  { main: "var(--color-primary)",     soft: "var(--color-primary-bg)", fgSoft: "var(--color-primary-strong)" },
   warning:  { main: "var(--color-indicator-warning)", soft: "#FFF4E5",                  fgSoft: "#9A6B00" },
   critical: { main: "var(--color-indicator-critical)", soft: "#FDECEC",                 fgSoft: "#B5302A" },
   success:  { main: "var(--color-status-success)", soft: "#E4F7EC",                    fgSoft: "#007030" },

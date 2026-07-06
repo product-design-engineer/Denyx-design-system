@@ -29,7 +29,7 @@
  * - 단일 row, height 고정 (~32px) — `flex-row items-center`.
  * - 첨부 chip 는 같은 행에 inline 으로 들어감. 다수 첨부 시 가로 스크롤이 아니라 chip 자체가 truncate.
  * - 송신 버튼은 [[AiSendButton]] 채택, 입력값 유무로 active 자동 전환.
- * - border 색은 토큰 binding (`--color-brand-blue` / `--color-brand-blue-bg-2`) — 인라인 hex 금지.
+ * - border 색은 토큰 binding (`--color-primary` / `--color-primary-bg-subtle`) — 인라인 hex 금지.
  *
  * ## Suggestions channel (선택)
  * `suggestions` prop 으로 페이지 컨텍스트에 특화된 chip 제안을 input focus 시 input 아래로
@@ -231,7 +231,7 @@ export default function AiInlinePrompt({
     <div className="ai-inline-prompt-wrapper relative w-full">
       <div
         className="ai-inline-prompt relative bg-white flex flex-row gap-6px items-center px-8px py-6px rounded-8px transition-colors duration-200 w-full"
-        style={{ border: hasInput ? "1px solid var(--color-brand-blue)" : "1px solid var(--color-brand-blue-bg-2)" }}
+        style={{ border: hasInput ? "1px solid var(--color-primary)" : "1px solid var(--color-primary-bg-subtle)" }}
       >
         {/* 첨부 chip — 같은 행 안에 inline compact (input 좌측 prefix) */}
         {attachments && attachments.length > 0 && attachments.map((a, i) => (

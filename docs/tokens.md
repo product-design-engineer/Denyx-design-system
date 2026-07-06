@@ -136,6 +136,26 @@ tokens.color.text.disabled.value   // #adadad — 비활성 상태 텍스트 (6 
 
 본문이 압도적으로 흔하므로 `primary` 가 다른 색을 합친 것보다 많이 쓰임 — 위계 4 단계로 충분.
 
+## Primary · Accent (Semantic) — 일반 작명 리네이밍 (2026-07-06)
+
+도메인명(`denyx`)·색상값(`blue`)이 토큰명에 노출되던 것을 일반(General) 작명으로 전환. 값 변경 없음(비파괴) — 구명은 `var()` alias 로 유지 (`/* @deprecated */`, 최소 2주 후 제거).
+
+| 신규 (표준) | 값 (light) | 구명 (@deprecated alias) | 용도 |
+|---|---|---|---|
+| `--color-primary` | `#296CF2` | `--color-brand-blue` | 주요 강조 — AI 버튼 · 링크 · 강조 |
+| `--color-primary-strong` | `#1B5CD9` | `--color-brand-blue-deep` | hover 강조 (dark: `#7FB0FF`) |
+| `--color-primary-soft` | `#3DA9FF` | `--color-brand-blue-soft` | 옅은 강조 — MiniLineChart 기본 라인 |
+| `--color-primary-bg` | `#D6E1FF` | `--color-brand-blue-bg` | 강조 배경 — active 카드 (dark: `#1C2A46`) |
+| `--color-primary-bg-subtle` | `#C2D5FC` | `--color-brand-blue-bg-2` | 강조 배경 변형 (dark: `#233357`) |
+| `--color-accent-start` | `#004BE0` | `--color-denyx-blue` | AI 그라데이션 시작 |
+| `--color-accent` | `#8B52FF` | `--color-denyx-purple` | AI 그라데이션 중간 — pinwheel 강조 |
+| `--color-accent-deep` | `#4F5BD5` | `--color-denyx-purple-deep` | AI 그라데이션 deep variant |
+
+- 신규 코드는 **신규 토큰명만** 참조. 구명 신규 사용 금지.
+- 유틸 클래스명(`text-brand-blue`·`bg-var-color-brand-blue-bg` 등)은 소비자 API 이므로 유지 — 내부 정의만 신규 토큰을 참조. (`text-primary` 는 텍스트 위계 클래스와 충돌하므로 클래스 리네이밍 불가)
+- `--gradient-brand` 는 `var(--color-primary) → var(--color-accent)` 조합으로 갱신.
+- `.dark` 오버라이드는 신규 토큰명 기준 — 구명 alias 는 `var()` 체인으로 자동 추종.
+
 ## Layout Scale — Spacing · Radius · Shadow (Global tier)
 
 2026-07-02 신설 (`docs/DS-ENHANCEMENT-PLAN.md` §2.1~2.3). `pnpm audit:tokens` 실측 빈도 기반.

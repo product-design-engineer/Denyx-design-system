@@ -38,6 +38,7 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
+          'Change Log',
           'For Designers',
           'Foundation',
           ['Denyx Symbol'],

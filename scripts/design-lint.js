@@ -4,7 +4,7 @@
  *
  * Lint 규칙 8개:
  *   1. broken-ref      (error)   — 깨진 {token.path} 참조
- *   2. missing-primary  (warning) — 필수 토큰 누락 (text-primary, brand-blue 등)
+ *   2. missing-primary  (warning) — 필수 토큰 누락 (text-primary, primary 등)
  *   3. contrast-ratio   (warning) — WCAG AA 4.5:1 미만
  *   4. orphaned-tokens  (warning) — 정의됐지만 어디서도 참조되지 않은 색상
  *   5. missing-typography (warning) — Named typography pattern 에 필수 속성 누락
@@ -58,7 +58,7 @@ for (const { key, ref } of refs) {
 const PRIMARY_TOKENS = [
   "colors.text-primary",
   "colors.text-secondary",
-  "colors.brand-blue",
+  "colors.primary",
   "colors.status-success",
   "colors.status-warning",
   "colors.status-error",

@@ -17,7 +17,7 @@ import { forwardRef, useState, type ReactNode, type ButtonHTMLAttributes } from 
  * - 2개 이상 상호배타 옵션 → Tabs / RadioGroup.
  *
  * ## Composition rules
- * - 색/치수/radius/shadow = 토큰(`--color-brand-blue`·`--color-surface-200`·`--radius-full`·`--shadow-sm`) — 인라인 hex 금지.
+ * - 색/치수/radius/shadow = 토큰(`--color-primary`·`--color-surface-200`·`--radius-full`·`--shadow-sm`) — 인라인 hex 금지.
  * - controlled(`checked`) / uncontrolled(`defaultChecked`) 둘 다 지원 ([[Checkbox]] 패턴 동일).
  * - 라이트 기본 — 다크는 토큰이 자동 전환(`.dark`/`[data-theme=dark]`).
  * - 시각 라벨 없으면 `label`(=aria-label) 또는 `aria-label`/`aria-labelledby` 필수.
@@ -98,7 +98,7 @@ const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch(
         height: d.h,
         padding: 0,
         borderRadius: "var(--radius-full, 9999px)",
-        background: on ? "var(--color-brand-blue)" : "var(--color-surface-200)",
+        background: on ? "var(--color-primary)" : "var(--color-surface-200)",
         border: "1px solid var(--color-border-default)",
         transition: "background 0.2s ease",
         opacity: disabled ? 0.5 : 1,

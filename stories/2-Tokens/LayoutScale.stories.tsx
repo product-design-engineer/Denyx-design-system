@@ -41,7 +41,7 @@ export const Spacing: StoryObj = {
           <code style={{ fontFamily: "Roboto, monospace", fontSize: 12, color: "#222" }}>--spacing-{s.key}</code>
           <span style={{ fontSize: 12, color: "#4c4c4c" }}>{s.px}px</span>
           <span style={{ fontSize: 11, color: "#757575" }}>{s.freq}</span>
-          <div style={{ width: `var(--spacing-${s.key})`, height: 16, background: "var(--color-brand-blue)", borderRadius: 2 }} />
+          <div style={{ width: `var(--spacing-${s.key})`, height: 16, background: "var(--color-primary)", borderRadius: 2 }} />
         </div>
       ))}
       <p style={{ fontSize: 11, color: "#757575", margin: "8px 16px 0" }}>
@@ -68,7 +68,7 @@ export const Radius: StoryObj = {
         <div key={r.key} style={{ display: "grid", gridTemplateColumns: "130px 60px 72px 1fr", gap: 16, alignItems: "center", padding: "8px 16px", borderBottom: "1px solid #f5f5f5" }}>
           <code style={{ fontFamily: "Roboto, monospace", fontSize: 12, color: "#222" }}>--radius-{r.key}</code>
           <span style={{ fontSize: 12, color: "#4c4c4c" }}>{r.px}</span>
-          <div style={{ width: 56, height: 40, background: "var(--color-brand-blue-bg)", border: "1px solid var(--color-brand-blue)", borderRadius: `var(--radius-${r.key})` }} />
+          <div style={{ width: 56, height: 40, background: "var(--color-primary-bg)", border: "1px solid var(--color-primary)", borderRadius: `var(--radius-${r.key})` }} />
           <span style={{ fontSize: 12, color: "#4c4c4c" }}>{r.use}</span>
         </div>
       ))}

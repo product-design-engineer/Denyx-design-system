@@ -16,11 +16,11 @@ const meta: Meta = {
           "- **Indicator (Intent)** — `tokens.color.indicator.*` 5 톤 도트/스트로크\n" +
           "- **Tone Pairing** — 5 톤별 surface + indicator + label 조합\n" +
           "- **Text Hierarchy** — primary / secondary / tertiary / disabled\n" +
-          "- **Brand** — brand-blue 5 변형\n" +
+          "- **Primary** — primary 5 변형 (구 brand-blue 계열, 구명 @deprecated alias 유지)\n" +
           "- **Status** — success / warning / error\n" +
           "- **Surface Generic** — surface-50 / 100 / 200\n" +
           "- **Border** — default / soft / strong / divider\n" +
-          "- **Denyx Gradient** — denyx-blue / denyx-purple / denyx-purple-deep (AI symbol/위젯 그라데이션)\n" +
+          "- **Accent Gradient** — accent-start / accent / accent-deep (AI symbol/위젯 그라데이션 · 구 denyx-* 계열)\n" +
           "- **Extended Gray** — gray-mid / soft / pale (text 4계층 외 UI 회색)\n" +
           "- **Extended Palette** — 40 chart/brand ad-hoc 색 (hex-suffix 토큰)",
       },
@@ -159,17 +159,17 @@ export const TextHierarchy: StoryObj = {
   ),
 };
 
-/* ─── 5) Brand ─────────────────────────────────────── */
+/* ─── 5) Primary ───────────────────────────────────── */
 
-/** **Denyx Brand 색상** — 라이브 denyx-ai-assistant 번들에서 추출. */
-export const Brand: StoryObj = {
+/** **`--color-primary-*`** — 주요 강조색 5종 (구 `brand-blue` 계열 → 일반 작명 리네이밍, 구명은 @deprecated alias 로 유지). */
+export const Primary: StoryObj = {
   render: () => (
     <SwatchGrid>
-      <Swatch color="#296CF2" label="color-brand-blue"      hex="#296CF2" description="Denyx 주요 브랜드 컬러 — AI 버튼 / 링크 / 강조" />
-      <Swatch color="#1B5CD9" label="color-brand-blue-deep" hex="#1B5CD9" description="브랜드 블루 deep — hover 강조" />
-      <Swatch color="#3DA9FF" label="color-brand-blue-soft" hex="#3DA9FF" description="브랜드 블루 soft — MiniLineChart 기본 라인" />
-      <Swatch color="#D6E1FF" label="color-brand-blue-bg"   hex="#D6E1FF" description="브랜드 블루 배경 — active 카드 강조" />
-      <Swatch color="#C2D5FC" label="color-brand-blue-bg-2" hex="#C2D5FC" description="브랜드 블루 배경 변형" />
+      <Swatch color="#296CF2" label="color-primary"           hex="#296CF2" description="주요 강조 컬러 — AI 버튼 / 링크 / 강조 (구 brand-blue)" />
+      <Swatch color="#1B5CD9" label="color-primary-strong"    hex="#1B5CD9" description="강조 강화 — hover 강조 (구 brand-blue-deep)" />
+      <Swatch color="#3DA9FF" label="color-primary-soft"      hex="#3DA9FF" description="옅은 강조 — MiniLineChart 기본 라인 (구 brand-blue-soft)" />
+      <Swatch color="#D6E1FF" label="color-primary-bg"        hex="#D6E1FF" description="강조 배경 — active 카드 강조 (구 brand-blue-bg)" />
+      <Swatch color="#C2D5FC" label="color-primary-bg-subtle" hex="#C2D5FC" description="강조 배경 변형 (구 brand-blue-bg-2)" />
     </SwatchGrid>
   ),
 };
@@ -214,16 +214,16 @@ export const Border: StoryObj = {
   ),
 };
 
-/* ─── 9) Denyx Gradient ───────────────────────────── */
+/* ─── 9) Accent Gradient ──────────────────────────── */
 
-/** **`--color-denyx-*`** — AI 심볼·위젯 보라/파랑 그라데이션 stops. */
-export const DenyxGradient: StoryObj = {
+/** **`--color-accent-*`** — AI 심볼·위젯 그라데이션 stops (구 `denyx-*` 계열 → 일반 작명 리네이밍, 구명은 @deprecated alias 로 유지). */
+export const AccentGradient: StoryObj = {
   render: () => (
     <div className="flex flex-col gap-3 max-w-3xl">
       <SwatchGrid>
-        <Swatch color="#004BE0" label="color-denyx-blue"          hex="#004BE0" description="AI 그라데이션 시작 (보라-파랑)" />
-        <Swatch color="#8B52FF" label="color-denyx-purple"        hex="#8B52FF" description="AI 그라데이션 중간 — pinwheel 강조" />
-        <Swatch color="#4F5BD5" label="color-denyx-purple-deep"   hex="#4F5BD5" description="AI 그라데이션 deep variant" />
+        <Swatch color="#004BE0" label="color-accent-start" hex="#004BE0" description="AI 그라데이션 시작 (구 denyx-blue)" />
+        <Swatch color="#8B52FF" label="color-accent"       hex="#8B52FF" description="AI 그라데이션 중간 — pinwheel 강조 (구 denyx-purple)" />
+        <Swatch color="#4F5BD5" label="color-accent-deep"  hex="#4F5BD5" description="AI 그라데이션 deep variant (구 denyx-purple-deep)" />
       </SwatchGrid>
       <div className="text-md text-secondary mt-2" style={{ fontFamily: "var(--font-family-korean)" }}>
         그라데이션 미리보기 — <code className="text-chart text-tertiary" style={{ fontFamily: "var(--font-family-numeric)" }}>linear-gradient(110deg, #004BE0, #8B52FF, #004BE0)</code>

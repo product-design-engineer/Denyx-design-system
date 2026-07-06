@@ -42,7 +42,7 @@ export type ToastVariant = "success" | "info" | "warning" | "error";
 
 const VARIANT_COLOR: Record<ToastVariant, { dot: string; bg: string }> = {
   success: { dot: "var(--color-status-success)", bg: "#E8F8EE" },
-  info:    { dot: "var(--color-brand-blue)", bg: "#E8F0FE" },
+  info:    { dot: "var(--color-primary)", bg: "#E8F0FE" },
   warning: { dot: "#FF8800", bg: "#FFF4E5" },
   error:   { dot: "#F34747", bg: "#FDECEC" },
 };

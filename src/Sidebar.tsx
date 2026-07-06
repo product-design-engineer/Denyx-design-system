@@ -23,7 +23,7 @@
  * ## Composition rules
  * - 폭은 `collapsed` 가 결정 (240px ↔ 40px), `transition-all duration-400` 로 애니메이션.
  *   AI 위젯 활성 시 항상 동기화(feedback-widget-sidebar-collapse) — [[DashboardLayout]] 이 전달.
- * - 경계선·강조 배경은 토큰 binding (`--color-border-default` · `--color-brand-blue-bg`) — 인라인 hex 금지.
+ * - 경계선·강조 배경은 토큰 binding (`--color-border-default` · `--color-primary-bg`) — 인라인 hex 금지.
  * - 아이콘은 표준 경로(`/icons/*`) 참조 (Storybook/소비자 정적 서빙 동일).
  * - 메뉴는 `MenuItem[]` 트리로 주입 — `children` 유무로 단일/확장 항목이 갈림.
  *

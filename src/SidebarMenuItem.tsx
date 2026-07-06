@@ -25,7 +25,7 @@ import type { MenuItem } from "./Sidebar";
  *
  * ## Composition rules
  * - 데이터(`MenuItem`)만 주입 — 행 외형(높이 32px/28px · 들여쓰기 · active 강조)은 이 컴포넌트가 책임.
- * - 색·배경은 토큰 (`--color-brand-blue-bg` · `text-primary/secondary` · `hover-bg-surface-100`) — 인라인 hex 금지.
+ * - 색·배경은 토큰 (`--color-primary-bg` · `text-primary/secondary` · `hover-bg-surface-100`) — 인라인 hex 금지.
  * - 펼침 토글은 데이터(`expanded`)로 제어 — 행 자체는 표현용(상태 비보유). 토글 콜백은 Sidebar 가 관리.
  * - 아이콘은 표준 경로(`/icons/*`).
  * - 자식 행은 `pl-28px` 들여쓰기 — 부모 아이콘(20px) + gap(8px) 정렬.
@@ -49,7 +49,7 @@ export default function SidebarMenuItem({ item }: { item: MenuItem }) {
       <div
         onClick={item.onClick}
         className="flex h-32px items-center overflow-clip p-8px shrink-0 w-full cursor-pointer hover-bg-surface-100"
-        style={item.active ? { backgroundColor: "var(--color-brand-blue-bg)" } : undefined}
+        style={item.active ? { backgroundColor: "var(--color-primary-bg)" } : undefined}
       >
         <div className="flex items-center shrink-0 size-20px justify-center">
           <img alt="" className="size-16px" src={icon(item.icon)} />

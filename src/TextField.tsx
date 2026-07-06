@@ -115,7 +115,7 @@ export default function TextField({
     : invalid
     ? "var(--color-status-error)"
     : "var(--color-border-strong)";
-  const focusBorder = invalid ? "var(--color-status-error)" : "var(--color-brand-blue)";
+  const focusBorder = invalid ? "var(--color-status-error)" : "var(--color-primary)";
 
   return (
     <div

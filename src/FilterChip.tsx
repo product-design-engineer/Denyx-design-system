@@ -76,9 +76,9 @@ export default function FilterChip({
   // selected vs unselected 색
   const selectedStyle: React.CSSProperties = selected
     ? {
-        backgroundColor: "var(--color-brand-blue)",
+        backgroundColor: "var(--color-primary)",
         color: "#fff",
-        border: "1px solid var(--color-brand-blue)",
+        border: "1px solid var(--color-primary)",
       }
     : {
         backgroundColor: "var(--color-surface-100)",

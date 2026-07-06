@@ -92,10 +92,10 @@ export default function Checkbox({
           width: spec.box,
           height: spec.box,
           backgroundColor:
-            checked || indeterminate ? "var(--color-brand-blue)" : "var(--color-card)",
+            checked || indeterminate ? "var(--color-primary)" : "var(--color-card)",
           borderColor:
             checked || indeterminate
-              ? "var(--color-brand-blue)"
+              ? "var(--color-primary)"
               : disabled
               ? "var(--color-border-default)"
               : "var(--color-border-strong)",

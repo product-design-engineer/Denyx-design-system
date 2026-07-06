@@ -72,7 +72,7 @@ export type OrgContext = { label: string; icon?: string; badge?: string }; // ba
 | `hideProductRail` | `boolean` | `false` | 우측 제품 레일 숨김(테넌트 상위·계정 영역) |
 
 **메뉴 하위 항목 네비게이션:** `MenuItem.children[].onClick`으로 그룹(예: "관리 ▾") 하위 항목도 라우팅 진입점이 된다(`expanded: true` + 각 child `onClick`).
-**스위처 컨텍스트 뱃지:** `org.badge`는 **토큰** 칩으로 렌더 — `bg-[var(--color-brand-blue-bg)] text-[color:var(--color-brand-blue)]`(하드코딩 hex 금지). `org.icon` 미지정 시 라벨 좌측은 **12px 스페이서**(빈 40px 박스 금지).
+**스위처 컨텍스트 뱃지:** `org.badge`는 **토큰** 칩으로 렌더 — `bg-[var(--color-primary-bg)] text-[color:var(--color-primary)]`(하드코딩 hex 금지). `org.icon` 미지정 시 라벨 좌측은 **12px 스페이서**(빈 40px 박스 금지).
 
 `collapsed=true`일 때 사이드바는 제품 레일만 남기고 다 숨깁니다. AI 위젯이 열렸을 때의 표준 동작 — 보통 `DashboardLayout`이 자동으로 이 prop을 전달합니다.
 

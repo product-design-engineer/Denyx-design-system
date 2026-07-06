@@ -20,7 +20,7 @@
  *   의도적으로 제공하지 않음.
  * - Denyx AI 토글은 인라인 마크업이 아니라 [[AiAssistantButton]] 채택 (토큰 binding dogfooding).
  * - 높이 48px 고정(`box-border`) — 페이지에서 inline `<div>` 로 재구현 금지.
- * - 배경/경계/텍스트 색은 토큰 (`--color-border-strong` · `--color-text-*` · `--color-brand-blue-bg`).
+ * - 배경/경계/텍스트 색은 토큰 (`--color-border-strong` · `--color-text-*` · `--color-primary-bg`).
  * - `notifications` 1건 이상이면 벨에 빨간 점 + 클릭 시 목록, `profileMenu` 있으면 아바타가 드롭다운.
  *
  * @example
@@ -139,7 +139,7 @@ export default function PageHeader({
                 <defs>
                   <linearGradient id="avatar-grad" x1="0" y1="0" x2="24" y2="24">
                     <stop stopColor="var(--color-palette-4fc3f7)" />
-                    <stop offset="1" stopColor="var(--color-brand-blue)" />
+                    <stop offset="1" stopColor="var(--color-primary)" />
                   </linearGradient>
                 </defs>
                 <circle cx="12" cy="12" r="12" fill="url(#avatar-grad)" />
