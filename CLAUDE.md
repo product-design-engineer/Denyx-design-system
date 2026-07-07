@@ -259,6 +259,15 @@ AI 위젯 영역의 모든 컴포넌트는 다음 primitive 를 **반드시 comp
 - **빈 라벨/기본값(default 프로젝트·조직명) 노출 금지** — 잘못된 정보 노출 방지.
 - 비파괴 원칙: 기본값 `hideProjectSwitcher=false` / `org=DEFAULT_ORG` 이므로 기존 호출처 동작 불변. `DashboardLayout` 이 두 prop 을 Sidebar 로 passthrough.
 
+## 아이콘 — Lucide 셋 · 2D 솔리드 컬러 (2026-07-07 신설)
+
+UI·문서(Storybook MDX 포함)의 아이콘은 **Lucide 아이콘 셋**을 사용하고, **2D 솔리드 컬러(단색) 스타일**로 렌더한다.
+
+- 이모지(🧱💡🔒 등)를 UI/문서 아이콘으로 사용 금지 — Lucide SVG 로 대체.
+- 단색 원칙: `stroke="currentColor"` (또는 단일 토큰 색) — 그라데이션·멀티톤·3D 스타일 금지. 색은 토큰 참조 (`var(--color-primary)` 등).
+- 예외: AI 심볼/브랜드 그라데이션(AiSymbol 등 기존 브랜드 자산)은 본 정책 대상 아님.
+- 인라인 SVG 시 `aria-hidden="true"` + 24 viewBox + `strokeWidth 2` (Lucide 기본) 유지.
+
 ## SVG 텍스트 — font-size 단위 필수
 
 `<text fontSize="9">` (unitless = user-space units, viewBox 와 함께 scale) **금지**.
