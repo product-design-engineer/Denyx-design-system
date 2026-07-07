@@ -2,12 +2,20 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 <Meta title="For Designers" />
 
-<div style={{ maxWidth: 720, margin: '0 auto', fontFamily: 'var(--font-family, "Pretendard Variable", sans-serif)' }}>
+{/*
+  디자이너용 비개발자 가이드 — 가독성 원칙 (2026-07-07 고도화):
+  - 본문 14px / 보조 13px / 메타 12px, lineHeight 1.7 (장문 문서 기준)
+  - 색은 DS 토큰만 (denyx-ds.css 가 preview 에 로드됨) — 다크 모드 자동 대응
+  - 카드 배경 --color-card / 표면 --color-surface-* / 보더 --color-border-default
+  - 톤 콜아웃은 --color-surface-{critical|info|warning} + indicator 색
+*/}
+
+<div style={{ maxWidth: 760, margin: '0 auto', fontFamily: 'var(--font-family-korean, "Noto Sans", "Noto Sans KR", sans-serif)', color: 'var(--color-text-primary, #222)' }}>
 
 # 디자이너를 위한 Denyx Design System 안내서
 
-<div style={{ background: 'var(--color-primary, #2563eb)', color: '#fff', borderRadius: 12, padding: '20px 24px', marginBottom: 32, fontSize: 15, lineHeight: 1.7 }}>
-  이 문서는 코드를 쓰지 않는 <strong>디자이너를 위한 가이드</strong>입니다.
+<div style={{ background: 'var(--color-primary, #296CF2)', color: '#fff', borderRadius: 12, padding: '24px 28px', marginBottom: 40, fontSize: 15, lineHeight: 1.8 }}>
+  이 문서는 코드를 쓰지 않는 <strong>디자이너를 위한 가이드</strong>입니다.<br />
   컴포넌트의 구조, 토큰의 의미, 엔지니어와의 소통 방법을 시각적으로 설명합니다.
 </div>
 
@@ -15,125 +23,129 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 ## 1. 이 디자인 시스템이 뭔가요?
 
-<div style={{ background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 12, padding: 24, marginBottom: 16 }}>
-
-**레고 블록 카탈로그**라고 생각하세요.
-
-Denyx Design System은 미리 만들어진 **UI 부품(블록)의 모음**입니다.
-우리는 이 블록들을 조합해서 페이지를 만듭니다.
-
+<div style={{ background: 'var(--color-surface-50, #F5F5F5)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 12, padding: '24px 28px', margin: '20px 0', fontSize: 15, lineHeight: 1.8 }}>
+  <strong>레고 블록 카탈로그</strong>라고 생각하세요.<br /><br />
+  Denyx Design System은 미리 만들어진 <strong>UI 부품(블록)의 모음</strong>입니다.
+  우리는 이 블록들을 조합해서 페이지를 만듭니다.
 </div>
 
-<div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
-  <div style={{ flex: 1, minWidth: 180, background: 'var(--color-surface-50, #f0f7ff)', border: '1px solid var(--color-primary, #2563eb)', borderRadius: 8, padding: 16, textAlign: 'center' }}>
-    <div style={{ fontSize: 28, marginBottom: 8 }}>&#x1F9F1;</div>
-    <div style={{ fontWeight: 600, fontSize: 13 }}>블록 하나를 고치면</div>
+<div style={{ display: 'flex', gap: 16, margin: '24px 0', flexWrap: 'wrap', alignItems: 'stretch' }}>
+  <div style={{ flex: 1, minWidth: 200, background: 'var(--color-surface-info, #e8f4ff)', border: '1px solid var(--color-primary, #296CF2)', borderRadius: 10, padding: 20, textAlign: 'center' }}>
+    <div style={{ fontSize: 32, marginBottom: 10 }}>&#x1F9F1;</div>
+    <div style={{ fontWeight: 700, fontSize: 15 }}>블록 하나를 고치면</div>
   </div>
-  <div style={{ flex: '0 0 40px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, color: 'var(--color-primary, #2563eb)' }}>&#x2192;</div>
-  <div style={{ flex: 1, minWidth: 180, background: 'var(--color-status-success-bg, #f0fdf4)', border: '1px solid var(--color-status-success, #22c55e)', borderRadius: 8, padding: 16, textAlign: 'center' }}>
-    <div style={{ fontSize: 28, marginBottom: 8 }}>&#x2728;</div>
-    <div style={{ fontWeight: 600, fontSize: 13 }}>모든 페이지에 자동 반영</div>
+  <div style={{ flex: '0 0 48px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, color: 'var(--color-primary, #296CF2)' }}>&#x2192;</div>
+  <div style={{ flex: 1, minWidth: 200, background: 'var(--color-surface-50, #F5F5F5)', border: '1px solid var(--color-status-success, #00B442)', borderRadius: 10, padding: 20, textAlign: 'center' }}>
+    <div style={{ fontSize: 32, marginBottom: 10 }}>&#x2728;</div>
+    <div style={{ fontWeight: 700, fontSize: 15 }}>모든 페이지에 자동 반영</div>
   </div>
 </div>
 
-버튼의 색상을 한 곳에서 바꾸면, 그 버튼을 사용하는 모든 화면이 동시에 바뀝니다.
-이것이 **단일 출처(Single Source of Truth)** 의 힘입니다.
+<div style={{ fontSize: 15, lineHeight: 1.8 }}>
+  버튼의 색상을 한 곳에서 바꾸면, 그 버튼을 사용하는 모든 화면이 동시에 바뀝니다.
+  이것이 <strong>단일 출처(Single Source of Truth)</strong> 의 힘입니다.
+</div>
 
 ---
 
 ## 2. 어떻게 구성되어 있나요?
 
-디자인 시스템은 4개의 계층으로 나뉩니다. 아래에서 위로 쌓이는 구조입니다.
+<div style={{ fontSize: 15, lineHeight: 1.8, marginBottom: 8 }}>
+  디자인 시스템은 <strong>4개의 계층</strong>으로 나뉩니다. 아래(Tokens)에서 위(Shell)로 쌓이는 구조입니다.
+</div>
 
-<div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginBottom: 24, marginTop: 16 }}>
+<div style={{ display: 'flex', flexDirection: 'column', gap: 0, margin: '24px 0 28px' }}>
 
-  <div style={{ background: '#1e293b', color: '#fff', borderRadius: '12px 12px 0 0', padding: '16px 20px', textAlign: 'center' }}>
-    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>Shell</div>
-    <div style={{ fontSize: 12, opacity: 0.85 }}>전체 페이지 골격 (DashboardLayout, DenyxAiWidget)</div>
+  <div style={{ background: '#1e293b', color: '#fff', borderRadius: '12px 12px 0 0', padding: '18px 24px', textAlign: 'center' }}>
+    <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>Shell</div>
+    <div style={{ fontSize: 13, opacity: 0.85 }}>전체 페이지 골격 — DashboardLayout, DenyxAiWidget</div>
   </div>
 
-  <div style={{ background: '#334155', color: '#fff', padding: '16px 20px', textAlign: 'center' }}>
-    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>Composite</div>
-    <div style={{ fontSize: 12, opacity: 0.85 }}>기본 블록을 조합한 영역 (PageHeader, Sidebar, FilterBar)</div>
+  <div style={{ background: '#334155', color: '#fff', padding: '18px 24px', textAlign: 'center' }}>
+    <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>Composite</div>
+    <div style={{ fontSize: 13, opacity: 0.85 }}>기본 블록을 조합한 영역 — PageHeader, Sidebar, FilterBar</div>
   </div>
 
-  <div style={{ background: '#64748b', color: '#fff', padding: '16px 20px', textAlign: 'center' }}>
-    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>Primitives</div>
-    <div style={{ fontSize: 12, opacity: 0.85 }}>기본 블록 (Button, TextField, Checkbox, Select, Chip, DataTable)</div>
+  <div style={{ background: '#64748b', color: '#fff', padding: '18px 24px', textAlign: 'center' }}>
+    <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>Primitives</div>
+    <div style={{ fontSize: 13, opacity: 0.9 }}>기본 블록 — Button, TextField, Checkbox, Select, Chip, DataTable</div>
   </div>
 
-  <div style={{ background: 'var(--color-primary, #2563eb)', color: '#fff', borderRadius: '0 0 12px 12px', padding: '16px 20px', textAlign: 'center' }}>
-    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>Tokens</div>
-    <div style={{ fontSize: 12, opacity: 0.95 }}>색상, 글꼴, 간격 등의 "설계 규격서"</div>
+  <div style={{ background: 'var(--color-primary, #296CF2)', color: '#fff', borderRadius: '0 0 12px 12px', padding: '18px 24px', textAlign: 'center' }}>
+    <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>Tokens</div>
+    <div style={{ fontSize: 13, opacity: 0.95 }}>색상, 글꼴, 간격 등의 "설계 규격서"</div>
   </div>
 
 </div>
 
-<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 24 }}>
-  <div style={{ background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16 }}>
-    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 8, color: 'var(--color-primary, #2563eb)' }}>Tokens (설계 규격서)</div>
-    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-secondary, #666)' }}>
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 28 }}>
+  <div style={{ background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20 }}>
+    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10, color: 'var(--color-primary, #296CF2)' }}>Tokens — 설계 규격서</div>
+    <div style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--color-text-secondary, #4c4c4c)' }}>
       색상 팔레트, 글꼴 크기, 줄 간격, 여백 등 모든 시각 속성의 원본 값.
       토큰 하나를 바꾸면 그 토큰을 참조하는 모든 컴포넌트가 함께 바뀝니다.
     </div>
   </div>
-  <div style={{ background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16 }}>
-    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 8, color: '#64748b' }}>Primitives (기본 블록)</div>
-    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-secondary, #666)' }}>
+  <div style={{ background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20 }}>
+    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10 }}>Primitives — 기본 블록</div>
+    <div style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--color-text-secondary, #4c4c4c)' }}>
       버튼, 입력창, 체크박스, 셀렉트 등 다른 블록 없이 혼자 동작하는 가장 작은 단위.
       다른 컴포넌트를 포함하지 않습니다.
     </div>
   </div>
-  <div style={{ background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16 }}>
-    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 8, color: '#334155' }}>Composite (조합 영역)</div>
-    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-secondary, #666)' }}>
+  <div style={{ background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20 }}>
+    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10 }}>Composite — 조합 영역</div>
+    <div style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--color-text-secondary, #4c4c4c)' }}>
       Primitives를 조합해서 만든 영역 수준의 UI.
       페이지 헤더, 사이드바, 필터 바 등이 여기에 해당합니다.
     </div>
   </div>
-  <div style={{ background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16 }}>
-    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 8, color: '#1e293b' }}>Shell (페이지 골격)</div>
-    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-secondary, #666)' }}>
+  <div style={{ background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20 }}>
+    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10 }}>Shell — 페이지 골격</div>
+    <div style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--color-text-secondary, #4c4c4c)' }}>
       전체 페이지를 감싸는 최종 조립 단위.
       DashboardLayout과 DenyxAiWidget, 딱 2개입니다.
     </div>
   </div>
 </div>
 
-또한 **AI 영역**은 별도로 분리되어 있습니다. AI 관련 컴포넌트(AiCard, AiInlinePrompt 등)는 좌측 트리의 **Denyx AI** 카테고리에서 찾을 수 있습니다.
+<div style={{ fontSize: 14, lineHeight: 1.8, background: 'var(--color-surface-50, #F5F5F5)', borderRadius: 10, padding: '14px 20px' }}>
+  &#x1F4A1; <strong>AI 영역</strong>은 별도로 분리되어 있습니다. AI 관련 컴포넌트(AiCard, AiInlinePrompt 등)는
+  좌측 트리의 <strong>Denyx AI</strong> 카테고리에서 찾을 수 있습니다.
+</div>
 
 ---
 
 ## 3. 컴포넌트 찾는 법
 
-<div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+<div style={{ display: 'flex', flexDirection: 'column', gap: 14, margin: '24px 0 28px' }}>
 
-  <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16 }}>
-    <div style={{ flex: '0 0 40px', height: 40, background: 'var(--color-primary, #2563eb)', color: '#fff', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 16 }}>1</div>
+  <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20 }}>
+    <div style={{ flex: '0 0 44px', height: 44, background: 'var(--color-primary, #296CF2)', color: '#fff', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18 }}>1</div>
     <div>
-      <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>좌측 트리에서 카테고리별 탐색</div>
-      <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-secondary, #666)' }}>
+      <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>좌측 트리에서 카테고리별 탐색</div>
+      <div style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--color-text-secondary, #4c4c4c)' }}>
         Storybook 왼쪽 패널에서 Tokens, Primitives, Composite, Shell, Denyx AI 등 카테고리별로 컴포넌트를 찾을 수 있습니다.
         각 카테고리 안에서 컴포넌트 이름을 클릭하면 미리보기가 나타납니다.
       </div>
     </div>
   </div>
 
-  <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16 }}>
-    <div style={{ flex: '0 0 40px', height: 40, background: 'var(--color-primary, #2563eb)', color: '#fff', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 16 }}>2</div>
+  <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20 }}>
+    <div style={{ flex: '0 0 44px', height: 44, background: 'var(--color-primary, #296CF2)', color: '#fff', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18 }}>2</div>
     <div>
-      <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>Docs 탭에서 상세 확인</div>
-      <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-secondary, #666)' }}>
+      <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>Docs 탭에서 상세 확인</div>
+      <div style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--color-text-secondary, #4c4c4c)' }}>
         각 컴포넌트의 Docs 탭에는 사용 가능한 옵션(prop), 언제 사용하고 언제 사용하지 말아야 하는지, 사용 시나리오가 정리되어 있습니다.
       </div>
     </div>
   </div>
 
-  <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16 }}>
-    <div style={{ flex: '0 0 40px', height: 40, background: 'var(--color-primary, #2563eb)', color: '#fff', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 16 }}>3</div>
+  <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start', background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20 }}>
+    <div style={{ flex: '0 0 44px', height: 44, background: 'var(--color-primary, #296CF2)', color: '#fff', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 18 }}>3</div>
     <div>
-      <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>Controls 패널에서 실시간 조작</div>
-      <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-secondary, #666)' }}>
+      <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>Controls 패널에서 실시간 조작</div>
+      <div style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--color-text-secondary, #4c4c4c)' }}>
         캔버스 하단의 Controls 패널에서 크기, 색상, 텍스트 등 옵션을 실시간으로 바꿔보며 결과를 바로 확인할 수 있습니다.
         디자인 의사결정을 내리기 전에 다양한 조합을 시험해 보세요.
       </div>
@@ -146,40 +158,40 @@ Denyx Design System은 미리 만들어진 **UI 부품(블록)의 모음**입니
 
 ## 4. 디자인할 때 지켜야 할 것
 
-<div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+<div style={{ display: 'flex', flexDirection: 'column', gap: 14, margin: '24px 0 28px' }}>
 
-  <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 8, padding: 16 }}>
-    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: '#dc2626' }}>색상은 토큰만 사용하세요</div>
-    <div style={{ fontSize: 12, lineHeight: 1.8 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-        <span style={{ color: '#dc2626', fontWeight: 700 }}>X</span>
-        <span style={{ color: 'var(--color-text-secondary, #666)' }}>Figma에서 임의의 색상 #3B82F6 직접 입력</span>
+  <div style={{ background: 'var(--color-surface-critical, #ffe8e8)', border: '1px solid var(--color-indicator-critical, #E53935)', borderRadius: 10, padding: 20 }}>
+    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10, color: 'var(--color-indicator-critical, #E53935)' }}>색상은 토큰만 사용하세요</div>
+    <div style={{ fontSize: 13, lineHeight: 1.9 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+        <span style={{ color: 'var(--color-status-error, #f34646)', fontWeight: 700, fontSize: 14 }}>&#x2715;</span>
+        <span>Figma에서 임의의 색상 #3B82F6 직접 입력</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <span style={{ color: '#22c55e', fontWeight: 700 }}>O</span>
-        <span style={{ color: 'var(--color-text-secondary, #666)' }}>토큰에 정의된 색상 사용 (Brand Blue, Status Error 등)</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span style={{ color: 'var(--color-status-success, #00B442)', fontWeight: 700, fontSize: 14 }}>&#x2713;</span>
+        <span>토큰에 정의된 색상 사용 (Primary, Status Error 등)</span>
       </div>
     </div>
-    <div style={{ fontSize: 11, marginTop: 8, color: 'var(--color-text-tertiary, #999)' }}>
-      토큰으로 관리해야 다크 모드 전환이 자동으로 됩니다. 좌측 트리 Tokens &gt; Color에서 전체 색상표를 확인하세요.
+    <div style={{ fontSize: 12, marginTop: 10, color: 'var(--color-text-tertiary, #757575)' }}>
+      토큰으로 관리해야 다크 모드 전환이 자동으로 됩니다. 좌측 트리 <a href="/?path=/docs/tokens-color--docs" style={{ color: 'var(--color-primary, #296CF2)' }}>Tokens &gt; Color</a>에서 전체 색상표를 확인하세요.
     </div>
   </div>
 
-  <div style={{ background: '#eff6ff', border: '1px solid #93c5fd', borderRadius: 8, padding: 16 }}>
-    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: '#2563eb' }}>AI 영역은 AiCard로 감싸세요</div>
-    <div style={{ fontSize: 12, lineHeight: 1.8, color: 'var(--color-text-secondary, #666)' }}>
-      AI 위젯 안의 카드 UI는 반드시 AiCard 컴포넌트를 사용합니다.
+  <div style={{ background: 'var(--color-surface-info, #e8f4ff)', border: '1px solid var(--color-primary, #296CF2)', borderRadius: 10, padding: 20 }}>
+    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10, color: 'var(--color-primary, #296CF2)' }}>AI 영역은 AiCard로 감싸세요</div>
+    <div style={{ fontSize: 13, lineHeight: 1.8 }}>
+      AI 위젯 안의 카드 UI는 반드시 <strong>AiCard</strong> 컴포넌트를 사용합니다.
       흰 배경 + 라운드 + 패딩 + 진입 애니메이션을 AiCard가 자동으로 처리하므로,
       직접 카드를 만들 필요가 없습니다.
     </div>
   </div>
 
-  <div style={{ background: '#fefce8', border: '1px solid #fde68a', borderRadius: 8, padding: 16 }}>
-    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8, color: '#ca8a04' }}>타이포그래피 위계를 지키세요</div>
-    <div style={{ fontSize: 12, lineHeight: 1.8 }}>
-      글꼴 크기와 굵기는 항상 함께 조합합니다. 같은 크기에서 굵기만 바꾸면 위계가 무너집니다.
+  <div style={{ background: 'var(--color-surface-warning, #fff7e0)', border: '1px solid var(--color-indicator-warning, #F0B400)', borderRadius: 10, padding: 20 }}>
+    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10, color: 'var(--color-indicator-warning, #F0B400)' }}>타이포그래피 위계를 지키세요</div>
+    <div style={{ fontSize: 13, lineHeight: 1.8 }}>
+      글꼴 크기와 굵기는 항상 <strong>함께</strong> 조합합니다. 같은 크기에서 굵기만 바꾸면 위계가 무너집니다.
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr 1fr', gap: '4px 16px', fontSize: 11, marginTop: 12, padding: '12px', background: 'rgba(255,255,255,0.6)', borderRadius: 6 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr 2fr', gap: '6px 20px', fontSize: 13, marginTop: 14, padding: '14px 16px', background: 'var(--color-card, #fff)', borderRadius: 8, lineHeight: 1.5 }}>
       <div style={{ fontWeight: 700 }}>크기</div>
       <div style={{ fontWeight: 700 }}>굵기</div>
       <div style={{ fontWeight: 700 }}>용도</div>
@@ -191,9 +203,9 @@ Denyx Design System은 미리 만들어진 **UI 부품(블록)의 모음**입니
     </div>
   </div>
 
-  <div style={{ background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16 }}>
-    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 8 }}>DataTable density 기본값은 default</div>
-    <div style={{ fontSize: 12, lineHeight: 1.8, color: 'var(--color-text-secondary, #666)' }}>
+  <div style={{ background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20 }}>
+    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10 }}>DataTable density 기본값은 default</div>
+    <div style={{ fontSize: 13, lineHeight: 1.8, color: 'var(--color-text-secondary, #4c4c4c)' }}>
       테이블의 기본 밀도는 <strong>default</strong> (헤더 12px / 행 13px)입니다.
       compact (헤더 10px / 행 11px)는 100행 이상의 로그 데이터 같은 극단적인 경우에만 사용합니다.
     </div>
@@ -205,37 +217,39 @@ Denyx Design System은 미리 만들어진 **UI 부품(블록)의 모음**입니
 
 ## 5. 엔지니어에게 전달할 때
 
-디자인을 엔지니어에게 전달할 때는 **컴포넌트 이름 + 옵션(prop) 조합**으로 소통하면 가장 정확합니다.
+<div style={{ fontSize: 15, lineHeight: 1.8, marginBottom: 16 }}>
+  디자인을 엔지니어에게 전달할 때는 <strong>컴포넌트 이름 + 옵션(prop) 조합</strong>으로 소통하면 가장 정확합니다.
+</div>
 
-<div style={{ background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 12, padding: 20, marginBottom: 16 }}>
-  <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 12 }}>소통 예시</div>
+<div style={{ background: 'var(--color-surface-50, #F5F5F5)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 12, padding: 24, marginBottom: 16 }}>
+  <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 14 }}>소통 예시</div>
 
-  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-    <div style={{ background: '#fff', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: '12px 16px', fontSize: 12, lineHeight: 1.6 }}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div style={{ background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 8, padding: '14px 18px', fontSize: 13, lineHeight: 1.7 }}>
       "이 페이지 헤더는 <strong>PageHeader</strong>에 title='대시보드'로 설정하고,
        AI 진입은 <strong>PageHeaderAiInline</strong>을 사용해 주세요."
     </div>
-    <div style={{ background: '#fff', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: '12px 16px', fontSize: 12, lineHeight: 1.6 }}>
+    <div style={{ background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 8, padding: '14px 18px', fontSize: 13, lineHeight: 1.7 }}>
       "이 칩은 <strong>Chip</strong> 컴포넌트, tone='success', size='md'입니다."
     </div>
-    <div style={{ background: '#fff', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: '12px 16px', fontSize: 12, lineHeight: 1.6 }}>
+    <div style={{ background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 8, padding: '14px 18px', fontSize: 13, lineHeight: 1.7 }}>
       "이 카드는 <strong>AiCard</strong>로 감싸고, 내부에 <strong>AiSectionHeading</strong> tone='warning'을 넣어 주세요."
     </div>
   </div>
 </div>
 
-<div style={{ background: '#eff6ff', border: '1px solid #93c5fd', borderRadius: 8, padding: 16, marginBottom: 24 }}>
-  <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 8, color: '#2563eb' }}>새 컴포넌트가 필요하다면?</div>
-  <div style={{ fontSize: 12, lineHeight: 1.8, color: 'var(--color-text-secondary, #666)' }}>
+<div style={{ background: 'var(--color-surface-info, #e8f4ff)', border: '1px solid var(--color-primary, #296CF2)', borderRadius: 10, padding: 20, marginBottom: 14 }}>
+  <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10, color: 'var(--color-primary, #296CF2)' }}>새 컴포넌트가 필요하다면?</div>
+  <div style={{ fontSize: 13, lineHeight: 1.8 }}>
     기존 컴포넌트로 표현할 수 없는 UI가 필요하면, 페이지 안에서 임의로 만들지 마세요.
     <strong> 이 DS 저장소에 요청</strong>하여 새 컴포넌트를 추가합니다.
     이렇게 해야 다른 페이지에서도 재사용할 수 있고, 일관성이 유지됩니다.
   </div>
 </div>
 
-<div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: 8, padding: 16, marginBottom: 24 }}>
-  <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 8, color: '#dc2626' }}>불변 정책 -- 소비 측에서 DS를 수정할 수 없습니다</div>
-  <div style={{ fontSize: 12, lineHeight: 1.8, color: 'var(--color-text-secondary, #666)' }}>
+<div style={{ background: 'var(--color-surface-critical, #ffe8e8)', border: '1px solid var(--color-indicator-critical, #E53935)', borderRadius: 10, padding: 20, marginBottom: 28 }}>
+  <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 10, color: 'var(--color-indicator-critical, #E53935)' }}>&#x1F512; 불변 정책 — 소비 측에서 DS를 수정할 수 없습니다</div>
+  <div style={{ fontSize: 13, lineHeight: 1.8 }}>
     토큰이나 컴포넌트의 색상, 크기, 스타일을 제품 코드에서 덮어쓰는 것은 금지되어 있습니다.
     변경이 필요하면 반드시 이 디자인 시스템 저장소에서 수정합니다.
   </div>
@@ -245,26 +259,30 @@ Denyx Design System은 미리 만들어진 **UI 부품(블록)의 모음**입니
 
 ## 6. 유용한 링크
 
-<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 24 }}>
-  <a href="https://denyx-design-system-storybook.vercel.app" target="_blank" rel="noopener noreferrer" style={{ display: 'block', background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16, textDecoration: 'none', color: 'inherit' }}>
-    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 4 }}>Storybook (라이브)</div>
-    <div style={{ fontSize: 11, color: 'var(--color-text-tertiary, #999)' }}>컴포넌트 카탈로그를 브라우저에서 바로 확인</div>
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, margin: '24px 0 28px' }}>
+  <a href="https://denyx-design-system-storybook.vercel.app" target="_blank" rel="noopener noreferrer" style={{ display: 'block', background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20, textDecoration: 'none', color: 'inherit' }}>
+    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>Storybook (라이브)</div>
+    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-tertiary, #757575)' }}>컴포넌트 카탈로그를 브라우저에서 바로 확인</div>
   </a>
-  <a href="https://github.com/interfacedesigner/Denyx-design-system" target="_blank" rel="noopener noreferrer" style={{ display: 'block', background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16, textDecoration: 'none', color: 'inherit' }}>
-    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 4 }}>GitHub</div>
-    <div style={{ fontSize: 11, color: 'var(--color-text-tertiary, #999)' }}>소스 코드 및 이슈 등록</div>
+  <a href="https://github.com/interfacedesigner/Denyx-design-system" target="_blank" rel="noopener noreferrer" style={{ display: 'block', background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20, textDecoration: 'none', color: 'inherit' }}>
+    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>GitHub</div>
+    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-tertiary, #757575)' }}>소스 코드 및 이슈 등록</div>
   </a>
-  <a href="https://denyx-design-system-storybook.vercel.app/api/mcp" target="_blank" rel="noopener noreferrer" style={{ display: 'block', background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16, textDecoration: 'none', color: 'inherit' }}>
-    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 4 }}>MCP (AI 연동)</div>
-    <div style={{ fontSize: 11, color: 'var(--color-text-tertiary, #999)' }}>AI 에이전트가 DS를 참조할 때 사용하는 엔드포인트</div>
+  <a href="https://denyx-design-system-storybook.vercel.app/api/mcp" target="_blank" rel="noopener noreferrer" style={{ display: 'block', background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20, textDecoration: 'none', color: 'inherit' }}>
+    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>MCP (AI 연동)</div>
+    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-tertiary, #757575)' }}>AI 에이전트가 DS를 참조할 때 사용하는 엔드포인트</div>
   </a>
-  <a href="/?path=/docs/tokens-color--docs" style={{ display: 'block', background: 'var(--color-surface-50, #fafafa)', border: '1px solid var(--color-border, #e5e5e5)', borderRadius: 8, padding: 16, textDecoration: 'none', color: 'inherit' }}>
-    <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 4 }}>Color 토큰</div>
-    <div style={{ fontSize: 11, color: 'var(--color-text-tertiary, #999)' }}>전체 색상 팔레트 및 시맨틱 컬러 확인</div>
+  <a href="/?path=/docs/tokens-color--docs" style={{ display: 'block', background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20, textDecoration: 'none', color: 'inherit' }}>
+    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>Color 토큰</div>
+    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-tertiary, #757575)' }}>전체 색상 팔레트 및 시맨틱 컬러 확인</div>
+  </a>
+  <a href="/?path=/docs/change-log--docs" style={{ display: 'block', background: 'var(--color-card, #fff)', border: '1px solid var(--color-border-default, #EAEAEA)', borderRadius: 10, padding: 20, textDecoration: 'none', color: 'inherit' }}>
+    <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>Change Log</div>
+    <div style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-tertiary, #757575)' }}>토큰·컴포넌트의 소비자 영향 변경 이력</div>
   </a>
 </div>
 
-<div style={{ textAlign: 'center', padding: '24px 0', fontSize: 12, color: 'var(--color-text-tertiary, #999)' }}>
+<div style={{ textAlign: 'center', padding: '28px 0', fontSize: 13, color: 'var(--color-text-tertiary, #757575)' }}>
   궁금한 점이 있으면 담당 디자이너에게 언제든 문의하세요.
 </div>
 
