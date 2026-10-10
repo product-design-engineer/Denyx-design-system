@@ -41,15 +41,39 @@ Primitives ──→ Composite ──→ Shell
 - Component 토큰(3계층)은 variant×tone 조합이 복잡한 것만 선택 도입 (`--wds-btn-*`).
 - `--color-palette-*` (hex suffix) 는 차트 시리즈 전용 Global. 컴포넌트에서 직접 참조 가능 (차트 한정).
 
-### 토큰 단일 출처 파이프라인
+### 토큰 Addon 구조 (2026-10-10 신설)
+
+컬러 토큰은 4파일 Addon 구조. Core는 그레이스케일(중립색)만 보유, Brand/Status/Chart Addon이 색을 주입.
 
 ```
-src/tokens.css  ─── 유일한 진실 ───→  scripts/generate-tokens.mjs
-                                          ↓
-                                   src/widget/_tokens.ts (자동 생성)
+src/tokens/
+  core.css    ── 그레이스케일 23색 + 구조 66 = 89 tokens + gray fallback
+  brand.css   ── primary·accent·gradient 9 tokens (제품 아이덴티티)
+  status.css  ── status·indicator·surface-intent 12 tokens (상태 표현)
+  chart.css   ── palette 36 tokens (차트 전용, 테마 불변)
+
+src/tokens.css  ── @import 합본 (하위호환)
+                ──→ scripts/generate-tokens.mjs → src/widget/_tokens.ts (자동 생성)
+                ──→ scripts/build-tokens-json.mjs → docs/tokens.json (자동 생성)
 ```
 
-- **`tokens.css`가 유일한 출처.** 토큰 추가·변경·삭제는 이 파일에서만.
+**소비자 import:**
+```css
+/* 기존 방식 (불변) */
+@import '@denyx/design-system/tokens.css';
+
+/* Addon 선택 로드 */
+@import '@denyx/design-system/tokens/core.css';
+@import '@denyx/design-system/tokens/brand.css';
+@import '@denyx/design-system/tokens/status.css';
+
+/* 테마 교체 — brand.css 만 다른 파일로 교체 */
+@import '@denyx/design-system/tokens/core.css';
+@import '@custom-product/brand.css';
+```
+
+- **Core에 gray fallback 포함** — Addon 없이도 읽을 수 있는 UI 보장. Brand/Status 로드 시 덮어씀.
+- **`pnpm lint:addon`** — Core 그레이스케일 순수성 · Addon 간 변수 중복 없음 · .dark 자기 완결 검증.
 - `_tokens.ts`는 **자동 생성물** — 직접 수정 금지. `node scripts/generate-tokens.mjs` 로 재생성.
 - `pnpm check:tokens` — CI에서 drift 감지 (생성 후 git diff).
 - `storybook` / `build-storybook` 실행 시 자동으로 `generate:tokens` 선행.
@@ -62,7 +86,7 @@ src/tokens.css  ─── 유일한 진실 ───→  scripts/generate-tokens
 
 | 작업 | 절차 |
 |---|---|
-| **추가** | 실사용 **3곳 이상** 근거 (grep 첨부) + 계층(Global/Semantic) 명시 + `tokens.md` 동기 |
+| **추가** | 실사용 **3곳 이상** 근거 (grep 첨부) + 계층(Global/Semantic) 명시 + `@role` 주석 필수 + `tokens.md` 동기 |
 | **수정** | 영향 범위 분석 (전체 참조처 grep) + 시각 회귀(Chromatic) 확인 |
 | **삭제** | 최소 2주 deprecation (`/* @deprecated → 대체토큰 */`) 후 제거 |
 
@@ -111,6 +135,15 @@ DashboardLayout, DenyxAiWidget
 - 추출된 컴포넌트는 계층 명시 + docstring(4섹션) + story + `index.ts` export + 카탈로그 동기.
 - 인라인 허용은 **재사용 없는 1회성 레이아웃 래퍼**(flex 컨테이너 등)에 한함.
 - **적용 현황(2026-06-17):** 반복 인라인 구조 23종을 Primitives Parts 로 추출 완료 — `index.ts` export + story. 테이블 행·스텝·칩·메뉴 항목 등.
+
+### Docstring 4섹션 표준 + components.json (2026-10-10 신설)
+
+모든 컴포넌트 docstring 은 **4섹션 필수**: `## Purpose` / `## When to use` / `## When NOT to use` / `## Composition rules` + `@example`. `pnpm lint:docstrings` 게이트가 강제.
+
+- `docs/components.json` — **기계 판독 컴포넌트 카탈로그(자동 생성 · 직접 편집 금지).** 컴포넌트별 name · layer · purpose · whenToUse · whenNotToUse · compositionRules · example · dont. `scripts/build-components-json.mjs` 가 소스 docstring + barrel export 에서 유도.
+- `pnpm build:components-json` 으로 재생성. `pnpm build:design` 이 자동 선행.
+- Do/Don't 는 `When NOT to use` + `Composition rules` 의 금지형 문장에서 자동 유도 — 별도 작성 불필요.
+- Baseline ratchet: 기존 위반은 `docstring-baseline.json` 에 동결, 신규 유입만 차단. 해소 시 `--update`.
 
 ## 스타일 — 일반 CSS (Tailwind 미사용 · 흔적 0)
 
@@ -230,16 +263,29 @@ AI 위젯 영역의 모든 컴포넌트는 다음 primitive 를 **반드시 comp
 
 ## 회귀 안전망 (Regression Safety Net)
 
-4중 안전망으로 DS 변경 시 기존 소비자가 깨지지 않는지 자동 검증.
+7중 안전망으로 DS 변경 시 기존 소비자가 깨지지 않는지 자동 검증.
 
 | 레이어 | 도구 | 명령어 | 감지 대상 |
 |---|---|---|---|
 | 1. 렌더 테스트 | Vitest | `pnpm test` | 컴포넌트 렌더 에러 |
 | 2. 스냅샷 테스트 | Vitest snapshot | `pnpm test` | 의도치 않은 마크업 변경 |
 | 3. 타입 체크 | TypeScript `tsc --noEmit` | `pnpm typecheck` | export 타입 변경, prop 불일치 |
-| 4. 시각 회귀 | Chromatic | `pnpm chromatic` | 픽셀 수준 UI 변경 |
+| 4. Docstring 표준 | check-docstrings.mjs | `pnpm lint:docstrings` | 4섹션 docstring 누락 (Purpose / When to use / When NOT to use / Composition rules + @example) |
+| 5. 카탈로그 커버리지 | check-catalog-coverage.mjs | `pnpm lint:coverage` | 공개 export 컴포넌트의 story 누락 |
+| 6. 토큰 의미 커버리지 | check-token-docs.mjs | `pnpm lint:token-docs` | @role 주석 없는 토큰 |
+| 7. Addon 구조 무결성 | check-token-addon.mjs | `pnpm lint:addon` | Core 그레이스케일 순수성·Addon 간 변수 중복·.dark 자기 완결 |
+| 8. Gate roster 검산 | check-gates.mjs | `pnpm lint:gates` | 게이트 배선 누락·스크립트 미등록·justification 부재 |
+| 9. 시각 회귀 | Chromatic | `pnpm chromatic` | 픽셀 수준 UI 변경 |
 
-**통합 검증:** `pnpm check` (typecheck + lint:src + test)
+**통합 검증:** `pnpm check` (typecheck + lint:src + lint:docstrings + lint:coverage + lint:token-docs + lint:addon + lint:gates + test)
+
+### Gate roster — 게이트 명부 단일 원천 (2026-10-10 신설)
+
+`scripts/gate-roster.mjs` — 모든 가드레일의 단일 원천. auto(자동)/policy(사람 검토) 상태 관리.
+
+- **auto 게이트**는 `script`(검사 스크립트) 또는 `pipeline`(pnpm 스크립트명) 또는 `justification`(구조적 보장 근거) 중 하나 필수.
+- `check-gates.mjs` 가 roster ↔ 실제 배선 정합성을 검산: 스크립트 존재 여부 · pnpm 배선 · 새 check-*.mjs 의 roster 등록 여부.
+- **새 게이트 추가 시**: check-*.mjs 작성 → roster 등록 → package.json 배선 → check 체인 추가. roster 미등록 시 `lint:gates` 실패.
 
 스냅샷이 의도적 변경이면 `pnpm test -- -u` 로 업데이트.
 

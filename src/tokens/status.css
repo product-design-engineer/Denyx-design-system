@@ -1,0 +1,39 @@
+/*
+ * status.css — Status Addon 토큰.
+ *
+ * 상태 표현 (성공·경고·에러) + 의미 인디케이터 (critical·warning·info).
+ * core.css 의 gray fallback 을 실제 상태 색으로 덮어쓴다.
+ * muted/neutral 은 Core 소속 (중립 회색).
+ */
+:root {
+  /* @group-role 상태 표시 원색 — 배지·도트·보더 | @avoid 배경(대비 미달, soft 변형 사용) */
+  --color-status-success: #00B442;
+  --color-status-warning: #FFA012;
+  --color-status-error: #f34646;
+
+  /* @group-role AI 의미 인디케이터 — 도트·스트로크·강조. 높은 채도 */
+  --color-indicator-critical: #E53935;
+  --color-indicator-warning: #F0B400;
+  --color-indicator-info: #296CF2;
+
+  /* @group-role AI 의미 배경 — 카드/패널 표면. 낮은 채도, 가독성 보장 */
+  --color-surface-critical: #ffe8e8;
+  --color-surface-warning: #fff7e0;
+  --color-surface-info: #e8f4ff;
+
+  /* @group-role AI 의미 라벨 — 분류 배지 텍스트 (참조 목적) */
+  --label-critical: "고활용";
+  --label-warning: "활용";
+  --label-info: "저활용";
+  --label-muted: "완전 유휴";
+  --label-neutral: "";
+}
+
+/* ── Dark Theme — Status overrides ──────────────────────── */
+.dark, [data-theme="dark"] {
+  --color-indicator-info: #5A9AFF;
+
+  --color-surface-critical: #3A1C1C;
+  --color-surface-warning: #3A3018;
+  --color-surface-info: #1A2A3E;
+}

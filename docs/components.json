@@ -1,0 +1,1719 @@
+{
+  "generated": "2026-10-10T10:12:08.666Z",
+  "description": "자동 생성 — 직접 편집 금지. `node scripts/build-components-json.mjs` 로 재생성.",
+  "count": 63,
+  "components": [
+    {
+      "name": "AiActionChip",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/AiActionChip.tsx",
+      "purpose": "랜딩 인사말 아래 제안 액션 한 건을 칩 버튼으로 렌더 — 라벨 텍스트 + 진입 페이드인 애니메이션.\n`DenyxAiWidget` 의 `actions.map(...)` 안에 인라인되어 있던 버튼 마크업을 그대로 추출한 것.\n진입은 400ms 부터 칩마다 80ms 스태거(`index` 기반)로 페이드인한다.",
+      "whenToUse": [
+        "[[DenyxAiWidget]] 가 `actions.map` 으로 항목마다 렌더 (기본 용법). 보통 단독 사용하지 않음.",
+        "동일한 브랜드-블루 아웃라인 칩 외형이 필요한 다른 랜딩 표면."
+      ],
+      "whenNotToUse": [
+        "랜딩 카드 chrome / 인사말 문단 → 부모 [[DenyxAiWidget]] 가 책임.",
+        "액션이 아닌 일반 버튼 → 표준 버튼 컴포넌트 사용."
+      ],
+      "compositionRules": [
+        "라벨(`label`)·순번(`index`)만 주입 — 외형/스태거 지연은 이 컴포넌트가 책임 (표현용).",
+        "색·배경은 토큰(`color-var-color-brand-blue` · `bg-card` · `hover-bg-color-var-color-brand-blue-bg`) — 인라인 hex 금지.",
+        "스태거 지연은 `400 + index * 80` ms 로 부모 map 순번과 동일하게 계산."
+      ],
+      "example": "```tsx\n{actions.map((label, i) => (\n  <AiActionChip key={label} label={label} index={i} />\n))}\n```",
+      "dont": [
+        "랜딩 카드 chrome / 인사말 문단 → 부모 [[DenyxAiWidget]] 가 책임.",
+        "액션이 아닌 일반 버튼 → 표준 버튼 컴포넌트 사용.",
+        "색·배경은 토큰(`color-var-color-brand-blue` · `bg-card` · `hover-bg-color-var-color-brand-blue-bg`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "AiAttachmentChip",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/AiAttachmentChip.tsx",
+      "purpose": "입력창 위 첨부 파일 한 건을 고정폭 칩으로 렌더 — 파일명(truncate) + MIME 배지.\n`DenyxAiWidget` 의 `attachments.map(...)` 안에 인라인되어 있던 칩 마크업을 그대로 추출한 것.",
+      "whenToUse": [
+        "[[DenyxAiWidget]] 가 `attachments.map` 으로 항목마다 렌더 (기본 용법). 보통 단독 사용하지 않음.",
+        "동일한 첨부 파일 칩 외형이 필요한 다른 입력 표면."
+      ],
+      "whenNotToUse": [
+        "입력창 chrome / textarea / 전송 버튼 → 부모 [[DenyxAiWidget]] 가 책임.",
+        "첨부가 아닌 일반 칩 → 해당 칩 컴포넌트 사용."
+      ],
+      "compositionRules": [
+        "파일명(`name`)·MIME(`mime`)만 주입 — 칩 외형/truncate/배지는 이 컴포넌트가 책임 (표현용).",
+        "색·배경은 토큰(`bg-card` · `border-cd3d3d3` · `text-primary` · `text-tertiary` · `bg-rgba-0-0-0-0_05`) — 인라인 hex 금지.",
+        "MIME 미지정 시 `\"CSV\"` 로 폴백 (부모 인라인 동작 그대로)."
+      ],
+      "example": "```tsx\n{attachments.map((a, i) => (\n  <AiAttachmentChip key={i} name={a.name} mime={a.mime} />\n))}\n```",
+      "dont": [
+        "입력창 chrome / textarea / 전송 버튼 → 부모 [[DenyxAiWidget]] 가 책임.",
+        "첨부가 아닌 일반 칩 → 해당 칩 컴포넌트 사용.",
+        "색·배경은 토큰(`bg-card` · `border-cd3d3d3` · `text-primary` · `text-tertiary` · `bg-rgba-0-0-0-0_05`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "AiBulletList",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/_primitives.tsx",
+      "purpose": "카드 본문 안의 항목 나열을 일관된 `ul/li` 스타일로 노출. 12px 좌측 들여쓰기 + disc bullet + 4c4c4c\n텍스트 + 한국어 폰트. AI 응답에서 가장 흔한 \"key findings\", \"권장 조치\" 등의 표현.",
+      "whenToUse": [
+        "3개 이상 항목 나열 (1-2 개면 인라인 텍스트가 자연스러움).",
+        "평등한 weight 의 항목들 (강조 없는 등가 정보)."
+      ],
+      "whenNotToUse": [
+        "항목별 강조가 필요 → 각 항목을 별도 카드 또는 [[AiClassificationTable]] 로.",
+        "step-by-step 진행 → [[AiStepsTimeline]] 의 ✓/spinner 패턴 사용.",
+        "숫자가 포함된 표 → [[AiCostTable]] 등 전용 table 컴포넌트."
+      ],
+      "compositionRules": [
+        "텍스트 안에 인라인 컬러 적용 금지 — 톤 강조가 필요하면 항목 자체를 다른 카드로 분리.",
+        "`size=\"md\"` 는 카드 헤더 바로 아래 본문에 (13px), `size=\"sm\"` 은 부가 정보에 (12px, 기본)."
+      ],
+      "example": "```tsx\n<AiBulletList items={[\n  \"httpc 응답시간 4,294ms — 압도적 dominant\",\n  \"method/sql/dbc/socket 은 정상 범위\",\n  \"외부 API 의존도 ↑ 가능성 높음\",\n]} />\n```",
+      "dont": [
+        "항목별 강조가 필요 → 각 항목을 별도 카드 또는 [[AiClassificationTable]] 로.",
+        "step-by-step 진행 → [[AiStepsTimeline]] 의 ✓/spinner 패턴 사용.",
+        "숫자가 포함된 표 → [[AiCostTable]] 등 전용 table 컴포넌트.",
+        "텍스트 안에 인라인 컬러 적용 금지 — 톤 강조가 필요하면 항목 자체를 다른 카드로 분리."
+      ]
+    },
+    {
+      "name": "AiCaption",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/_primitives.tsx",
+      "purpose": "카드 안의 sub-section 머리에 붙는 11px 굵은 회색 대문자 라벨. `REASONING`, `COST ANALYSIS` 같은\n영문 키 라벨 또는 한국어 sub-heading 으로 사용.",
+      "whenToUse": [
+        "한 카드 안에 여러 sub-section 이 있어 각각을 분류 표기해야 할 때.",
+        "표/차트 위에 \"무엇을 보여주는 영역인지\" 1-2 단어로 명시."
+      ],
+      "whenNotToUse": [
+        "카드 메인 헤딩 → [[AiSectionHeading]] (13px, dot/emoji 포함).",
+        "사용자 본문 텍스트 → 일반 `<p>` 스타일."
+      ],
+      "compositionRules": [
+        "항상 대문자 또는 짧은 한 줄 텍스트. 긴 문장은 부적합.",
+        "색·크기·굵기 override 하지 말 것 — 디자인 시스템 일관성."
+      ],
+      "example": "```tsx\n<AiCaption>REASONING</AiCaption>\n<AiCaption>최근 5분 액티브 스레드 상태</AiCaption>\n```",
+      "dont": [
+        "카드 메인 헤딩 → [[AiSectionHeading]] (13px, dot/emoji 포함).",
+        "사용자 본문 텍스트 → 일반 `<p>` 스타일.",
+        "색·크기·굵기 override 하지 말 것 — 디자인 시스템 일관성."
+      ]
+    },
+    {
+      "name": "AiCard",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/_primitives.tsx",
+      "purpose": "AI 가 사용자에게 보내는 메시지의 단위 카드. 흰 배경 + `var(--color-border-default)` 보더 + 8px 라운드 + 기본 12px 패딩 +\n`ai-anim-in` 진입 애니메이션. Denyx AI 위젯 전체에서 일관된 메시지 표현을 보장합니다.",
+      "whenToUse": [
+        "AI 응답 메시지 단위 (1 메시지 = 1 AiCard).",
+        "메시지 본문이 헤딩 + 표 + 차트 + step list 등 복수 요소를 담을 때.",
+        "카드 진입 stagger 애니메이션이 필요한 모든 경우 (`delay` prop 으로 순차 지연)."
+      ],
+      "whenNotToUse": [
+        "사용자 발화 버블 → [[AiUserBubble]] (우측 정렬, 회색 배경).",
+        "도구 호출 진행 표시 → [[AiToolCallStep]] (자체 chrome 보유).",
+        "카드 chrome 없는 콘텐츠 (예: 로딩 진행 표시 자체) → 일반 div."
+      ],
+      "compositionRules": [
+        "헤더는 [[AiSectionHeading]] 또는 [[AiCaption]] 으로 — 인라인 텍스트 헤더 금지.",
+        "인라인 색상 리터럴 (`#xxx`) 금지 — 색이 필요하면 `tokens.color.*` 참조.",
+        "`delay` 는 부모 메시지 시퀀스에서 계산 — 일반적으로 `i * 360` (ms).",
+        "너비는 부모(`flex-col w-full`)에 맞춤 — 카드 내부에서 override 하지 말 것."
+      ],
+      "example": "```tsx\n<AiCard delay={200}>\n  <AiSectionHeading tone=\"critical\">🔴 핵심 이상 징후</AiSectionHeading>\n  <AiBulletList items={[\"httpc 응답시간 4,294ms\", \"압도적 dominant\"]} />\n</AiCard>\n```",
+      "dont": [
+        "사용자 발화 버블 → [[AiUserBubble]] (우측 정렬, 회색 배경).",
+        "도구 호출 진행 표시 → [[AiToolCallStep]] (자체 chrome 보유).",
+        "카드 chrome 없는 콘텐츠 (예: 로딩 진행 표시 자체) → 일반 div.",
+        "헤더는 [[AiSectionHeading]] 또는 [[AiCaption]] 으로 — 인라인 텍스트 헤더 금지.",
+        "인라인 색상 리터럴 (`#xxx`) 금지 — 색이 필요하면 `tokens.color.*` 참조.",
+        "너비는 부모(`flex-col w-full`)에 맞춤 — 카드 내부에서 override 하지 말 것."
+      ]
+    },
+    {
+      "name": "AiOptionButton",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/AiOptionButton.tsx",
+      "purpose": "선택 CTA 한 개. 상태(selected / dimmed / pending)에 따라 filled blue 강조,\ndim, 자동 클릭 손 인디케이터를 표현한다.",
+      "whenToUse": [
+        "옵션 목록에서 항목마다 렌더."
+      ],
+      "whenNotToUse": [
+        "정보성 tone 행(비-인터랙티브) → [[AiToneRow]].",
+        "일반 2지선다 CTA → [[AiChoiceButtons]]."
+      ],
+      "compositionRules": [
+        "선택 잠금/상태 계산(`selected`/`dimmed`/`pending`/`locked`)은 부모가 결정해 props 로 주입 — 버튼은 표현용.",
+        "색은 토큰(`--color-primary`) 사용 — 인라인 hex 신규 추가 금지.",
+        "`pending` 일 때 우측 상단에 [[AiClickCursor]] 손 인디케이터 표시."
+      ],
+      "example": "```tsx\n{options.map((o) => {\n  const isSelected = selectedKey === o.key;\n  const isDimmed = selectedKey !== null && !isSelected;\n  const isPending = pendingPick === o.key && !selectedKey;\n  return (\n    <AiOptionButton\n      key={o.key}\n      label={o.label}\n      selected={isSelected}\n      dimmed={isDimmed}\n      pending={isPending}\n      locked={selectedKey !== null}\n      onClick={() => handleClick(o.key)}\n    />\n  );\n})}\n```",
+      "dont": [
+        "정보성 tone 행(비-인터랙티브) → [[AiToneRow]].",
+        "일반 2지선다 CTA → [[AiChoiceButtons]].",
+        "색은 토큰(`--color-primary`) 사용 — 인라인 hex 신규 추가 금지."
+      ]
+    },
+    {
+      "name": "AiQuickActionChip",
+      "layer": "Primitives",
+      "sourceFile": "src/AiQuickActionChip.tsx",
+      "purpose": "AI 위젯 환영 메시지 아래 늘어서는 \"현재 상태 요약\" 등 빠른 액션 칩 하나를 렌더.\n인라인으로 흩어져 있던 `QUICK_ACTIONS.map` 의 버튼 마크업을 한 곳으로 모은 것 —\npill 형태(rounded-full · border · 브랜드 블루 텍스트) + hover 시 배경이\n`--color-primary-bg` 로 채워지는 인라인 핸들러를 그대로 보유.",
+      "whenToUse": [
+        "[[AiWidget]] 가 `QUICK_ACTIONS.map` 으로 칩마다 렌더 (기본 용법).",
+        "AI 패널과 동일한 외형의 빠른 액션 pill 이 필요한 다른 표면."
+      ],
+      "whenNotToUse": [
+        "일반 폼/툴바의 버튼 → 표준 버튼 컴포넌트.",
+        "헤더 안 AI 토글 버튼 → [[AiAssistantButton]]."
+      ],
+      "compositionRules": [
+        "`label` 텍스트만 주입 — pill 외형/hover 전환은 이 컴포넌트가 책임.",
+        "색·배경은 토큰 binding (`--color-card` · `--color-primary-strong` · `--color-primary-bg`) — 인라인 hex 금지.",
+        "hover 배경 전환은 표현용 인라인 핸들러로 처리(상태 비보유)."
+      ],
+      "example": "```tsx\n{QUICK_ACTIONS.map((label) => <AiQuickActionChip key={label} label={label} />)}\n```",
+      "dont": [
+        "일반 폼/툴바의 버튼 → 표준 버튼 컴포넌트.",
+        "헤더 안 AI 토글 버튼 → [[AiAssistantButton]].",
+        "색·배경은 토큰 binding (`--color-card` · `--color-primary-strong` · `--color-primary-bg`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "AiSectionHeading",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/_primitives.tsx",
+      "purpose": "카드의 주제를 한 줄로 명시하는 13px 굵은 헤딩. 좌측에 톤 도트(`tone` prop) 또는 이모지(`emoji` prop)\n로 시각 강조. \"🔴 핵심 이상 징후\", \"● 비용 분석\", \"📊 데이터 시각화\" 등 패턴.",
+      "whenToUse": [
+        "모든 위젯 카드의 첫 줄 (대부분의 AiCard 안에 1개).",
+        "분류 톤이 있는 메시지 — critical/warning/info 의 색 신호 동시에 전달."
+      ],
+      "whenNotToUse": [
+        "카드 sub-section 라벨 → [[AiCaption]] (더 작음).",
+        "dot/emoji 둘 다 없이 텍스트만 → div + class 로 충분."
+      ],
+      "compositionRules": [
+        "`tone` 또는 `emoji` 중 하나만 (양쪽 동시 = emoji 우선, dot 생략).",
+        "`tone` 사용 시 [[tokens]].color.indicator 의 색이 자동 적용 — 인라인 컬러 override 금지.",
+        "텍스트는 짧게 (10자 이내 권장). 긴 헤딩은 본문으로 분리."
+      ],
+      "example": "```tsx\n<AiSectionHeading tone=\"critical\">🔴 핵심 이상 징후</AiSectionHeading>\n<AiSectionHeading emoji=\"📊\">데이터 시각화</AiSectionHeading>\n<AiSectionHeading tone=\"info\">정상 동작 중</AiSectionHeading>\n```",
+      "dont": [
+        "카드 sub-section 라벨 → [[AiCaption]] (더 작음).",
+        "dot/emoji 둘 다 없이 텍스트만 → div + class 로 충분.",
+        "`tone` 사용 시 [[tokens]].color.indicator 의 색이 자동 적용 — 인라인 컬러 override 금지."
+      ]
+    },
+    {
+      "name": "AiSeverityRow",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/AiSeverityRow.tsx",
+      "purpose": "한 건을 한 줄로 렌더 — 시간(고정폭) · 심각도 칩(도트 + 라벨) · 소스 + 메시지(truncate).",
+      "whenToUse": [
+        "심각도(tone) 기반 행이 필요한 목록에서 항목마다 렌더."
+      ],
+      "whenNotToUse": [
+        "심각도가 아닌 다른 목록 항목 → 해당 위젯의 행 컴포넌트 사용."
+      ],
+      "compositionRules": [
+        "심각도 → Tone 매핑·라벨은 부모가 결정해 `tone` · `label` 로 주입 (이 컴포넌트는 표현용).",
+        "칩 색은 `TONE_BG`/`TONE_DOT` 토큰만 사용 — 인라인 hex 금지.",
+        "열 순서 고정: 시간(고정폭) · 심각도 칩 · 소스+메시지(truncate).",
+        "`isLast` 면 하단 보더 제거. `last-border-b-0` 는 CSS `:last-child` 라 마지막 행에서만"
+      ],
+      "example": "```tsx\n{rows.map((r, i) => (\n  <AiSeverityRow\n    key={i}\n    time={r.time}\n    tone={SEVERITY_TONE[r.severity]}\n    label={SEVERITY_LABEL[r.severity]}\n    source={r.source}\n    message={r.message}\n    isLast={i === rows.length - 1}\n  />\n))}\n```",
+      "dont": [
+        "심각도가 아닌 다른 목록 항목 → 해당 위젯의 행 컴포넌트 사용.",
+        "칩 색은 `TONE_BG`/`TONE_DOT` 토큰만 사용 — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "AiSymbol",
+      "layer": "Primitives",
+      "sourceFile": "src/AiSymbol.tsx",
+      "purpose": "Denyx AI 의 브랜드 심볼을 그리는 순수 SVG 아이콘. blue→purple 그라데이션의\n\"AI\" 텍스트 마크로, AI 진입점·로딩·헤더 등에서 AI 정체성을 표시한다.",
+      "whenToUse": [
+        "AI 위젯/버튼/헤더 옆 브랜드 마크 (AI 기능임을 나타내는 시각 표식)",
+        "AI 로딩·환영 화면의 장식 심볼"
+      ],
+      "whenNotToUse": [
+        "톱니바퀴·설정 등 일반 기능 아이콘 → [[SettingsIcon]] 등 icons/",
+        "AI 입력/대화 UI 전체 → [[DenyxAiWidget]] / [[AiWidget]]"
+      ],
+      "compositionRules": [
+        "정사각형(`size` = px 너비/높이).",
+        "그라데이션 id 는 `size` 로 유니크하게 생성 — 한 페이지에 여러 size 공존 OK.",
+        "데코레이션이므로 `aria-hidden`. 의미 전달이 필요하면 부모에 라벨 부여."
+      ],
+      "example": "```tsx\n<AiSymbol size={20} className=\"mr-1\" />\n```",
+      "dont": [
+        "톱니바퀴·설정 등 일반 기능 아이콘 → [[SettingsIcon]] 등 icons/",
+        "AI 입력/대화 UI 전체 → [[DenyxAiWidget]] / [[AiWidget]]"
+      ]
+    },
+    {
+      "name": "AiToneBadge",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/_primitives.tsx",
+      "purpose": "GPU/리소스 분석 등 시나리오에서 \"고활용/활용/저활용/완전 유휴\" 같은 분류 결과를 작은 알약 모양의\n컬러 칩으로 노출. 좌측 도트(`tokens.color.indicator`) + 라벨(`tokens.label`) + 배경\n(`tokens.color.surface`) 이 한 톤으로 통일.",
+      "whenToUse": [
+        "분류 표의 셀 안에서 row 의 분류 결과를 시각화 ([[AiClassificationTable]]).",
+        "카드 헤딩 옆에 분류 상태 부착 (보조 정보)."
+      ],
+      "whenNotToUse": [
+        "메인 강조 신호 → [[AiSectionHeading]] 의 `tone` 사용 (더 큼, 시각적 가중치 큼).",
+        "단순 텍스트 라벨 → 일반 `<span>`.",
+        "Tone 이 없는 일반 정보 → 톤 없이 표시할 거면 다른 컴포넌트 검토."
+      ],
+      "compositionRules": [
+        "기본 라벨은 `tokens.label[intent].value` 자동 사용 — `label` prop 으로만 override.",
+        "인라인 컬러 override 금지 — 토큰 시스템 일관성."
+      ],
+      "example": "```tsx\n<AiToneBadge tone=\"critical\" />          // 출력: ● 고활용 (기본 라벨)\n<AiToneBadge tone=\"info\" label=\"저활용 (10% 미만)\" />\n```",
+      "dont": [
+        "메인 강조 신호 → [[AiSectionHeading]] 의 `tone` 사용 (더 큼, 시각적 가중치 큼).",
+        "단순 텍스트 라벨 → 일반 `<span>`.",
+        "Tone 이 없는 일반 정보 → 톤 없이 표시할 거면 다른 컴포넌트 검토.",
+        "인라인 컬러 override 금지 — 토큰 시스템 일관성."
+      ]
+    },
+    {
+      "name": "AiToneRow",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/AiToneRow.tsx",
+      "purpose": "tone 별 배경 위에 좌측 컬러 도트 + 제목(bold) + 상세 설명을 세로로 쌓는 한 행.",
+      "whenToUse": [
+        "tone 배경 + 도트 + 제목/상세 행 외형이 필요한 표면."
+      ],
+      "whenNotToUse": [
+        "선택 가능한 옵션 버튼 → [[AiOptionButton]].",
+        "단순 글머리 기호 목록 → 일반 `<ul>`/`<li>`."
+      ],
+      "compositionRules": [
+        "tone 색은 부모의 `TONE_BG` / `TONE_DOT` 맵에서 풀어 `background` 로 주입 — 인라인 hex 신규 추가 금지.",
+        "데이터(title/detail)만 받는 표현용 행 — 상태 비보유."
+      ],
+      "example": "```tsx\n{groups.map((g, i) => (\n  <AiToneRow\n    key={i}\n    title={g.title}\n    detail={g.detail}\n    background={TONE_BG[g.tone]}\n    dotColor={TONE_DOT[g.tone]}\n  />\n))}\n```",
+      "dont": [
+        "선택 가능한 옵션 버튼 → [[AiOptionButton]].",
+        "단순 글머리 기호 목록 → 일반 `<ul>`/`<li>`.",
+        "tone 색은 부모의 `TONE_BG` / `TONE_DOT` 맵에서 풀어 `background` 로 주입 — 인라인 hex 신규 추가 금지."
+      ]
+    },
+    {
+      "name": "AiWidget",
+      "layer": "Shell",
+      "sourceFile": "src/AiWidget.tsx",
+      "purpose": "라이브 vercel 위젯을 그대로 옮긴 440px AI 패널(폭은 라이브 번들에서 추출).\n헤더(Denyx AI + Beta 배지 · 새 세션/너비조정/닫기) + 본문(환영 메시지 +\n빠른 액션 칩) + 푸터(첨부 버튼 · 입력창 · \"Claude Opus 4\" 모델 선택기 · 보내기).\n`variant` 로 두 가지 배치를 제공:\n - `slide`   — 우측 full-height 패널, 우→좌 translate 슬라이드(컨텐츠를 밀지 않고 overlay).\n - `overlap` — 우하단 floating 카드(440×640), 컨텐츠 위에 떠 있음.",
+      "whenToUse": [
+        "vercel 데모와 동일한 룩앤필(Beta 배지 · 모델 선택기 pill)을 그대로 보여줄 때.",
+        "overlay 슬라이드/floating 카드 형태의 가벼운 AI 패널이 필요할 때."
+      ],
+      "whenNotToUse": [
+        "프로덕션 대시보드의 위젯 본체(480px · prop 외부화 · 토큰 사용량 · 첨부 칩 · 자동 스크롤)",
+        "헤더/카드/모달의 한 줄 inline 입력 → [[AiInlinePrompt]].",
+        "헤더 안 AI 토글 버튼만 → [[AiAssistantButton]]."
+      ],
+      "compositionRules": [
+        "색·그라데이션·경계는 토큰 binding (`--color-primary` / `--color-primary-strong` /",
+        "빠른 액션은 모듈 상수 `QUICK_ACTIONS` 로 고정, `{userName}`/`{dashboardName}` 은 플레이스홀더 텍스트.",
+        "`open` 으로 가시성 제어 — slide 는 `translate-x`, overlap 은 `opacity`/`pointer-events` 로 전환."
+      ],
+      "example": "```tsx\n<AiWidget open={aiOpen} variant=\"slide\" onClose={() => setAiOpen(false)} />\n<AiWidget open={aiOpen} variant=\"overlap\" onClose={() => setAiOpen(false)} />\n```",
+      "dont": [
+        "프로덕션 대시보드의 위젯 본체(480px · prop 외부화 · 토큰 사용량 · 첨부 칩 · 자동 스크롤)",
+        "헤더/카드/모달의 한 줄 inline 입력 → [[AiInlinePrompt]].",
+        "헤더 안 AI 토글 버튼만 → [[AiAssistantButton]]."
+      ]
+    },
+    {
+      "name": "BottomRailItem",
+      "layer": "Primitives",
+      "sourceFile": "src/BottomRailItem.tsx",
+      "purpose": "제품 레일(40px 폭) 하단에 쌓이는 유틸 아이콘 칸을 렌더. 40px×32px 칸 + 20px 아이콘.\n사용자 추가 · 테마 전환 · 전체화면 등 글로벌 유틸 액션.\ncollapsed/펼침 무관하게 항상 표시 — [[ProductRailItem]] 과 함께 레일의 상시 가시 요소.",
+      "whenToUse": [
+        "[[Sidebar]] 가 `BOTTOM_RAIL_ICONS.map` 으로 항목마다 렌더하는 **기본 용법**. 보통 단독 사용하지 않음.",
+        "사이드바 밖에서 **동일한 유틸 아이콘 칸**이 필요한 경우 (예: 플로팅 툴바).",
+        "collapsed(40px) · 펼침(240px) **양쪽 모두** 표시 — 이 컴포넌트 자체는 상태 불변."
+      ],
+      "whenNotToUse": [
+        "**상단 제품 아이콘 칸** (40px 정사각 + active 강조) → [[ProductRailItem]].",
+        "**사이드바 본문 메뉴 행** → [[SidebarMenuItem]].",
+        "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
+        "`hideProductRail=true` 화면 — Sidebar 가 레일 전체를 숨김."
+      ],
+      "compositionRules": [
+        "아이콘 파일명(`name`)만 주입 — 칸 크기(40px×32px)/hover 는 이 컴포넌트가 책임.",
+        "hover 는 토큰 (`hover-bg-surface-100`) — 인라인 hex 금지.",
+        "아이콘은 표준 경로(`/icons/*`).",
+        "active 강조 없음 (ProductRailItem 과 차이) — 유틸 액션은 토글 상태가 아니라 즉시 실행."
+      ],
+      "example": "```tsx\n{BOTTOM_RAIL_ICONS.map((name) => (\n  <BottomRailItem key={name} name={name} />\n))}\n```",
+      "dont": [
+        "**상단 제품 아이콘 칸** (40px 정사각 + active 강조) → [[ProductRailItem]].",
+        "**사이드바 본문 메뉴 행** → [[SidebarMenuItem]].",
+        "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
+        "`hideProductRail=true` 화면 — Sidebar 가 레일 전체를 숨김.",
+        "hover 는 토큰 (`hover-bg-surface-100`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "Button",
+      "layer": "Primitives",
+      "sourceFile": "src/Button.tsx",
+      "purpose": "Denyx 디자인 시스템의 표준 버튼. 모든 click trigger 가 이 컴포넌트로 통일되어야 함 — 인라인\n`<button className=\"...\">` 새로 짜지 말 것. 색/사이즈/상태 일관성은 이 컴포넌트가 보장.\n\nSpec: @denyx/wds Button-specs.md 기반 (Figma 5701-33519). 3 variant × 4 size × 3 tone +\ndisabled / loading / fullWidth.",
+      "whenToUse": [
+        "사용자 액션 trigger (제출 / 적용 / 닫기 / 등록 등).",
+        "Primary CTA, Secondary action, 위험 동작 (delete 등)."
+      ],
+      "whenNotToUse": [
+        "링크 이동 → `<a>` 사용.",
+        "AI 토글 그라데이션 → [[AiAssistantButton]].",
+        "AI 위젯 송신 → [[AiSendButton]].",
+        "icon-only 압축 버튼 (size 16-20px) → 인라인 OK."
+      ],
+      "compositionRules": [
+        "모든 색은 토큰 (`var(--color-primary)` 등) — 인라인 hex 금지.",
+        "사이즈는 spec 4 단계만 — custom px 금지.",
+        "loading=true → 자동 disabled + spinner overlay."
+      ],
+      "example": "```tsx\n<Button variant=\"contained\" tone=\"primary\" size=\"lg\" onClick={onApply}>\n  네, 적용하고 트렌드 보기\n</Button>\n<Button variant=\"outline\" tone=\"critical\" size=\"md\" disabled>\n  삭제 (권한 없음)\n</Button>\n```",
+      "dont": [
+        "링크 이동 → `<a>` 사용.",
+        "AI 토글 그라데이션 → [[AiAssistantButton]].",
+        "AI 위젯 송신 → [[AiSendButton]].",
+        "icon-only 압축 버튼 (size 16-20px) → 인라인 OK.",
+        "모든 색은 토큰 (`var(--color-primary)` 등) — 인라인 hex 금지.",
+        "사이즈는 spec 4 단계만 — custom px 금지."
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "layer": "Primitives",
+      "sourceFile": "src/Checkbox.tsx",
+      "purpose": "폼·필터·룰 편집기·카탈로그 ON/OFF 등 전반의 boolean 입력 building block.\n인라인 `<input type=\"checkbox\">` 새로 짜지 말 것 — 토큰·상태 일관성은 이 컴포넌트가 보장.",
+      "whenToUse": [
+        "다중 선택 필터 (FilterDropdown 내부, 카탈로그 카테고리 선택)",
+        "폼의 boolean 입력 (룰 활성/비활성, 동의 체크)",
+        "DataTable 행 다중 선택"
+      ],
+      "whenNotToUse": [
+        "단일 ON/OFF 토글 → 추후 `Switch` (다른 의미 — 즉시 적용 vs 폼 제출)",
+        "양자택일 → `Radio`"
+      ],
+      "compositionRules": [
+        "label 은 옆 텍스트 (children 또는 `label` prop) — 클릭 영역이 input + label 모두",
+        "indeterminate 는 부분 선택 상태 (트리 선택 시) — checked 와 별개 boolean",
+        "색·간격은 토큰만 (brand-blue · text-primary · border-strong)"
+      ],
+      "example": "```tsx\n<Checkbox checked={isOn} onChange={setOn}>알림 활성화</Checkbox>\n<Checkbox checked={false} indeterminate>전체 선택 (부분)</Checkbox>\n<Checkbox checked={true} disabled>읽기 전용</Checkbox>\n```",
+      "dont": [
+        "단일 ON/OFF 토글 → 추후 `Switch` (다른 의미 — 즉시 적용 vs 폼 제출)",
+        "양자택일 → `Radio`"
+      ]
+    },
+    {
+      "name": "Chip",
+      "layer": "Primitives",
+      "sourceFile": "src/Chip.tsx",
+      "purpose": "짧은 라벨·태그·메타데이터 표시. severity 칩, 카테고리 라벨, 상태 표시 등 전반.\n인라인 `<span>` 으로 직접 색 칠하지 말 것 — 톤 일관성은 이 컴포넌트가 보장.",
+      "whenToUse": [
+        "Severity 라벨 (Critical / Warning / Info)",
+        "카테고리 태그 (Disk / JVM / Kubernetes)",
+        "상태 표시 (Active / Pending / Closed)",
+        "닫기 가능한 선택 항목 (다중 선택 결과)"
+      ],
+      "whenNotToUse": [
+        "클릭 시 필터 토글 → `FilterChip` (interactive 변형)",
+        "본문 텍스트 강조 → 인라인 `<strong>` / 색 utility",
+        "버튼 → `Button`"
+      ],
+      "compositionRules": [
+        "색은 토큰 (brand-blue / status-warning / status-error / surface-100 등) — 직접 hex 금지",
+        "variant: solid(채움) · soft(연한 배경) · outline(보더만)",
+        "tone: primary · warning · critical · neutral",
+        "size: sm(18px) · md(20px)",
+        "closable=true → 우측 × 버튼 + onClose 콜백"
+      ],
+      "example": "```tsx\n<Chip tone=\"critical\" variant=\"soft\">Critical</Chip>\n<Chip tone=\"neutral\" variant=\"outline\" leadingIcon=\"●\">Disk</Chip>\n<Chip tone=\"primary\" closable onClose={() => removeFilter(\"disk\")}>Disk</Chip>\n```",
+      "dont": [
+        "클릭 시 필터 토글 → `FilterChip` (interactive 변형)",
+        "본문 텍스트 강조 → 인라인 `<strong>` / 색 utility",
+        "버튼 → `Button`",
+        "색은 토큰 (brand-blue / status-warning / status-error / surface-100 등) — 직접 hex 금지"
+      ]
+    },
+    {
+      "name": "DashboardBuildingProgress",
+      "layer": "Primitives",
+      "sourceFile": "src/DashboardBuildingProgress.tsx",
+      "purpose": "gradient ring spinner + 제목/부제 + 단계별 ✓ progress 리스트로 \"지금 구성 중\"\n상태를 보여주는 로딩 화면. `intervalMs` 간격으로 단계가 하나씩 완료(✓)된다.",
+      "whenToUse": [
+        "대시보드/위젯 grid 를 만들어 보여주기 직전의 준비 단계 화면",
+        "여러 단계가 순차 진행됨을 사용자에게 알려야 하는 짧은 대기 구간"
+      ],
+      "whenNotToUse": [
+        "단발 액션 결과 알림 → [[Toast]]",
+        "단순 스피너 한 개만 필요 → 인라인 spinner (단계 리스트 불필요)",
+        "진행률 막대(%) 가 명확한 결정적 작업 → 별도 progress bar"
+      ],
+      "compositionRules": [
+        "**정책 feedback-common-components-catalog**: chrome-level 공용 컴포넌트로 재구현 금지.",
+        "단계 진행은 컴포넌트 내부 타이머가 자동 구동 — 전체 시간 ≈ `steps.length × intervalMs`.",
+        "`card=true` → 흰색 카드 chrome(border+radius), `false` → 콘텐츠만(부모 배경 위, `flex-1`).",
+        "`background` 미지정 + `card=false` 면 부모 배경을 그대로 둠."
+      ],
+      "example": "```tsx\n<DashboardBuildingProgress\n  title=\"대시보드를 구성하고 있어요\"\n  steps={[\"지표 수집\", \"위젯 배치\", \"임계값 적용\", \"렌더링\"]}\n  intervalMs={380}\n  card\n/>\n```",
+      "dont": [
+        "단발 액션 결과 알림 → [[Toast]]",
+        "단순 스피너 한 개만 필요 → 인라인 spinner (단계 리스트 불필요)",
+        "진행률 막대(%) 가 명확한 결정적 작업 → 별도 progress bar",
+        "**정책 feedback-common-components-catalog**: chrome-level 공용 컴포넌트로 재구현 금지."
+      ]
+    },
+    {
+      "name": "DashboardLayout",
+      "layer": "Shell",
+      "sourceFile": "src/DashboardLayout.tsx",
+      "purpose": "Denyx SaaS 화면의 최상위 골격. 좌측은 [[Sidebar]], 우측은 세로 스택으로\n`header`(48px [[PageHeader]] 자리) → 그 아래 `main` + `children`(우측 위젯/패널)\n행으로 구성. AI 위젯(`children`, 예: [[DenyxAiWidget]])은 `main` 과 같은 행에\n자리잡아 자체 width 애니메이션으로 밀고 들어옴.\nSidebar 의 모든 가변 데이터(`activeProduct`/`project`/`menu`/`org` 등)는 통과만\n시키고 기본값은 [[Sidebar]] 에 위임 — 빈 호출이면 K8s-GPU 컨텍스트가 default.",
+      "whenToUse": [
+        "사이드바 + 헤더 + 본문 + (선택) AI 위젯을 한 화면에 조합하는 모든 대시보드 라우트.",
+        "AI 위젯 개폐에 따라 Sidebar 가 collapse 되어야 하는 화면."
+      ],
+      "whenNotToUse": [
+        "사이드바·헤더가 없는 단독 페이지/모달 → 셸 없이 컴포넌트를 직접 배치.",
+        "좌측 네비만 필요 → [[Sidebar]] 단독 사용."
+      ],
+      "compositionRules": [
+        "공통 정책(feedback-widget-sidebar-collapse): `widgetOpen` 을 [[Sidebar]] 의",
+        "공통 정책(feedback-page-header-invariant): `header` 는 위젯 행과 분리된 위쪽",
+        "`header`/`main`/`children` 슬롯만 주입. 레이아웃 구조(`flex` 골격)는 재구현 금지.",
+        "우측 위젯(`children`)은 자체 width 트랜지션을 가진 컴포넌트를 넣음([[DenyxAiWidget]])."
+      ],
+      "example": "```tsx\n<DashboardLayout\n  widgetOpen={aiActive}\n  activeProduct=\"gpu\"\n  header={<PageHeader title=\"K8s-GPU / GPU 트렌드\" aiActive={aiActive} onAiToggle={toggle} />}\n  main={<GpuTrendPage />}\n>\n  <DenyxAiWidget open={aiActive} onClose={() => setAiActive(false)} />\n</DashboardLayout>\n```",
+      "dont": [
+        "사이드바·헤더가 없는 단독 페이지/모달 → 셸 없이 컴포넌트를 직접 배치.",
+        "좌측 네비만 필요 → [[Sidebar]] 단독 사용.",
+        "`header`/`main`/`children` 슬롯만 주입. 레이아웃 구조(`flex` 골격)는 재구현 금지."
+      ]
+    },
+    {
+      "name": "DataTable",
+      "layer": "Primitives",
+      "sourceFile": "src/DataTable.tsx",
+      "purpose": "`columns`(컬럼 정의) + `rows`(행 데이터)를 받아 CSS grid 기반 테이블을 렌더하는\nside-effect free generic 컴포넌트. 모든 모니터링 페이지에서 컬럼/density 만 바꿔 재활용.\n`render` 로 셀 커스텀, `onRowClick` 으로 행 클릭(없으면 hover 효과만) 지원.",
+      "whenToUse": [
+        "세션/프로세스/SQL 등 표 형태의 모니터링 데이터 목록.",
+        "컬럼 너비·정렬·density 정책을 일관되게 적용해야 하는 테이블 전반."
+      ],
+      "whenNotToUse": [
+        "단일 값/메트릭 표시 → 인라인 텍스트(예: OptionbarPage 의 ValueDisplay).",
+        "행 선택·검색 등 폼 입력 chrome → [[TextField]] 등 별도 primitive 와 조합."
+      ],
+      "compositionRules": [
+        "density: `\"compact\"`(헤더 text-xs / 셀 text-sm, 8/6px 패딩) ·",
+        "컬럼 너비: `width`(px/CSS) 고정 트랙이 `flex`(fr) 가변 트랙보다 우선",
+        "정렬: 명시 `align` 이 최우선 → header 가 \"No\" 면 center → `numeric` 이면 right →",
+        "색·border 는 토큰(var(--color-border-default)/var(--color-surface-50)) 사용."
+      ],
+      "example": "```tsx\n<DataTable\n  density=\"compact\"\n  columns={[\n    { key: \"no\", header: \"No\", width: 40 },\n    { key: \"name\", header: \"세션\", flex: 2 },\n    { key: \"cpu\", header: \"CPU\", width: 80, numeric: true },\n  ]}\n  rows={sessions}\n  onRowClick={(row) => openDetail(row)}\n/>\n```",
+      "dont": [
+        "단일 값/메트릭 표시 → 인라인 텍스트(예: OptionbarPage 의 ValueDisplay).",
+        "행 선택·검색 등 폼 입력 chrome → [[TextField]] 등 별도 primitive 와 조합."
+      ]
+    },
+    {
+      "name": "DataTableRow",
+      "layer": "Primitives",
+      "sourceFile": "src/DataTableRow.tsx",
+      "purpose": "generic `<T>` 행 한 건을 받아 CSS grid 한 줄로 그린다 — DataTable 의 `rows.map`\n인라인에 흩어져 있던 행+셀 마크업(셀 정렬/numeric 폰트/render prop)을 한 곳으로 모은 것.\n표현용(상태 비보유) — 트랙 정의·정렬 정책·density 토큰은 부모가 계산해 prop 으로 주입.",
+      "whenToUse": [
+        "[[DataTable]] 이 `rows.map` 으로 행마다 렌더 (기본 용법). 보통 단독 사용하지 않음.",
+        "DataTable 과 동일한 행 외형이 필요한 다른 grid 표면."
+      ],
+      "whenNotToUse": [
+        "헤더 행 → DataTable 내부에서 별도 인라인 렌더(셀 외형이 다름).",
+        "단일 값/메트릭 표시 → 인라인 텍스트."
+      ],
+      "compositionRules": [
+        "트랙(`gridTemplate`)·정렬(`colAlign`)·density 토큰(`rowText`/`rowHeight`/`rowPadding`)은",
+        "셀 내용: `column.render` 가 있으면 우선, 없으면 `row[column.key]`.",
+        "`numeric` 셀은 Roboto numeric 폰트, 그 외 Noto Sans. 색·border 는 토큰 사용.",
+        "행 클릭은 `onRowClick`(데이터+인덱스) 으로 위임 — 없으면 hover 효과만."
+      ],
+      "example": "```tsx\n{rows.map((row, ri) => (\n  <DataTableRow\n    key={ri}\n    row={row}\n    rowIndex={ri}\n    columns={columns}\n    gridTemplate={gridTemplate}\n    colAlign={colAlign}\n    rowText={tokens.rowText}\n    rowHeight={tokens.rowHeight}\n    rowPadding={tokens.rowPadding}\n    onRowClick={onRowClick}\n  />\n))}\n```",
+      "dont": [
+        "헤더 행 → DataTable 내부에서 별도 인라인 렌더(셀 외형이 다름).",
+        "단일 값/메트릭 표시 → 인라인 텍스트.",
+        "`numeric` 셀은 Roboto numeric 폰트, 그 외 Noto Sans. 색·border 는 토큰 사용."
+      ]
+    },
+    {
+      "name": "DateTimeBlock",
+      "layer": "Primitives",
+      "sourceFile": "src/DateTimeBlock.tsx",
+      "purpose": "듀얼 datetime 입력기의 한 쪽(start 또는 end)을 렌더.\n`YYYY-MM-DD HH:MM` 형식 — year 4자리, 나머지 2자리 padding 자동.\nnumeric 폰트(`--font-family-numeric`) + `tabular-nums` 로 자릿수 세로 정렬.",
+      "whenToUse": [
+        "[[TimeRangeSelector]] 내부에서 start/end 각각 렌더하는 **기본 용법**. 보통 단독 사용하지 않음.",
+        "사이드바/옵션바 밖에서 **동일한 datetime 입력 외형**이 필요한 경우 (예: 모달 내 시간 입력, 필터 팝오버)."
+      ],
+      "whenNotToUse": [
+        "**시간 범위 전체**(start~end + LIVE + 이동) → [[TimeRangeSelector]].",
+        "**LIVE 현재 시각만** compact 표시 → [[LiveTimerCompact]].",
+        "**일반 텍스트/숫자 입력** → [[TextField]].",
+        "**날짜 피커(캘린더 팝업)** → 별도 DatePicker (미구현, STORIES_ROADMAP 2차 라운드)."
+      ],
+      "compositionRules": [
+        "`DateParts` 데이터만 주입 — 표시 포맷(padding · separator · 폰트)은 이 컴포넌트가 책임.",
+        "**Width 정책 — content hug (`w-fit`):** 컨테이너는 `width: fit-content` 로 내용물에 맞춤.",
+        "`--wds-datetime-year-w` (28px) — year 4자리",
+        "`--wds-datetime-field-w` (16px) — month/day/hour/minute 2자리",
+        "`--wds-datetime-space-w` (6px) — 날짜-시간 사이 공백",
+        "폰트는 `--font-family-numeric` + `tabular-nums` — 자릿수 정렬 보장.",
+        "색은 토큰 (`text-primary` 입력값 · `text-tertiary` separator) — 인라인 hex 금지.",
+        "input 은 `border-none bg-transparent` — 부모 컨테이너의 보더/배경에 의존.",
+        "`side` prop 으로 aria-label 접두어(시작/종료) 자동 결정."
+      ],
+      "example": "```tsx\n<DateTimeBlock parts={{ year: \"2026\", month: \"06\", day: \"17\", hour: \"14\", minute: \"30\" }} side=\"start\" />\n```",
+      "dont": [
+        "**시간 범위 전체**(start~end + LIVE + 이동) → [[TimeRangeSelector]].",
+        "**LIVE 현재 시각만** compact 표시 → [[LiveTimerCompact]].",
+        "**일반 텍스트/숫자 입력** → [[TextField]].",
+        "**날짜 피커(캘린더 팝업)** → 별도 DatePicker (미구현, STORIES_ROADMAP 2차 라운드).",
+        "색은 토큰 (`text-primary` 입력값 · `text-tertiary` separator) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "DenyxAiWidget",
+      "layer": "Shell",
+      "sourceFile": "src/DenyxAiWidget.tsx",
+      "purpose": "대시보드 우측에 폭 480px(닫히면 0)로 펼쳐지는 AI 어시스턴트 패널. 그라데이션\n40px 헤더(새 세션/전체화면/닫기) + 본문(랜딩 인사말 + 액션 칩, 또는 시나리오\n메시지 스택) + 하단 입력 영역(첨부 칩 행 · multi-line textarea · 첨부 버튼 ·\n토큰 사용량 pill · 전송 버튼)으로 구성. 마크업은 /application/slider 라이브\n위젯과 동일하게 재현(side-effect-free)하고 데이터는 모두 prop 으로 외부화.",
+      "whenToUse": [
+        "[[DashboardLayout]] 의 `children` 슬롯에 들어가는 위젯 본체 — 세로 전체 높이를 쓰는 대화 패널.",
+        "랜딩 인사말 + 빠른 액션 칩 + 토큰 사용량 + 첨부까지 풀 chrome 이 필요한 자리."
+      ],
+      "whenNotToUse": [
+        "세로 공간이 한정된 헤더/카드/모달의 한 줄 입력 → [[AiInlinePrompt]] (single-row).",
+        "헤더 안 AI 토글 버튼만 필요 → [[AiAssistantButton]].",
+        "라이브 vercel 위젯의 440px 변형(Beta 배지 · 모델 선택기) 재현 → [[AiWidget]]."
+      ],
+      "compositionRules": [
+        "폭은 `open` 이 결정(480px ↔ 0), `transition: width 0.4s` 로 애니메이션. [[DashboardLayout]]",
+        "editable mode: `inputValue` 미지정이면 내부 state 로 사용자가 직접 입력, `onSubmit`",
+        "`scrollSignal` 이 바뀔 때마다 본문을 부드럽게 최하단으로 자동 스크롤(메시지 추가 후 반영).",
+        "색·경계는 토큰 binding (`--color-primary` / `--color-primary-bg-subtle` 등). 토큰 pill 은 내부 TokenUsageBadge.",
+        "`showLanding=true` 일 때만 인사말+칩 렌더, `messages` 는 그 아래 시나리오 스택으로 누적."
+      ],
+      "example": "```tsx\n<DenyxAiWidget\n  open={aiActive}\n  onClose={() => setAiActive(false)}\n  onNewSession={resetSession}\n  onFullscreen={goFullscreen}\n  user=\"Wha-tap Kim\"\n  pageHighlight=\"GPU 트렌드\"\n  actions={[\"현재 상태 요약\", \"이상 징후 진단\"]}\n  onSubmit={(v) => askAi(v)}\n/>\n```",
+      "dont": [
+        "세로 공간이 한정된 헤더/카드/모달의 한 줄 입력 → [[AiInlinePrompt]] (single-row).",
+        "헤더 안 AI 토글 버튼만 필요 → [[AiAssistantButton]].",
+        "라이브 vercel 위젯의 440px 변형(Beta 배지 · 모델 선택기) 재현 → [[AiWidget]]."
+      ]
+    },
+    {
+      "name": "DsReadOnlyNotice",
+      "layer": "Shell",
+      "sourceFile": "src/DsReadOnlyNotice.tsx",
+      "purpose": "소비자(엔지니어)가 UI 작업 레이어에서 토큰·컴포넌트·Atom·위젯을\n역으로 수정하려 할 때 표시하는 불변 정책 안내 창.",
+      "whenToUse": [
+        "소비 앱에서 DS 컴포넌트 prop 외의 스타일 override 시도 시.",
+        "DevTools 에서 DS 토큰 값 변경 시도 시 (optional).",
+        "컴포넌트 소스 수정 시도를 감지했을 때."
+      ],
+      "whenNotToUse": [
+        "**디자인 시스템 repo 내부** 작업 — 이 모달은 소비자(엔지니어) 방향 전용. DS 작업자는 대상이 아님.",
+        "**일반 확인/경고 모달** → [[Modal]].",
+        "**토스트 알림** (비파괴적 안내) → [[Toast]]."
+      ],
+      "compositionRules": [
+        "[[Modal]] 기반 — 동일한 portal · backdrop · ESC 닫기 동작.",
+        "불변 정책 텍스트는 하드코딩 — 정책 내용은 이 컴포넌트가 단일 출처.",
+        "`attemptedAction` prop 으로 어떤 시도가 차단되었는지 맥락 표시.",
+        "색은 토큰 (`text-primary` · `text-secondary` · `bg-card`) — 인라인 hex 금지."
+      ],
+      "example": "```tsx\n<DsReadOnlyNotice\n  open={showNotice}\n  onClose={() => setShowNotice(false)}\n  attemptedAction=\"토큰 --color-primary 값 변경\"\n/>\n```",
+      "dont": [
+        "**디자인 시스템 repo 내부** 작업 — 이 모달은 소비자(엔지니어) 방향 전용. DS 작업자는 대상이 아님.",
+        "**일반 확인/경고 모달** → [[Modal]].",
+        "**토스트 알림** (비파괴적 안내) → [[Toast]].",
+        "색은 토큰 (`text-primary` · `text-secondary` · `bg-card`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "FilterBar",
+      "layer": "Composite",
+      "sourceFile": "src/FilterBar.tsx",
+      "purpose": "페이지 상단의 검색·필터·액션 묶음 영역. 통합 이벤트 목록·카탈로그·룰 목록 같은\n큰 데이터 표 페이지의 헤더 부근에 자리. 이번 디자인 시스템 작업의 *마지막*\n컴포넌트 — Primitives 9 종 (TextField/FilterChip/FilterDropdown 등) 을 조립.",
+      "whenToUse": [
+        "통합 이벤트 목록 페이지 (검색 + 카테고리/심각도 필터 + 시간 윈도우)",
+        "카탈로그·룰 목록 페이지 헤더",
+        "자유 형식 영역의 검색·필터 통합점"
+      ],
+      "whenNotToUse": [
+        "단일 검색만 → `TextField` (leadingIcon=search, clearable)",
+        "단일 dropdown 만 → `FilterDropdown` 직접",
+        "페이지 전체 라우팅 → `Sidebar`"
+      ],
+      "compositionRules": [
+        "슬롯 3개: `search` (좌측) / `dropdowns` (중간) / `actions` (우측)",
+        "dropdowns 는 config 배열로 받고 FilterChip 트리거 + FilterDropdown 자동 생성",
+        "`showSelectedChips`: 별도 row 에 선택된 항목을 closable FilterChip 으로 노출",
+        "`showResetAll`: 1+ dropdown 에 선택 있을 때 \"전체 초기화\" 버튼 노출",
+        "가로 wrap — 좁은 화면에서 자연 줄바꿈"
+      ],
+      "example": "```tsx\n<FilterBar\n  search={\n    <TextField size=\"sm\" leadingIcon={<SearchIcon />} value={q} onChange={setQ}\n               placeholder=\"제목, 메시지, 프로젝트\" clearable />\n  }\n  dropdowns={[\n    { key: \"category\", label: \"카테고리\", options: CATEGORIES, value: cat, onChange: setCat },\n    { key: \"severity\", label: \"심각도\",   options: SEVERITIES, value: sev, onChange: setSev },\n  ]}\n  actions={<><TimeRangeSelector ... /><Button>새로고침</Button></>}\n  showSelectedChips\n  showResetAll\n  onResetAll={() => { setCat([]); setSev([]); setQ(\"\"); }}\n/>\n```",
+      "dont": [
+        "단일 검색만 → `TextField` (leadingIcon=search, clearable)",
+        "단일 dropdown 만 → `FilterDropdown` 직접",
+        "페이지 전체 라우팅 → `Sidebar`"
+      ]
+    },
+    {
+      "name": "FilterChip",
+      "layer": "Composite",
+      "sourceFile": "src/FilterChip.tsx",
+      "purpose": "Chip 의 **interactive 변형**. 필터 칩 — 클릭 시 선택 토글, 선택된 상태 강조,\n선택 해제(×) 가능. FilterBar 안에 다중 배치되어 다중 필터 진입점 역할.",
+      "whenToUse": [
+        "페이지 헤더의 다중 필터 칩 (severity / 카테고리 / 시간 윈도우)",
+        "선택된 항목의 제거 가능한 라벨"
+      ],
+      "whenNotToUse": [
+        "정적 라벨 (display only) → `Chip` (button 시맨틱 없음)",
+        "단일 옵션 펼침 드롭다운 → `FilterDropdown`",
+        "토글 버튼 그룹 (강제 단일 선택) → `Tabs (variant=\"segmented\")`"
+      ],
+      "compositionRules": [
+        "시각 색 정책은 Chip 과 정렬 — selected = solid brand-blue / unselected = soft neutral",
+        "`closable && selected` 일 때만 우측 × 표시 (선택된 필터의 제거 의미)",
+        "`count` 는 우측 숫자 — 발생 빈도/개수 표시 (예: \"Disk · 9\")",
+        "키보드: button 기본 (Enter/Space 토글), Tab focus"
+      ],
+      "example": "```tsx\n<FilterChip selected={isDisk} onChange={setDisk}>Disk</FilterChip>\n<FilterChip selected count={12} onChange={...}>Critical</FilterChip>\n<FilterChip selected closable onClose={() => removeFilter(\"disk\")}>Disk</FilterChip>\n```",
+      "dont": [
+        "정적 라벨 (display only) → `Chip` (button 시맨틱 없음)",
+        "단일 옵션 펼침 드롭다운 → `FilterDropdown`",
+        "토글 버튼 그룹 (강제 단일 선택) → `Tabs (variant=\"segmented\")`"
+      ]
+    },
+    {
+      "name": "FilterChipItem",
+      "layer": "Primitives",
+      "sourceFile": "src/FilterChipItem.tsx",
+      "purpose": "FilterBar 의 selected chips row 에서 선택된 필터 한 건을 closable FilterChip 으로 렌더.\n인라인으로 흩어져 있던 `selectedChipItems.map` 한 항목의 마크업을 한 곳으로 모은 것 —\n라벨은 `\"<dropdownLabel>: <optionLabel>\"` 형태, 우측 × 로 개별 제거.",
+      "whenToUse": [
+        "[[FilterBar]] 가 selectedChipItems 를 `map` 으로 항목마다 렌더 (기본 용법). 보통 단독 사용하지 않음.",
+        "선택된 필터를 closable 칩으로 나열하는 동일 외형이 필요한 다른 표면."
+      ],
+      "whenNotToUse": [
+        "dropdown 트리거 칩 (count 표시, 토글) → FilterBar 의 FilterDropdown trigger (FilterChip 직접).",
+        "정적 라벨 (제거 불가) → `Chip`.",
+        "단일 필터 칩 일반 사용 → `FilterChip` 직접."
+      ],
+      "compositionRules": [
+        "데이터(`item`)만 주입 — 칩 외형/라벨 조합/sm 사이즈는 이 컴포넌트가 책임.",
+        "제거 동작은 콜백(`onRemove`)으로 위임 — 어떤 dropdown 의 값을 지울지는 부모가 결정.",
+        "시각/동작은 selected closable FilterChip(size=\"sm\") 과 동일 — 변형 없음."
+      ],
+      "example": "```tsx\n{selectedChipItems.map((it) => (\n  <FilterChipItem\n    key={`${it.dKey}-${it.value}`}\n    item={it}\n    onRemove={() => {\n      const d = dropdowns.find((x) => x.key === it.dKey);\n      if (d) d.onChange(d.value.filter((v) => v !== it.value));\n    }}\n  />\n))}\n```",
+      "dont": [
+        "dropdown 트리거 칩 (count 표시, 토글) → FilterBar 의 FilterDropdown trigger (FilterChip 직접).",
+        "정적 라벨 (제거 불가) → `Chip`.",
+        "단일 필터 칩 일반 사용 → `FilterChip` 직접."
+      ]
+    },
+    {
+      "name": "FilterDropdown",
+      "layer": "Composite",
+      "sourceFile": "src/FilterDropdown.tsx",
+      "purpose": "트리거 클릭 시 펼쳐지는 다중 선택 드롭다운. FilterBar(Chrome) 안에 다중 배치되어\n\"카테고리 / 심각도 / 시간 윈도우\" 등의 다중 필터 진입점 역할.\n\nModal 보다 가벼움 — backdrop 없음, body scroll lock 없음. 작은 패널이라 absolute\npositioning 으로 충분.",
+      "whenToUse": [
+        "페이지 헤더의 다중 선택 필터 (카테고리·심각도)",
+        "옵션 5~20 정도 — count 표시 가능"
+      ],
+      "whenNotToUse": [
+        "단일 선택 + 5~20 옵션 → `Select`",
+        "단일 선택 + 20+ 옵션 (검색 필요) → `Combobox` (추후)",
+        "50+ 옵션 다중 선택 → 별도 패널 페이지 (FilterDropdown 부적합)",
+        "단일 토글 → `FilterChip`"
+      ],
+      "compositionRules": [
+        "트리거는 외부에서 받음 (`trigger` prop) — Button / FilterChip 등 ReactElement",
+        "패널은 `absolute` 로 트리거 옆에 위치 (Portal 안 씀 — 작은 패널)",
+        "outside-click + ESC 로 닫힘 (각각 prop disable 가능)",
+        "options 모드: `options` + `value` + `onChange` 다중 선택 Checkbox 자동 렌더",
+        "자유 children: 사용자가 panel 본문 자유 구성 (Apply/Cancel 등 footer 추가 가능)"
+      ],
+      "example": "```tsx\n<FilterDropdown\n  trigger={<FilterChip selected={selected.length > 0} count={selected.length}>카테고리</FilterChip>}\n  title=\"카테고리\"\n  options={[\n    { value: \"disk\", label: \"Disk\", count: 12 },\n    { value: \"jvm\",  label: \"JVM\",  count: 43 },\n    { value: \"k8s\",  label: \"Kubernetes\", count: 8 },\n  ]}\n  value={selected}\n  onChange={setSelected}\n  placement=\"bottom-start\"\n/>\n```",
+      "dont": [
+        "단일 선택 + 5~20 옵션 → `Select`",
+        "단일 선택 + 20+ 옵션 (검색 필요) → `Combobox` (추후)",
+        "50+ 옵션 다중 선택 → 별도 패널 페이지 (FilterDropdown 부적합)",
+        "단일 토글 → `FilterChip`"
+      ]
+    },
+    {
+      "name": "FilterDropdownOptionItem",
+      "layer": "Primitives",
+      "sourceFile": "src/FilterDropdownOptionItem.tsx",
+      "purpose": "FilterDropdown 패널 본문에서 `options.map` 으로 흩어져 있던 단일 옵션 행\n(Checkbox + 라벨 + 우측 count) 을 한 곳으로 모은 것. 행 하나가 `FilterDropdownOption`\n한 건을 받아 체크박스 + 라벨 truncate + count `<span>` 으로 렌더.",
+      "whenToUse": [
+        "[[FilterDropdown]] 가 options 모드에서 옵션마다 렌더 (기본 용법). 보통 단독 사용하지 않음.",
+        "동일한 다중 선택 옵션 행 외형이 필요한 다른 드롭다운 표면."
+      ],
+      "whenNotToUse": [
+        "자유 children 모드 패널 본문 → 사용자가 직접 구성.",
+        "단일 선택 옵션 행 → Select / Combobox 내부 요소."
+      ],
+      "compositionRules": [
+        "데이터(`FilterDropdownOption`)만 주입 — 체크 상태/토글은 props 로 위임 (`checked`·`onToggle`).",
+        "Checkbox 는 DS 컴포넌트 — 이 행이 직접 import.",
+        "count 는 `undefined`/`null` 이 아닐 때만 우측 `<span>` 으로 표시."
+      ],
+      "example": "```tsx\n<FilterDropdownOptionItem\n  option={{ value: \"disk\", label: \"Disk\", count: 12 }}\n  checked={value.includes(\"disk\")}\n  onToggle={() => toggleOption(\"disk\")}\n/>\n```",
+      "dont": [
+        "자유 children 모드 패널 본문 → 사용자가 직접 구성.",
+        "단일 선택 옵션 행 → Select / Combobox 내부 요소."
+      ]
+    },
+    {
+      "name": "HeaderPillButton",
+      "layer": "Primitives",
+      "sourceFile": "src/HeaderPillButton.tsx",
+      "purpose": "페이지 헤더(48px) 안의 \"Docs\" · \"고객지원\" 등 알약형(pill) 텍스트 버튼을 렌더.\n32px 높이 · rounded-full · 1px divider 보더 · hover 배경 전환.\n양쪽 헤더에서 동일한 마크업이 중복되어 있던 것을 한 곳으로 추출.",
+      "whenToUse": [
+        "[[PageHeader]] · [[PageHeaderAiInline]] 내부의 Docs / 고객지원 버튼 렌더 (기본 용법).",
+        "48px 헤더 안에서 **동일한 알약 버튼 외형**이 필요한 경우."
+      ],
+      "whenNotToUse": [
+        "**일반 액션 버튼** (contained/outline/basic) → [[Button]].",
+        "**AI 위젯 토글** → [[AiAssistantButton]].",
+        "**AI 송신** → [[AiSendButton]].",
+        "**48px 헤더 밖** 에서의 pill 버튼 — 높이/패딩이 헤더 전용 spec."
+      ],
+      "compositionRules": [
+        "`icon` + `children`(라벨) 으로 구성 — 아이콘은 16px SVG ReactNode.",
+        "높이 32px · `rounded-full` · `border-color-var-color-border-divider` · `bg-card` — 토큰 기반.",
+        "hover 는 `hover-bg-surface-100 transition-colors`.",
+        "폰트는 `text-md`(13px) · `--font-family-korean` · `--font-weight-medium`."
+      ],
+      "example": "```tsx\n<HeaderPillButton icon={<DocsIcon />}>Docs</HeaderPillButton>\n<HeaderPillButton icon={<SupportIcon />}>고객지원</HeaderPillButton>\n```",
+      "dont": [
+        "**일반 액션 버튼** (contained/outline/basic) → [[Button]].",
+        "**AI 위젯 토글** → [[AiAssistantButton]].",
+        "**AI 송신** → [[AiSendButton]].",
+        "**48px 헤더 밖** 에서의 pill 버튼 — 높이/패딩이 헤더 전용 spec."
+      ]
+    },
+    {
+      "name": "LiveTimerCompact",
+      "layer": "Primitives",
+      "sourceFile": "src/LiveTimerCompact.tsx",
+      "purpose": "LIVE 모니터링의 현재 시각 + polling 진행을 32px compact 박스로 표시.\n좌측 pause/play 버튼(`onTogglePause`) + 우측 타이머 박스(LIVE 배지 + 시각 + 선택적\nduration 알약/달력)로 구성. `time` 미지정 시 시스템 시각으로 자동 tick 하며,\n`refreshIntervalMs`(기본 5000ms) 주기로 배경 progress fill 이 좌→우로 채워지고 cycle\n마다 리셋된다. `paused=true` 면 시계·progress 모두 정지.",
+      "whenToUse": [
+        "옵션바 \"시간\" 항목에서 LIVE 현재 시각 + polling cycle 을 compact 하게 보여줄 때.",
+        "[[OptionbarPage]] 의 시간 슬롯 등 세로 공간이 한정된 자리."
+      ],
+      "whenNotToUse": [
+        "시작~종료 절대 범위 입력/이동이 필요 → [[TimeRangeSelector]].",
+        "옵션바 전체 행 구성 → [[OptionbarPage]]."
+      ],
+      "compositionRules": [
+        "높이 32px 고정, pause(좌)·timer(우) 가 chained 보더로 한 알약처럼 붙음.",
+        "`durationLabel` 만 있으면 캘린더 자리에 #00B543 알약 표시. `showCalendar` 로",
+        "색은 토큰(var(--color-status-success) 등) — LIVE 텍스트·progress fill 라이브 값 유지."
+      ],
+      "example": "```tsx\n<LiveTimerCompact paused={paused} onTogglePause={togglePause} durationLabel=\"10분\" />\n<LiveTimerCompact time=\"12:01:35\" refreshIntervalMs={3000} showCalendar onOpenCalendar={open} />\n```",
+      "dont": [
+        "시작~종료 절대 범위 입력/이동이 필요 → [[TimeRangeSelector]].",
+        "옵션바 전체 행 구성 → [[OptionbarPage]]."
+      ]
+    },
+    {
+      "name": "MiniLineChart",
+      "layer": "Primitives",
+      "sourceFile": "src/MiniLineChart.tsx",
+      "purpose": "DB/APM/GPU 등 모든 모니터링 페이지에서 재활용하는 작은 line chart 카드.\n헤더(타이틀 + ⓘ + 옵션 Top Stat + ⋮) + plot 영역 + peak ▼ 라벨로 구성.\n카드 폭에 맞춰 line/area 는 수평 확장하되 stroke 1px·글자 크기는 고정.",
+      "whenToUse": [
+        "지표 한 개의 시계열 추이를 작은 카드로 나열 (대시보드 grid, 사이드 패널)",
+        "peak 값과 시간대만 빠르게 확인하면 되는 요약 view"
+      ],
+      "whenNotToUse": [
+        "요일×시간 같은 격자형 빈도 표현 → [[WeekHourMatrix]]",
+        "진행 단계 표시 → [[DashboardBuildingProgress]]",
+        "정밀한 인터랙션(zoom·tooltip·다중 시리즈)이 필요한 본격 차트 → 전용 차트 라이브러리"
+      ],
+      "compositionRules": [
+        "**SVG font-size 단위 정책 (feedback-svg-text-units)**: SVG 내부에는 텍스트를",
+        "**좌표 정합 (feedback-chart-peak-alignment)**: viewBox 는 plot 사각형과 동일 비율",
+        "stroke 는 `vectorEffect=\"non-scaling-stroke\"` 로 1px 유지, area fill 은 color + alpha.",
+        "색은 토큰 (`color` 기본 `--color-primary-soft`), 축선은 `--color-border-divider`.",
+        "`delay` 지정 시에만 stagger 진입 애니메이션 적용."
+      ],
+      "example": "```tsx\n<MiniLineChart\n  title=\"CPU 사용률\"\n  values={[12, 30, 22, 80, 45, 60, 38]}\n  unit=\"%\"\n  showTopStat\n  delay={120}\n/>\n```",
+      "dont": [
+        "요일×시간 같은 격자형 빈도 표현 → [[WeekHourMatrix]]",
+        "진행 단계 표시 → [[DashboardBuildingProgress]]",
+        "정밀한 인터랙션(zoom·tooltip·다중 시리즈)이 필요한 본격 차트 → 전용 차트 라이브러리"
+      ]
+    },
+    {
+      "name": "Modal",
+      "layer": "Primitives",
+      "sourceFile": "src/Modal.tsx",
+      "purpose": "Overlay dialog primitive. 페이지·드로어·confirmation 등의 base.\n인라인 `<div className=\"fixed inset-0 ...\">` 새로 짜지 말 것 — backdrop·focus·ESC\n일관성은 이 컴포넌트가 보장.\n\n**위젯에서 사용 금지** — `feedback_widget_readonly_policy` 0. 대전제. Modal 은 페이지\n컨텍스트에서만 호출.",
+      "whenToUse": [
+        "페이지 confirmation (\"정말 삭제하시겠습니까?\")",
+        "사용자별 상세 편집 폼 (사용자 list 행 클릭)",
+        "JSON 일괄 수정 등 정밀 입력 폼",
+        "시뮬레이션 결과 미리보기"
+      ],
+      "whenNotToUse": [
+        "작은 hover 라벨 → `Tooltip`",
+        "우측 슬라이드 패널 → `Drawer` (별개 컴포넌트, 추후)",
+        "비차단 알림 → `Toast`",
+        "인라인 본문 → 페이지 본문에 직접"
+      ],
+      "compositionRules": [
+        "Portal 로 `document.body` 에 마운트 — `overflow:hidden` 부모 영향 회피",
+        "role=\"dialog\" + aria-modal=\"true\" + aria-labelledby (title) + aria-describedby (description)",
+        "3 채널 닫기: × 버튼 / ESC / backdrop 클릭 (각각 prop 으로 disable 가능)",
+        "open 시 첫 focusable 요소로 focus 이동 (× 버튼 기본)",
+        "색·간격: surface 흰 배경 / border-default 외곽 / rgba(0,0,0,0.4) backdrop"
+      ],
+      "example": "```tsx\n<Modal open={open} onClose={close} title=\"삭제 확인\" size=\"sm\"\n  footer={<>\n    <Button onClick={close}>취소</Button>\n    <Button tone=\"critical\" onClick={confirm}>삭제</Button>\n  </>}>\n  이 룰을 삭제하시겠습니까? 되돌릴 수 없습니다.\n</Modal>\n```",
+      "dont": [
+        "작은 hover 라벨 → `Tooltip`",
+        "우측 슬라이드 패널 → `Drawer` (별개 컴포넌트, 추후)",
+        "비차단 알림 → `Toast`",
+        "인라인 본문 → 페이지 본문에 직접"
+      ]
+    },
+    {
+      "name": "OptionbarInstanceSelector",
+      "layer": "Primitives",
+      "sourceFile": "src/OptionbarInstanceSelector.tsx",
+      "purpose": "옵션바 \"인스턴스\" 항목 — 좌측 상태 dot(`status`: ok/warn/error/idle) + 선택된\n인스턴스 라벨 + 우측 chevron-down 토글로 구성된 32px 드롭다운 트리거 버튼.\n토글/오픈 상태는 `open`·`onToggle` 로 외부 제어(트리거만 제공, 옵션 패널은 호출측 책임).",
+      "whenToUse": [
+        "[[OptionbarPage]] 의 \"인스턴스\" 항목.",
+        "상태 색 dot 으로 헬스를 즉시 보여줘야 하는 인스턴스 선택 트리거."
+      ],
+      "whenNotToUse": [
+        "상태 dot 이 없는 일반 라벨 드롭다운(프리셋 등) → [[PresetSelect]].",
+        "시간 범위 선택 → [[TimeRangeSelector]].",
+        "일반 텍스트/검색 입력 → [[TextField]]."
+      ],
+      "compositionRules": [
+        "폭 `width`(기본 180px), minHeight 32px, 1px border-divider + rounded 2.",
+        "status → dot 색은 `STATUS_COLOR` 매핑(ok #00C853 / warn·error·idle 토큰) 고정.",
+        "라벨은 numeric 폰트 + truncate. chevron 은 `open` 시 180deg 회전.",
+        "`title=\"\"` 이면 내부 title 렌더 억제(부모가 라벨을 그릴 때 중복 방지)."
+      ],
+      "example": "```tsx\n<OptionbarInstanceSelector\n  label=\"DMX-3-12-949\"\n  status=\"ok\"\n  open={open}\n  onToggle={() => setOpen((v) => !v)}\n/>\n```",
+      "dont": [
+        "상태 dot 이 없는 일반 라벨 드롭다운(프리셋 등) → [[PresetSelect]].",
+        "시간 범위 선택 → [[TimeRangeSelector]].",
+        "일반 텍스트/검색 입력 → [[TextField]]."
+      ]
+    },
+    {
+      "name": "OptionbarItem",
+      "layer": "Primitives",
+      "sourceFile": "src/OptionbarItem.tsx",
+      "purpose": "옵션바 행의 각 항목을 \"타이틀(12px bold) + 콘텐츠(32px chrome)\" 세로 스택으로 감싼다.\n시간 · 인스턴스 · 데이터베이스 · 프리셋 등 모든 옵션 항목이 이 래퍼를 공유.",
+      "whenToUse": [
+        "[[OptionbarPage]] 내부에서 각 항목을 감쌀 때 (기본 용법).",
+        "옵션바 밖에서 **동일한 title + content 세로 스택**이 필요한 경우."
+      ],
+      "whenNotToUse": [
+        "**옵션바 전체 행** → [[OptionbarPage]].",
+        "**title 없이 content 만** — `title=\"\"` 전달하면 타이틀 숨김 처리.",
+        "**필터 바 항목** → [[FilterBar]] 의 드롭다운/검색 슬롯."
+      ],
+      "compositionRules": [
+        "`title` + `children` 구조 — title 이 빈 문자열이면 타이틀 행 숨김.",
+        "타이틀은 `text-base`(12px) `font-bold` `text-primary` — 옵션바 타이포 위계.",
+        "children 은 32px height chrome 으로 baseline 통일 (LiveTimerCompact · InstanceSelector 등).",
+        "gap 6px (타이틀 ↔ 콘텐츠)."
+      ],
+      "example": "```tsx\n<OptionbarItem title=\"시간\">\n  <LiveTimerCompact time=\"12:01:35\" />\n</OptionbarItem>\n```",
+      "dont": [
+        "**옵션바 전체 행** → [[OptionbarPage]].",
+        "**title 없이 content 만** — `title=\"\"` 전달하면 타이틀 숨김 처리.",
+        "**필터 바 항목** → [[FilterBar]] 의 드롭다운/검색 슬롯."
+      ]
+    },
+    {
+      "name": "OptionbarValueDisplay",
+      "layer": "Primitives",
+      "sourceFile": "src/OptionbarValueDisplay.tsx",
+      "purpose": "옵션바 항목 중 인터랙션 없는 단순 텍스트 값(예: 데이터베이스 이름)을 32px 박스에 표시.\n다른 옵션(LiveTimerCompact · InstanceSelector · PresetSelect)과 동일한 32px height baseline.",
+      "whenToUse": [
+        "[[OptionbarPage]] 내부의 읽기 전용 텍스트 항목 (기본 용법 — 데이터베이스 옵션).",
+        "옵션바 밖에서 **동일한 32px 텍스트 값 표시**가 필요한 경우."
+      ],
+      "whenNotToUse": [
+        "**드롭다운 선택** → [[OptionbarInstanceSelector]] / [[PresetSelect]].",
+        "**시간 표시 + 제어** → [[LiveTimerCompact]].",
+        "**편집 가능한 텍스트** → [[TextField]]."
+      ],
+      "compositionRules": [
+        "높이 32px 고정 — 옵션바 baseline 통일.",
+        "폰트는 `--font-family-numeric` · regular weight — 값 표시 전용.",
+        "색은 `text-primary` — 인라인 hex 금지.",
+        "긴 텍스트는 `truncate` + `title` 속성으로 잘림 + 호버 전체 표시."
+      ],
+      "example": "```tsx\n<OptionbarValueDisplay value=\"ORA11K\" />\n```",
+      "dont": [
+        "**드롭다운 선택** → [[OptionbarInstanceSelector]] / [[PresetSelect]].",
+        "**시간 표시 + 제어** → [[LiveTimerCompact]].",
+        "**편집 가능한 텍스트** → [[TextField]].",
+        "색은 `text-primary` — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "PageHeader",
+      "layer": "Composite",
+      "sourceFile": "src/PageHeader.tsx",
+      "purpose": "페이지 상단 48px 고정 바. 좌측은 페이지 타이틀 + Denyx AI 토글([[AiAssistantButton]])\n+ Docs 버튼, 우측은 고객지원 버튼 + 알림 벨(드롭다운) + 프로필 아바타(드롭다운).\n[[Sidebar]] 의 48px 로고 헤더와 동일 높이로 chrome 의 최상단 행을 정렬.",
+      "whenToUse": [
+        "[[DashboardLayout]] 의 `header` 슬롯에 들어가는 주 페이지 헤더.",
+        "페이지 타이틀과 Denyx AI 진입점이 함께 필요한 모든 화면."
+      ],
+      "whenNotToUse": [
+        "뒤로가기/브레드크럼 등 보조 네비 행 → [[SubHeaderBar]] (48px 아래 40px 행).",
+        "시간/프리셋 등 데이터 필터 옵션 → `OptionbarPage` / `FilterBar`."
+      ],
+      "compositionRules": [
+        "공통 정책(feedback-page-header-invariant): Denyx AI 위젯 토글과 무관하게 항상",
+        "Denyx AI 토글은 인라인 마크업이 아니라 [[AiAssistantButton]] 채택 (토큰 binding dogfooding).",
+        "높이 48px 고정(`box-border`) — 페이지에서 inline `<div>` 로 재구현 금지.",
+        "배경/경계/텍스트 색은 토큰 (`--color-border-strong` · `--color-text-*` · `--color-primary-bg`).",
+        "`notifications` 1건 이상이면 벨에 빨간 점 + 클릭 시 목록, `profileMenu` 있으면 아바타가 드롭다운."
+      ],
+      "example": "```tsx\n<PageHeader\n  title=\"K8s-GPU / GPU 트렌드\"\n  aiActive={aiActive}\n  onAiToggle={() => setAiActive((v) => !v)}\n  roleBadge=\"OWNER\"\n  profileMenu={[{ label: \"엔터프라이즈 관리\", onClick: goAdmin }]}\n  notifications={[{ label: \"임계값 초과: disk-usage\" }]}\n/>\n```",
+      "dont": [
+        "뒤로가기/브레드크럼 등 보조 네비 행 → [[SubHeaderBar]] (48px 아래 40px 행).",
+        "시간/프리셋 등 데이터 필터 옵션 → `OptionbarPage` / `FilterBar`.",
+        "높이 48px 고정(`box-border`) — 페이지에서 inline `<div>` 로 재구현 금지.",
+        "`notifications` 1건 이상이면 벨에 빨간 점 + 클릭 시 목록, `profileMenu` 있으면 아바타가 드롭다운."
+      ]
+    },
+    {
+      "name": "PageHeaderAiInline",
+      "layer": "Composite",
+      "sourceFile": "src/PageHeaderAiInline.tsx",
+      "purpose": "기존 [[PageHeader]] 의 Denyx AI 토글 버튼 자리를 [[AiInlinePrompt]] 로 대체.\nAI 위젯 호출 trigger 가 인라인 prompt 의 송신으로 이동 — 별도 토글 entry 없음.\n48px 높이 invariant 유지. 좌측 타이틀 + 중앙 inline prompt(max 480px) + 우측 chrome(고객지원/벨/아바타).",
+      "whenToUse": [
+        "inline prompt 가 AI 위젯 호출 entry 인 페이지 (위젯 토글 별도 entry 불필요).",
+        "PageHeader 의 가용 공간이 prompt 를 수용할 만큼 wide 한 페이지."
+      ],
+      "whenNotToUse": [
+        "위젯 토글 entry 가 필요한 페이지 → [[PageHeader]] (기존, AI 버튼 포함)."
+      ],
+      "compositionRules": [
+        "inline prompt 는 [[feedback_page_header_invariant]] 정책 따라 `max-w-480px` cap, w-full 100% 강제 금지.",
+        "우측 chrome 잠식 금지 — `flex-1 + max-width` 컨테이너로 가용 공간만 흡수.",
+        "48px height invariant 유지 — inline prompt 자체가 ~32px 이라 안전하게 들어감."
+      ],
+      "example": "```tsx\n<PageHeaderAiInline\n  title=\"K8s-GPU / GPU 트렌드\"\n  promptPlaceholder=\"GPU 트렌드에 대해 질문...\"\n  promptSuggestions={GPU_SUGGESTIONS}\n  onPromptSubmit={(v) => askAi(v)}\n/>\n```",
+      "dont": [
+        "위젯 토글 entry 가 필요한 페이지 → [[PageHeader]] (기존, AI 버튼 포함).",
+        "inline prompt 는 [[feedback_page_header_invariant]] 정책 따라 `max-w-480px` cap, w-full 100% 강제 금지.",
+        "우측 chrome 잠식 금지 — `flex-1 + max-width` 컨테이너로 가용 공간만 흡수."
+      ]
+    },
+    {
+      "name": "PageHeaderNotificationItem",
+      "layer": "Primitives",
+      "sourceFile": "src/PageHeaderNotificationItem.tsx",
+      "purpose": "알림 드롭다운 목록의 단일 항목을 렌더 — 빨간 도트 + 라벨로 구성된 좌측정렬 버튼.\n[[PageHeader]] 의 `notifications.map` 인라인 마크업을 한 곳으로 모은 순수 UI 컴포넌트.\n드롭다운 열림/닫힘 제어는 부모([[PageHeader]])가 보유하고, 이 컴포넌트는 항목 1건만 그린다.",
+      "whenToUse": [
+        "[[PageHeader]] 가 `notifications.map` 으로 항목마다 렌더 (기본 용법). 보통 단독 사용하지 않음.",
+        "동일한 알림 항목 외형이 필요한 다른 드롭다운 목록 표면."
+      ],
+      "whenNotToUse": [
+        "프로필(아바타) 드롭다운 항목 → [[PageHeaderProfileMenuItem]].",
+        "토스트/배너 등 비-드롭다운 알림 표면 → [[Toast]] 등 해당 컴포넌트."
+      ],
+      "compositionRules": [
+        "데이터(`NotificationItem`)와 `onClick` 만 주입 — 행 외형/도트/정렬은 이 컴포넌트가 책임.",
+        "드롭다운 닫기 등 상태 제어는 부모가 `onClick` 핸들러로 전달 (이 컴포넌트는 상태 비보유).",
+        "색·배경은 토큰/기정의 클래스 (`bg-ce5484d` · `text-primary` · `hover-bg-surface-100`) — 새 클래스 금지."
+      ],
+      "example": "```tsx\n{notifications.map((n) => (\n  <PageHeaderNotificationItem\n    key={n.label}\n    item={n}\n    onClick={() => { setNotifyOpen(false); n.onClick?.(); }}\n  />\n))}\n```",
+      "dont": [
+        "프로필(아바타) 드롭다운 항목 → [[PageHeaderProfileMenuItem]].",
+        "토스트/배너 등 비-드롭다운 알림 표면 → [[Toast]] 등 해당 컴포넌트.",
+        "데이터(`NotificationItem`)와 `onClick` 만 주입 — 행 외형/도트/정렬은 이 컴포넌트가 책임.",
+        "색·배경은 토큰/기정의 클래스 (`bg-ce5484d` · `text-primary` · `hover-bg-surface-100`) — 새 클래스 금지."
+      ]
+    },
+    {
+      "name": "PageHeaderProfileMenuItem",
+      "layer": "Primitives",
+      "sourceFile": "src/PageHeaderProfileMenuItem.tsx",
+      "purpose": "프로필 드롭다운 메뉴의 단일 항목을 렌더 — 라벨만 표시하는 좌측정렬 버튼.\n[[PageHeader]] 의 `profileMenu.map` 인라인 마크업을 한 곳으로 모은 순수 UI 컴포넌트.\n드롭다운 열림/닫힘 제어는 부모([[PageHeader]])가 보유하고, 이 컴포넌트는 항목 1건만 그린다.",
+      "whenToUse": [
+        "[[PageHeader]] 가 `profileMenu.map` 으로 항목마다 렌더 (기본 용법). 보통 단독 사용하지 않음.",
+        "동일한 프로필 메뉴 항목 외형이 필요한 다른 드롭다운 목록 표면."
+      ],
+      "whenNotToUse": [
+        "알림(벨) 드롭다운 항목(도트 포함) → [[PageHeaderNotificationItem]].",
+        "사이드바 메뉴 행 → [[SidebarMenuItem]]."
+      ],
+      "compositionRules": [
+        "데이터(`ProfileMenuItem`)와 `onClick` 만 주입 — 행 외형/정렬은 이 컴포넌트가 책임.",
+        "드롭다운 닫기 등 상태 제어는 부모가 `onClick` 핸들러로 전달 (이 컴포넌트는 상태 비보유).",
+        "색·배경은 토큰/기정의 클래스 (`text-primary` · `hover-bg-surface-100`) — 새 클래스 금지."
+      ],
+      "example": "```tsx\n{profileMenu.map((it) => (\n  <PageHeaderProfileMenuItem\n    key={it.label}\n    item={it}\n    onClick={() => { setProfileOpen(false); it.onClick?.(); }}\n  />\n))}\n```",
+      "dont": [
+        "알림(벨) 드롭다운 항목(도트 포함) → [[PageHeaderNotificationItem]].",
+        "사이드바 메뉴 행 → [[SidebarMenuItem]].",
+        "색·배경은 토큰/기정의 클래스 (`text-primary` · `hover-bg-surface-100`) — 새 클래스 금지."
+      ]
+    },
+    {
+      "name": "PresetSelect",
+      "layer": "Primitives",
+      "sourceFile": "src/PresetSelect.tsx",
+      "purpose": "선택된 프리셋 라벨을 보여주는 드롭다운 트리거(`onOpenList`)와 그 우측의 정사각형\n관리 아이콘 버튼(`onManage`) 한 쌍. 두 콜백 모두 외부 제어이며, 컴포넌트 자체는\n트리거 버튼만 렌더하고 목록/관리 패널은 호출측이 띄운다.",
+      "whenToUse": [
+        "[[OptionbarPage]] 우측의 \"프리셋\" 항목.",
+        "DB / Server / APM 페이지 옵션바에서 프리셋 선택 + 관리 진입이 함께 필요한 자리."
+      ],
+      "whenNotToUse": [
+        "상태 dot 이 필요한 인스턴스 선택 → [[OptionbarInstanceSelector]].",
+        "시간 범위 선택 → [[TimeRangeSelector]].",
+        "일반 텍스트/검색 입력 → [[TextField]]."
+      ],
+      "compositionRules": [
+        "드롭다운 버튼 폭 `width`(기본 230px) + 32px 정사각 관리 버튼, 4px gap.",
+        "두 버튼 모두 32px height, border-divider + rounded 4 로 옵션바 baseline 통일.",
+        "라벨은 korean 폰트 + truncate. 색은 토큰(var(--color-border-divider) 등)."
+      ],
+      "example": "```tsx\n<PresetSelect\n  label=\"Default\"\n  onOpenList={() => openPresetList()}\n  onManage={() => openPresetManager()}\n/>\n```",
+      "dont": [
+        "상태 dot 이 필요한 인스턴스 선택 → [[OptionbarInstanceSelector]].",
+        "시간 범위 선택 → [[TimeRangeSelector]].",
+        "일반 텍스트/검색 입력 → [[TextField]]."
+      ]
+    },
+    {
+      "name": "ProductRailItem",
+      "layer": "Primitives",
+      "sourceFile": "src/ProductRailItem.tsx",
+      "purpose": "제품 레일(40px 폭)의 단일 제품 아이콘 칸을 렌더. 40px 정사각 + 24px 아이콘,\n`active` 면 라이트블루 배경(`--color-primary-bg`)으로 강조.\ncollapsed/펼침 무관하게 항상 40px — 사이드바의 유일한 상시 가시 요소.",
+      "whenToUse": [
+        "[[Sidebar]] 가 `PRODUCT_ICONS.map` 으로 제품마다 렌더하는 **기본 용법**. 보통 단독 사용하지 않음.",
+        "사이드바 밖에서 **동일한 제품 아이콘 칸**이 필요한 경우 (예: 제품 전환 팝오버, 모바일 네비).",
+        "collapsed(40px) · 펼침(240px) **양쪽 모두** 표시 — 이 컴포넌트 자체는 상태 불변."
+      ],
+      "whenNotToUse": [
+        "**사이드바 본문 메뉴 행** (아이콘+라벨+caret) → [[SidebarMenuItem]].",
+        "**레일 하단 유틸 아이콘** (32px 높이, active 강조 없음) → [[BottomRailItem]].",
+        "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
+        "`hideProductRail=true` 화면 (관리 콘솔 등 제품 네비 불필요) — Sidebar 가 레일 전체를 숨김."
+      ],
+      "compositionRules": [
+        "아이콘 파일명(`name`)만 주입 — 칸 크기(40px)/active 강조는 이 컴포넌트가 책임.",
+        "강조 배경은 토큰 (`--color-primary-bg`) — 인라인 hex 금지.",
+        "hover 는 `hover-bg-surface-100` 토큰.",
+        "아이콘은 표준 경로(`/icons/*`)."
+      ],
+      "example": "```tsx\n{PRODUCT_ICONS.map((name) => {\n  const key = name.replace(\"product-\", \"\").replace(\".svg\", \"\");\n  return <ProductRailItem key={name} name={name} active={key === activeProduct} />;\n})}\n```",
+      "dont": [
+        "**사이드바 본문 메뉴 행** (아이콘+라벨+caret) → [[SidebarMenuItem]].",
+        "**레일 하단 유틸 아이콘** (32px 높이, active 강조 없음) → [[BottomRailItem]].",
+        "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
+        "`hideProductRail=true` 화면 (관리 콘솔 등 제품 네비 불필요) — Sidebar 가 레일 전체를 숨김.",
+        "강조 배경은 토큰 (`--color-primary-bg`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "ReasoningStep",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/ReasoningStep.tsx",
+      "purpose": "reasoning 목록의 한 항목(상태 마커 + 라벨)을 렌더. `running: true` 면 회전 spinner +\n라벨 뒤 점 애니메이션(진행 중), false 면 brand-blue 체크 원(완료)으로 표시.\nAiReasoning 의 `steps.map(...)` 본문에 흩어져 있던 행 마크업을 한 곳으로 모은 것.",
+      "whenToUse": [
+        "[[AiReasoning]] 가 `steps.map` 으로 단계마다 렌더 (기본 용법). 보통 단독 사용하지 않음."
+      ],
+      "whenNotToUse": [
+        "카드 전체(라벨 + 목록) → [[AiReasoning]] 를 사용.",
+        "접기/펼치기 step 타임라인 → [[AiStepsTimeline]].",
+        "tool/function 호출 단위 표시 → [[AiToolCallStep]]."
+      ],
+      "compositionRules": [
+        "데이터(상태 `running` · `label`)만 주입 — 마커/간격은 이 컴포넌트가 책임.",
+        "마커 색(완료 brand-blue / 진행 spinner)은 토큰 사용, 인라인 hex 금지.",
+        "AiReasoning 카드 안에서만 사용 — 독립 카드로 감싸지 말 것."
+      ],
+      "example": "```tsx\n{steps.map((s, i) => (\n  <ReasoningStep key={i} index={i} label={s.label} running={s.running} />\n))}\n```",
+      "dont": [
+        "카드 전체(라벨 + 목록) → [[AiReasoning]] 를 사용.",
+        "접기/펼치기 step 타임라인 → [[AiStepsTimeline]].",
+        "tool/function 호출 단위 표시 → [[AiToolCallStep]].",
+        "마커 색(완료 brand-blue / 진행 spinner)은 토큰 사용, 인라인 hex 금지.",
+        "AiReasoning 카드 안에서만 사용 — 독립 카드로 감싸지 말 것."
+      ]
+    },
+    {
+      "name": "Select",
+      "layer": "Primitives",
+      "sourceFile": "src/Select.tsx",
+      "purpose": "옵션 목록에서 한 값 선택. `PresetSelect`·`OptionbarInstanceSelector` 같은 chrome\nspecialized 컴포넌트의 *기반* base.\n인라인 `<select>` 새로 짜지 말 것 — 색·간격·a11y 일관성은 이 컴포넌트가 보장.",
+      "whenToUse": [
+        "메트릭 선택 (룰 편집기: disk.usage / cpu.usage / ...)",
+        "심각도 선택 (Critical / Warning / Info)",
+        "단위 / 시간 단위 / 정렬 기준 등 단일 값 선택"
+      ],
+      "whenNotToUse": [
+        "다중 선택 → `FilterDropdown` (Checkbox 묶음)",
+        "검색 가능한 큰 목록(50+) → `Combobox` (추후, searchable variant)",
+        "양자택일(boolean) → `Switch` 또는 `Tabs` (segmented)",
+        "특정 시간/프리셋 → 기존 chrome `PresetSelect`, `TimeRangeSelector`"
+      ],
+      "compositionRules": [
+        "시각 톤은 TextField와 정렬 (size, border, padding 동일 spec)",
+        "옵션은 `{ value, label, disabled? }` 객체 배열 — 단순 string 배열은 미지원",
+        "native `<select>` 기반 — a11y/키보드 자동, 펼침 메뉴 디자인은 브라우저 기본",
+        "clearable / invalid / helperText / fullWidth: TextField 와 동일 prop·동작"
+      ],
+      "example": "```tsx\n<Select\n  label=\"메트릭\"\n  value={metric}\n  onChange={setMetric}\n  options={[\n    { value: \"disk.usage\", label: \"Disk usage (%)\" },\n    { value: \"cpu.usage\",  label: \"CPU usage (%)\" },\n  ]}\n  placeholder=\"선택...\"\n/>\n<Select size=\"sm\" value={tz} onChange={setTz} options={tzOptions} clearable />\n```",
+      "dont": [
+        "다중 선택 → `FilterDropdown` (Checkbox 묶음)",
+        "검색 가능한 큰 목록(50+) → `Combobox` (추후, searchable variant)",
+        "양자택일(boolean) → `Switch` 또는 `Tabs` (segmented)",
+        "특정 시간/프리셋 → 기존 chrome `PresetSelect`, `TimeRangeSelector`"
+      ]
+    },
+    {
+      "name": "SettingsIcon",
+      "layer": "Shell",
+      "sourceFile": "src/icons/SettingsIcon.tsx",
+      "purpose": "설정/구성을 의미하는 Material-style 톱니바퀴 SVG 아이콘. 흩어져 있던\n변형(blob path·회전 광선 등)을 이 하나로 통일한 단일 소스.",
+      "whenToUse": [
+        "\"설정\" 액션/메뉴/IconButton 안의 아이콘 (카드 우상단, 위젯 헤더 등)"
+      ],
+      "whenNotToUse": [
+        "AI 브랜드 표식 → [[AiSymbol]]",
+        "톱니바퀴 외 다른 의미(필터·더보기 등)는 각 전용 아이콘 사용"
+      ],
+      "compositionRules": [
+        "**정책 feedback-common-components-catalog**: 설정 아이콘은 항상 이 컴포넌트 재사용.",
+        "`size`(px)·`color`(기본 `--color-text-tertiary`)·`className`·`style` 로 조정.",
+        "단색 fill 아이콘, `aria-hidden` — 의미 라벨은 감싸는 버튼에 부여."
+      ],
+      "example": "```tsx\n<button aria-label=\"설정\"><SettingsIcon size={16} /></button>\n```",
+      "dont": [
+        "AI 브랜드 표식 → [[AiSymbol]]",
+        "톱니바퀴 외 다른 의미(필터·더보기 등)는 각 전용 아이콘 사용"
+      ]
+    },
+    {
+      "name": "Sidebar",
+      "layer": "Composite",
+      "sourceFile": "src/Sidebar.tsx",
+      "purpose": "화면 좌측의 전체 네비게이션 기둥. 위→아래로 다섯 영역이 쌓이며 모두 shrink-0,\n가운데 본문(메뉴) 영역만 flex-1 로 늘어남:\n  1. 48px 로고 헤더 (Denyx 로고 · 검색 · 접기) — [[PageHeader]](48px) 와 동일 높이\n  2. 40px 조직 스위처 ([[SubHeaderBar]] 40px 과 정렬)\n  3. 44px 프로젝트 스위처\n  4. 본문 (flex-1) — 40px 제품 레일 + 우측 메뉴 목록(+ 즐겨찾기 바)\n  5. 24px 저작권 푸터\n모든 가변 데이터(`activeProduct`/`project`/`menu`/`org`)는 prop 주입, 기본값은\nK8s-GPU 컨텍스트라 빈 호출과도 호환. `collapsed` 면 40px 제품 레일만 노출.",
+      "whenToUse": [
+        "보통 단독으로 두지 않고 [[DashboardLayout]] 의 좌측 컬럼으로 조합.",
+        "제품 레일 + 메뉴 트리 + 조직/프로젝트 스위처가 필요한 모든 모니터링 화면."
+      ],
+      "whenNotToUse": [
+        "사이드바 외 헤더/본문/위젯까지 한 셸로 묶고 싶을 때 → [[DashboardLayout]].",
+        "제품 네비가 불필요한 관리 콘솔 → `hideProductRail`/`hideProjectSwitcher` 로 영역만 끔."
+      ],
+      "compositionRules": [
+        "폭은 `collapsed` 가 결정 (240px ↔ 40px), `transition-all duration-400` 로 애니메이션.",
+        "경계선·강조 배경은 토큰 binding (`--color-border-default` · `--color-primary-bg`) — 인라인 hex 금지.",
+        "아이콘은 표준 경로(`/icons/*`) 참조 (Storybook/소비자 정적 서빙 동일).",
+        "메뉴는 `MenuItem[]` 트리로 주입 — `children` 유무로 단일/확장 항목이 갈림."
+      ],
+      "example": "```tsx\n<Sidebar activeProduct=\"gpu\" collapsed={aiActive} />\n\n<Sidebar\n  activeProduct=\"app\"\n  project={{ productIcon: \"product-app.svg\", groupLabel: \"[그룹] 운영\", projectLabel: \"[프로젝트] my-app\" }}\n  menu={customMenu}\n  org={{ label: \"[조직] Denyx\", icon: \"denyx-symbol.svg\" }}\n  onOrgClick={openOrgPicker}\n/>\n```",
+      "dont": [
+        "사이드바 외 헤더/본문/위젯까지 한 셸로 묶고 싶을 때 → [[DashboardLayout]].",
+        "제품 네비가 불필요한 관리 콘솔 → `hideProductRail`/`hideProjectSwitcher` 로 영역만 끔.",
+        "경계선·강조 배경은 토큰 binding (`--color-border-default` · `--color-primary-bg`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "SidebarCopyright",
+      "layer": "Primitives",
+      "sourceFile": "src/SidebarCopyright.tsx",
+      "purpose": "사이드바 최하단의 24px 저작권 텍스트 행을 렌더. \"Copyright {year} Denyx\" 한 줄.\ncollapsed(40px) 시 Sidebar 가 숨김 처리 — 텍스트이므로 최소화 형태 없음.",
+      "whenToUse": [
+        "[[Sidebar]] 최하단에서 렌더하는 **기본 용법**. 보통 단독 사용하지 않음.",
+        "사이드바 밖에서 **동일한 저작권 행**이 필요한 경우 (예: 풋터 영역).",
+        "`year` prop 으로 연도 제어 (기본 2026)."
+      ],
+      "whenNotToUse": [
+        "**collapsed(40px) 사이드바** — 텍스트를 40px에 표시할 수 없으므로 Sidebar 가 자동 숨김. 이 컴포넌트에 collapsed prop 없음.",
+        "**본문 메뉴 / 스위처 / 레일** → 해당 Sidebar 하위 컴포넌트 사용.",
+        "**긴 법적 고지** — 이 컴포넌트는 한 줄 저작권 전용. 멀티라인 법적 고지는 별도 영역."
+      ],
+      "compositionRules": [
+        "폰트는 **Roboto**(numeric family) — 영문 저작권 표기 전용. 한국어 폰트 사용하지 않음.",
+        "색은 토큰 (`text-tertiary` · `bg-card` · `border-color-var-color-border-default`) — 인라인 hex 금지.",
+        "높이 24px 고정 (`h-24px`). 사이드바 전체 높이 계산에 포함."
+      ],
+      "example": "```tsx\n<SidebarCopyright />\n<SidebarCopyright year={2026} />\n```",
+      "dont": [
+        "**collapsed(40px) 사이드바** — 텍스트를 40px에 표시할 수 없으므로 Sidebar 가 자동 숨김. 이 컴포넌트에 collapsed prop 없음.",
+        "**본문 메뉴 / 스위처 / 레일** → 해당 Sidebar 하위 컴포넌트 사용.",
+        "**긴 법적 고지** — 이 컴포넌트는 한 줄 저작권 전용. 멀티라인 법적 고지는 별도 영역.",
+        "색은 토큰 (`text-tertiary` · `bg-card` · `border-color-var-color-border-default`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "SidebarLogoHeader",
+      "layer": "Primitives",
+      "sourceFile": "src/SidebarLogoHeader.tsx",
+      "purpose": "사이드바 최상단의 48px 로고 영역을 렌더. [[PageHeader]](48px)와 동일 높이로 정렬.\n`collapsed=false` 면 풀 로고(80×24), `collapsed=true` 면 심볼(24×24)만 표시.",
+      "whenToUse": [
+        "[[Sidebar]] 최상단에서 렌더하는 **기본 용법**. 보통 단독 사용하지 않음.",
+        "사이드바 밖에서 **동일한 Denyx 로고 헤더**가 필요한 경우 (예: 로그인 페이지, 모바일 헤더).",
+        "collapsed(40px) · 펼침(240px) **양쪽 모두** 표시 — `collapsed` prop 으로 자동 전환."
+      ],
+      "whenNotToUse": [
+        "**페이지 헤더**(타이틀 + AI 버튼 + 알림) → [[PageHeader]] / [[PageHeaderAiInline]].",
+        "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
+        "**로고만 단독** (사이드바 chrome 없이) — 직접 `<img>` 사용."
+      ],
+      "compositionRules": [
+        "높이 48px 고정 (`h-48px box-border`) — PageHeader 와 행 정렬 보장.",
+        "펼침 시 `width: 240px`, collapsed 시 `width: 40px` — 부모 Sidebar 의 `width` 를 따름.",
+        "배경은 `bg-card`, 보더는 `border-r border-b` 토큰 — 인라인 hex 금지.",
+        "아이콘은 표준 경로 (`/icons/denyx-logo.svg`, `/icons/denyx-symbol.svg`)."
+      ],
+      "example": "```tsx\n<SidebarLogoHeader collapsed={false} width={240} />\n<SidebarLogoHeader collapsed={true} width={40} />\n```",
+      "dont": [
+        "**페이지 헤더**(타이틀 + AI 버튼 + 알림) → [[PageHeader]] / [[PageHeaderAiInline]].",
+        "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
+        "**로고만 단독** (사이드바 chrome 없이) — 직접 `<img>` 사용.",
+        "배경은 `bg-card`, 보더는 `border-r border-b` 토큰 — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "SidebarMenuItem",
+      "layer": "Primitives",
+      "sourceFile": "src/SidebarMenuItem.tsx",
+      "purpose": "사이드바(240px 펼침 상태) 본문의 단일 메뉴 행을 렌더. `MenuItem` 데이터 한 건을 받아\n세 형태 중 하나로 그린다:\n  1. **단일 항목** (`children` 없음) — 아이콘 + 라벨 (caret 없음). `active` 면 라이트블루 배경 강조.\n  2. **확장 항목** (`children` 배열 있음) — 아이콘 + 라벨 + caret(▾, `expanded` 면 180° 회전).\n  3. **자식 목록** (`expanded` && children.length>0) — 들여쓴 하위 행(28px). `active` 자식은 bold.\ncollapsed(40px) 시 Sidebar 가 메뉴 영역 자체를 숨김 — 이 컴포넌트는 240px 펼침 전용.",
+      "whenToUse": [
+        "[[Sidebar]] 가 `menu.map` 으로 항목마다 렌더하는 **기본 용법**. 보통 단독 사용하지 않음.",
+        "사이드바 밖에서 **동일한 메뉴 행 외형**이 필요한 경우 (예: 검색 결과 메뉴 트리, 사이트맵 팝오버).",
+        "메뉴 트리 1단계(부모 + children) 렌더 — 이 컴포넌트 하나가 부모 행 + 자식 목록을 모두 담당."
+      ],
+      "whenNotToUse": [
+        "**collapsed(40px) 제품 레일 아이콘** → [[ProductRailItem]] (40px 정사각, active 강조).",
+        "**레일 하단 유틸 아이콘** → [[BottomRailItem]] (40px×32px).",
+        "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
+        "**헤더/탭 등 비-사이드바 네비** → [[PageHeader]] / [[Tabs]] 등 해당 Chrome 컴포넌트.",
+        "**2단계 이상 중첩 메뉴** — 현재 1단계(부모→자식)만 지원. 깊은 트리는 구조 분리 필요."
+      ],
+      "compositionRules": [
+        "데이터(`MenuItem`)만 주입 — 행 외형(높이 32px/28px · 들여쓰기 · active 강조)은 이 컴포넌트가 책임.",
+        "색·배경은 토큰 (`--color-primary-bg` · `text-primary/secondary` · `hover-bg-surface-100`) — 인라인 hex 금지.",
+        "펼침 토글은 데이터(`expanded`)로 제어 — 행 자체는 표현용(상태 비보유). 토글 콜백은 Sidebar 가 관리.",
+        "아이콘은 표준 경로(`/icons/*`).",
+        "자식 행은 `pl-28px` 들여쓰기 — 부모 아이콘(20px) + gap(8px) 정렬."
+      ],
+      "example": "```tsx\n{menu.map((item) => <SidebarMenuItem key={item.label} item={item} />)}\n```",
+      "dont": [
+        "**collapsed(40px) 제품 레일 아이콘** → [[ProductRailItem]] (40px 정사각, active 강조).",
+        "**레일 하단 유틸 아이콘** → [[BottomRailItem]] (40px×32px).",
+        "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
+        "**헤더/탭 등 비-사이드바 네비** → [[PageHeader]] / [[Tabs]] 등 해당 Chrome 컴포넌트.",
+        "**2단계 이상 중첩 메뉴** — 현재 1단계(부모→자식)만 지원. 깊은 트리는 구조 분리 필요.",
+        "색·배경은 토큰 (`--color-primary-bg` · `text-primary/secondary` · `hover-bg-surface-100`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "SidebarOrgSwitcher",
+      "layer": "Primitives",
+      "sourceFile": "src/SidebarOrgSwitcher.tsx",
+      "purpose": "사이드바 상단(로고 헤더 바로 아래)의 40px 조직 컨텍스트 스위처를 렌더.\n심볼 아이콘(24px, 옵션) + 조직 라벨(13px bold) + 뱃지(옵션, 엔터프라이즈 등) + chevron(16px).\n`collapsed=true` 면 40px 정사각에 심볼 아이콘만 표시. 아이콘 없으면 null.",
+      "whenToUse": [
+        "[[Sidebar]] 가 `org` prop 으로 렌더하는 **기본 용법**. 보통 단독 사용하지 않음.",
+        "사이드바 밖에서 **동일한 조직 스위처 외형**이 필요한 경우 (예: 모바일 드로어, 설정 페이지).",
+        "조직 컨텍스트가 **있는** 화면에서만 노출 — `org={null}` 이면 Sidebar 가 숨김."
+      ],
+      "whenNotToUse": [
+        "**프로젝트 스위처** → [[SidebarProjectSwitcher]] (44px, 그룹+프로젝트 2줄).",
+        "**조직 컨텍스트가 없는 화면** (엔터프라이즈 활성화 전, 계정/관리 영역) — `org={null}` 로 숨김.",
+        "**조직 목록 드롭다운 본체** — 이 컴포넌트는 트리거(행)만 담당.",
+        "**본문 메뉴 항목** → [[SidebarMenuItem]]."
+      ],
+      "compositionRules": [
+        "데이터(`OrgContext`)만 주입 — 행 외형(높이 40px · 보더 · 배경 · 타이포)은 이 컴포넌트가 책임.",
+        "색은 토큰 (`text-secondary` · `bg-card` · `--color-primary-bg` 뱃지) — 인라인 hex 금지.",
+        "`icon` 생략 시 좌측은 **12px 스페이서** (빈 40px 박스 금지).",
+        "`badge` 는 토큰 칩으로 렌더 — `bg-var-color-brand-blue-bg` + `text-color-var-color-brand-blue`.",
+        "`collapsed=true` 면 아이콘만 40px 정사각으로 표시. `icon` 없으면 null 렌더."
+      ],
+      "example": "```tsx\n<SidebarOrgSwitcher org={{ label: \"[조직] Denyx\", icon: \"denyx-symbol.svg\" }} onClick={openOrgPicker} />\n```",
+      "dont": [
+        "**프로젝트 스위처** → [[SidebarProjectSwitcher]] (44px, 그룹+프로젝트 2줄).",
+        "**조직 컨텍스트가 없는 화면** (엔터프라이즈 활성화 전, 계정/관리 영역) — `org={null}` 로 숨김.",
+        "**조직 목록 드롭다운 본체** — 이 컴포넌트는 트리거(행)만 담당.",
+        "**본문 메뉴 항목** → [[SidebarMenuItem]].",
+        "색은 토큰 (`text-secondary` · `bg-card` · `--color-primary-bg` 뱃지) — 인라인 hex 금지.",
+        "`icon` 생략 시 좌측은 **12px 스페이서** (빈 40px 박스 금지)."
+      ]
+    },
+    {
+      "name": "SidebarProjectSwitcher",
+      "layer": "Primitives",
+      "sourceFile": "src/SidebarProjectSwitcher.tsx",
+      "purpose": "사이드바 상단(조직 스위처 아래)의 44px 프로젝트 컨텍스트 스위처를 렌더.\n제품 아이콘(24px) + 그룹 라벨(12px regular) + 프로젝트 라벨(13px bold) + chevron(16px).\n클릭 시 프로젝트 목록/전환 UI 진입 — 현재는 외형만 담당(동작은 호출자 onClick).",
+      "whenToUse": [
+        "[[Sidebar]] 가 `project` prop 으로 렌더하는 **기본 용법**. 보통 단독 사용하지 않음.",
+        "사이드바 밖에서 **동일한 프로젝트 스위처 외형**이 필요한 경우 (예: 모바일 드로어 헤더, 설정 페이지 프로젝트 컨텍스트 표시).",
+        "프로젝트 컨텍스트가 **있는** 화면에서만 노출 — 컨텍스트 없는 화면은 `hideProjectSwitcher` 로 숨김."
+      ],
+      "whenNotToUse": [
+        "**조직(테넌트) 스위처** → [[SidebarOrgSwitcher]] (40px, 뱃지 지원).",
+        "**collapsed(40px) 사이드바에서 숨기고 싶을 때** — `collapsed=true` 전달하면 40px 정사각 제품 아이콘만 표시. `productIcon` 없으면 null 렌더.",
+        "**프로젝트 컨텍스트가 없는 화면** (엔터프라이즈 활성화 전, 계정/관리 영역) — 빈 라벨/기본값 노출 금지 정책. `hideProjectSwitcher=true`.",
+        "**프로젝트 목록 드롭다운 본체** — 이 컴포넌트는 트리거(행)만 담당. 드롭다운 패널은 별도.",
+        "**본문 메뉴 항목** → [[SidebarMenuItem]]."
+      ],
+      "compositionRules": [
+        "데이터(`ProjectContext`)만 주입 — 행 외형(높이 44px · 보더 · 배경 · 타이포)은 이 컴포넌트가 책임.",
+        "색은 토큰 (`text-secondary` · `bg-card` · `border-color-var-color-border-default`) — 인라인 hex 금지.",
+        "`productIcon` 생략 시 좌측은 **12px 스페이서** (빈 40px 박스 금지 — 빈 아이콘 영역 방지 정책).",
+        "그룹 라벨은 `text-base`(12px) regular, 프로젝트 라벨은 `text-md`(13px) bold — 위계 차이로 구분.",
+        "긴 라벨은 `text-ellipsis` + `overflow-hidden` 으로 잘림 처리 (240px 폭 제약)."
+      ],
+      "example": "```tsx\n<SidebarProjectSwitcher project={{ productIcon: \"product-gpu.svg\", groupLabel: \"[그룹] 운영\", projectLabel: \"[프로젝트] K8s-GPU\" }} />\n```",
+      "dont": [
+        "**조직(테넌트) 스위처** → [[SidebarOrgSwitcher]] (40px, 뱃지 지원).",
+        "**collapsed(40px) 사이드바에서 숨기고 싶을 때** — `collapsed=true` 전달하면 40px 정사각 제품 아이콘만 표시. `productIcon` 없으면 null 렌더.",
+        "**프로젝트 컨텍스트가 없는 화면** (엔터프라이즈 활성화 전, 계정/관리 영역) — 빈 라벨/기본값 노출 금지 정책. `hideProjectSwitcher=true`.",
+        "**프로젝트 목록 드롭다운 본체** — 이 컴포넌트는 트리거(행)만 담당. 드롭다운 패널은 별도.",
+        "**본문 메뉴 항목** → [[SidebarMenuItem]].",
+        "색은 토큰 (`text-secondary` · `bg-card` · `border-color-var-color-border-default`) — 인라인 hex 금지.",
+        "`productIcon` 생략 시 좌측은 **12px 스페이서** (빈 40px 박스 금지 — 빈 아이콘 영역 방지 정책)."
+      ]
+    },
+    {
+      "name": "Stage",
+      "layer": "Primitives",
+      "sourceFile": "src/Stage.tsx",
+      "purpose": "어두운 배경 위에 콘텐츠를 가운데 정렬하고, 최대 1280px·16:9 비율의 흰색 무대를\n그려 모든 프로토타입 페이지가 동일한 캔버스에서 보이도록 한다. 우상단에 옵션 `badge` 표시.",
+      "whenToUse": [
+        "시나리오/프로토타입 페이지의 최상위 래퍼 (한 화면 = 한 Stage)",
+        "발표·캡처용 고정 16:9 프레임이 필요할 때"
+      ],
+      "whenNotToUse": [
+        "실제 제품의 풀-블리드(full-bleed) 반응형 레이아웃 → [[DashboardLayout]]",
+        "페이지 내부 chrome (헤더/사이드바) → [[PageHeader]] / [[Sidebar]]",
+        "모달·toast 같은 오버레이 → [[Modal]] / [[Toast]]"
+      ],
+      "compositionRules": [
+        "한 페이지에 하나만, 최상위에 배치. `children` 이 무대 안에 `overflow-hidden` 으로 클립됨.",
+        "무대는 `aspectRatio: \"16 / 9\"`, `max-w-1280px` 고정 — 내부는 이 비율 기준으로 구성.",
+        "`badge` 는 fixed 우상단 라벨(시나리오 이름 등), 미지정 시 생략."
+      ],
+      "example": "```tsx\n<Stage badge=\"DB · RAC\">\n  <DashboardLayout>…</DashboardLayout>\n</Stage>\n```",
+      "dont": [
+        "실제 제품의 풀-블리드(full-bleed) 반응형 레이아웃 → [[DashboardLayout]]",
+        "페이지 내부 chrome (헤더/사이드바) → [[PageHeader]] / [[Sidebar]]",
+        "모달·toast 같은 오버레이 → [[Modal]] / [[Toast]]"
+      ]
+    },
+    {
+      "name": "SubHeaderBar",
+      "layer": "Primitives",
+      "sourceFile": "src/SubHeaderBar.tsx",
+      "purpose": "뒤로가기 · 브레드크럼 · 보조 액션을 담는 **고정 40px** 보조 헤더 바.\n사이드바 조직 스위처(40px)와 동일 높이라 좌/우 컬럼 2행이 정렬됨\n(헤더 48px → 보조 행 40px 의 일관된 chrome 스케일).",
+      "whenToUse": [
+        "페이지 헤더 아래 \"← 뒤로\" / 브레드크럼 / 탭 진입 직전 보조 네비 행",
+        "관리자 콘솔 · 계정/엔터프라이즈 영역의 보조 네비게이션 바"
+      ],
+      "whenNotToUse": [
+        "주 페이지 타이틀·AI 진입 → `PageHeader` / `PageHeaderAiInline` (48px)",
+        "시간/프리셋 등 데이터 필터 옵션 → `OptionbarPage` / `FilterBar`"
+      ],
+      "compositionRules": [
+        "높이 40px 고정(`box-border`) — 페이지에서 inline `<div>` 로 재구현 금지.",
+        "`children` = 좌측 내용(주로 `<Button variant=\"basic\" size=\"md\">` 백 버튼 + 브레드크럼 텍스트)",
+        "`right` = 우측 정렬 보조 액션(선택)"
+      ],
+      "example": "```tsx\n<SubHeaderBar>\n  <Button variant=\"basic\" size=\"md\" onClick={goBack}>← 엔터프라이즈 선택</Button>\n</SubHeaderBar>\n\n<SubHeaderBar right={<Button size=\"md\">새 조직</Button>}>\n  <Button variant=\"basic\" size=\"md\" onClick={goBack}>← 엔터프라이즈 관리</Button>\n  <span className=\"text-base text-tertiary\">/ 조직: <span className=\"text-secondary font-medium\">Denyx</span></span>\n</SubHeaderBar>\n```",
+      "dont": [
+        "주 페이지 타이틀·AI 진입 → `PageHeader` / `PageHeaderAiInline` (48px)",
+        "시간/프리셋 등 데이터 필터 옵션 → `OptionbarPage` / `FilterBar`",
+        "높이 40px 고정(`box-border`) — 페이지에서 inline `<div>` 로 재구현 금지."
+      ]
+    },
+    {
+      "name": "Switch",
+      "layer": "Primitives",
+      "sourceFile": "src/Switch.tsx",
+      "purpose": "즉시 적용되는 ON/OFF 상태 토글 (Checkbox 와 구분 — 폼 제출이 아니라 즉시 반영 의도).\n트랙(좌우) + 슬라이드 노브. 색·치수·radius·shadow 는 전부 tokens.css 의 CSS 변수 참조 —\nTailwind 유틸 클래스 미사용, 시각 스타일은 inline `style`(토큰 기반)로만.",
+      "whenToUse": [
+        "설정 즉시 반영 토글 (알림 on/off, 기능 활성화, 다크 모드 — [[ThemeToggle]]).",
+        "\"지금 켜고 끈다\"는 의미가 분명할 때."
+      ],
+      "whenNotToUse": [
+        "폼 제출 시 함께 보내는 다중 선택 → [[Checkbox]].",
+        "2개 이상 상호배타 옵션 → Tabs / RadioGroup."
+      ],
+      "compositionRules": [
+        "색/치수/radius/shadow = 토큰(`--color-primary`·`--color-surface-200`·`--radius-full`·`--shadow-sm`) — 인라인 hex 금지.",
+        "controlled(`checked`) / uncontrolled(`defaultChecked`) 둘 다 지원 ([[Checkbox]] 패턴 동일).",
+        "라이트 기본 — 다크는 토큰이 자동 전환(`.dark`/`[data-theme=dark]`).",
+        "시각 라벨 없으면 `label`(=aria-label) 또는 `aria-label`/`aria-labelledby` 필수."
+      ],
+      "example": "```tsx\n<Switch checked={on} onChange={setOn} label=\"알림 활성화\" />\n<Switch defaultChecked size=\"sm\" />\n<Switch checked={dark} onChange={...} knobContent={<MoonIcon />} aria-label=\"테마\" />\n```",
+      "dont": [
+        "폼 제출 시 함께 보내는 다중 선택 → [[Checkbox]].",
+        "2개 이상 상호배타 옵션 → Tabs / RadioGroup.",
+        "색/치수/radius/shadow = 토큰(`--color-primary`·`--color-surface-200`·`--radius-full`·`--shadow-sm`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "TabButton",
+      "layer": "Primitives",
+      "sourceFile": "src/TabButton.tsx",
+      "purpose": "[[Tabs]] 의 두 variant(`segmented` · `large`)에 흩어져 있던 동일 구조의 탭 버튼\n마크업을 한 곳으로 모은 것. `TabsItem` 한 건과 선택/비활성 상태를 받아 버튼 1개를 그린다:\n  - 좌측 아이콘 슬롯(있을 때만) + 라벨.\n  - `selected` / `disabled` 에 따른 색·배경 토큰 전환.\n  - `large` variant 는 활성 시 하단 underline overlay(1px overlap)를 덧그린다.",
+      "whenToUse": [
+        "[[Tabs]] 가 `items.map` 으로 각 탭을 렌더할 때(기본 용법). 보통 단독 사용하지 않음."
+      ],
+      "whenNotToUse": [
+        "탭이 아닌 일반 버튼 → `Button`.",
+        "tablist 컨테이너·활성 인디케이터·키보드 이동 로직 → 부모 [[Tabs]] 가 보유."
+      ],
+      "compositionRules": [
+        "표현용(상태 비보유). 선택/비활성/콜백은 모두 부모가 prop 으로 주입.",
+        "색·배경은 토큰만 — 인라인 hex 금지(`denyx-ds.css` 기정의 클래스 사용, 새 클래스 금지).",
+        "`ref` 는 부모의 키보드 포커스 이동을 위해 버튼 요소로 forward.",
+        "JSX/className 은 원본 [[Tabs]] map 본문과 동일 — 순수 추출."
+      ],
+      "example": "```tsx\n{items.map((it, i) => (\n  <TabButton\n    key={it.value}\n    ref={(el) => { tabRefs.current[i] = el; }}\n    item={it}\n    variant=\"segmented\"\n    selected={it.value === value}\n    spec={spec}\n    id={`${groupId}-tab-${it.value}`}\n    fullWidth={fullWidth}\n    onClick={() => !it.disabled && onChange(it.value)}\n    onKeyDown={(e) => handleKey(e, i)}\n  />\n))}\n```",
+      "dont": [
+        "탭이 아닌 일반 버튼 → `Button`.",
+        "tablist 컨테이너·활성 인디케이터·키보드 이동 로직 → 부모 [[Tabs]] 가 보유.",
+        "색·배경은 토큰만 — 인라인 hex 금지(`denyx-ds.css` 기정의 클래스 사용, 새 클래스 금지)."
+      ]
+    },
+    {
+      "name": "Tabs",
+      "layer": "Primitives",
+      "sourceFile": "src/Tabs.tsx",
+      "purpose": "한 영역에서 여러 뷰를 전환하는 nav. 페이지 내 큰 탭(룰 편집기 섹션 분기 등)과\n작은 segmented control(시간 단위 1H/6H/24H 등) 양쪽을 variant 하나로 처리.",
+      "whenToUse": [
+        "페이지 안 본문 섹션 전환 (large variant — 룰 편집기·인시던트 상세)",
+        "작은 토글 그룹 (segmented variant — 시간 단위·정렬 기준)"
+      ],
+      "whenNotToUse": [
+        "글로벌 라우팅 → `Sidebar` + react-router",
+        "양자택일 boolean → `Switch` (추후)",
+        "단일 선택 옵션 > 5개 → `Select`"
+      ],
+      "compositionRules": [
+        "Tabs 는 *trigger* 만 제공. 패널 내용은 호출자가 `value` 로 분기 (shadcn/Radix 패턴)",
+        "ARIA tablist 패턴 — role=\"tablist\" / role=\"tab\" / aria-selected",
+        "키보드: ArrowLeft/ArrowRight 활성 이동 (disabled 건너뜀), Home/End 양 끝",
+        "색 토큰만 — brand-blue / text-primary / text-tertiary / surface-100"
+      ],
+      "example": "```tsx\n<Tabs\n  variant=\"large\"\n  items={[{ value: \"rule\", label: \"룰\" }, { value: \"scope\", label: \"Scope\" }, { value: \"action\", label: \"액션\" }]}\n  value={tab}\n  onChange={setTab}\n/>\n\n<Tabs\n  variant=\"segmented\"\n  size=\"sm\"\n  items={[{ value: \"1h\", label: \"1H\" }, { value: \"6h\", label: \"6H\" }, { value: \"24h\", label: \"24H\" }]}\n  value={range}\n  onChange={setRange}\n/>\n```",
+      "dont": [
+        "글로벌 라우팅 → `Sidebar` + react-router",
+        "양자택일 boolean → `Switch` (추후)",
+        "단일 선택 옵션 > 5개 → `Select`"
+      ]
+    },
+    {
+      "name": "TextField",
+      "layer": "Primitives",
+      "sourceFile": "src/TextField.tsx",
+      "purpose": "폼 입력 minimal building block. 룰 편집기·카탈로그 검색·임계값 input·이름 입력 등 전반.\n인라인 `<input>` 새로 짜지 말 것 — 색·간격·상태 일관성은 이 컴포넌트가 보장.",
+      "whenToUse": [
+        "텍스트 입력 (룰 이름, 검색어, scope 표현)",
+        "숫자 입력 (임계값, 지속 시간)",
+        "검색 (좌측 검색 아이콘 + 입력, FilterBar 내부)"
+      ],
+      "whenNotToUse": [
+        "AI 위젯 사용자 입력 (대화) → `AiPromptInput` (multiline, send 버튼 통합)",
+        "단위 선택이 끝 → `Select`",
+        "여러 줄 본문 → `Textarea` (추후 추가, multiline=true 옵션으로 검토)"
+      ],
+      "compositionRules": [
+        "색·테두리는 토큰 (border-default · brand-blue focus · status-error invalid)",
+        "사이즈 sm(24px) / md(28px) / lg(32px) — 다른 form primitives 와 정렬",
+        "좌/우 슬롯(아이콘, 단위) — leadingIcon / trailingNode",
+        "helper / error 메시지 — helperText + invalid",
+        "controlled 우선 (value + onChange). uncontrolled 도 지원 (defaultValue)"
+      ],
+      "example": "```tsx\n<TextField label=\"룰 이름\" placeholder=\"disk-usage-95-prod-var-log\" />\n<TextField\n  label=\"임계값\"\n  type=\"number\"\n  value={threshold}\n  onChange={setThreshold}\n  trailingNode={<span className=\"text-sm text-tertiary\">%</span>}\n/>\n<TextField\n  placeholder=\"제목, 메시지, 프로젝트, 에이전트\"\n  leadingIcon={<SearchIcon />}\n  size=\"sm\"\n/>\n<TextField label=\"이메일\" invalid helperText=\"유효한 이메일이 아닙니다\" />\n```",
+      "dont": [
+        "AI 위젯 사용자 입력 (대화) → `AiPromptInput` (multiline, send 버튼 통합)",
+        "단위 선택이 끝 → `Select`",
+        "여러 줄 본문 → `Textarea` (추후 추가, multiline=true 옵션으로 검토)"
+      ]
+    },
+    {
+      "name": "ThemeToggle",
+      "layer": "Primitives",
+      "sourceFile": "src/ThemeToggle.tsx",
+      "purpose": "해(light)/달(dark) 아이콘을 노브에 단 Switch. 토글 시 대상 엘리먼트에 `data-theme=\"dark|light\"`\n를 세팅한다. **실제 색 전환은 다크 토큰 세트(`[data-theme=dark]`/`.dark`)가 담당** — 이 컴포넌트는\n속성 토글 + (옵션) localStorage 저장/복원만 책임. SSR 안전(마운트 후 적용).",
+      "whenToUse": [
+        "헤더/설정의 라이트·다크 테마 스위치."
+      ],
+      "whenNotToUse": [
+        "일반 ON/OFF 토글 → [[Switch]] 직접 사용.",
+        "3개 이상 테마(시스템 포함) → 별도 SegmentedControl."
+      ],
+      "compositionRules": [
+        "색/치수는 [[Switch]] + tokens.css 토큰. 아이콘 색은 토큰(`--color-status-warning`/`--color-primary`).",
+        "`applyTo` 로 `data-theme` 대상 지정(기본 `document.documentElement`). `null` 이면 속성 미세팅(소비자가 직접).",
+        "controlled(`value`) / uncontrolled(`defaultValue`) 지원."
+      ],
+      "example": "```tsx\n<ThemeToggle persistKey=\"wds-theme\" />                 // documentElement 에 data-theme + localStorage\n<ThemeToggle value={mode} onChange={setMode} size=\"sm\" />\n<ThemeToggle applyTo={null} onChange={applyMyself} />   // 속성 미세팅, 콜백만\n```",
+      "dont": [
+        "일반 ON/OFF 토글 → [[Switch]] 직접 사용.",
+        "3개 이상 테마(시스템 포함) → 별도 SegmentedControl."
+      ]
+    },
+    {
+      "name": "TimelineStepItem",
+      "layer": "Primitives",
+      "sourceFile": "src/widget/TimelineStepItem.tsx",
+      "purpose": "단계 한 건을 한 줄 카드로 렌더 — 상태 마커(완료 ✓ / 진행 spinner) · 라벨(truncate) · 우측 화살표.\n`AiStepsTimeline` 의 `steps.map(...)` 안에 인라인되어 있던 행 마크업을 그대로 추출한 것.",
+      "whenToUse": [
+        "[[AiStepsTimeline]] 가 `steps.map` 으로 단계마다 렌더 (기본 용법). 보통 단독 사용하지 않음."
+      ],
+      "whenNotToUse": [
+        "헤더(`N steps`)·접기/펼치기·등장 애니메이션 → 부모 [[AiStepsTimeline]] 가 책임.",
+        "단계가 아닌 다른 목록 항목 → 해당 위젯의 행 컴포넌트 사용."
+      ],
+      "compositionRules": [
+        "데이터(`label` · `running`)만 주입 — 행 외형/마커/화살표는 이 컴포넌트가 책임 (표현용).",
+        "마커 색은 토큰만 사용 (완료 `--color-status-success` / 진행 `--color-primary`) — 인라인 hex 금지.",
+        "진행 중(`running: true`)이면 회전 spinner, 아니면 status-success 체크."
+      ],
+      "example": "```tsx\n{steps.map((s, i) => (\n  <TimelineStepItem key={i} label={s.label} running={s.running} />\n))}\n```",
+      "dont": [
+        "헤더(`N steps`)·접기/펼치기·등장 애니메이션 → 부모 [[AiStepsTimeline]] 가 책임.",
+        "단계가 아닌 다른 목록 항목 → 해당 위젯의 행 컴포넌트 사용.",
+        "마커 색은 토큰만 사용 (완료 `--color-status-success` / 진행 `--color-primary`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "TimeRangeSelector",
+      "layer": "Primitives",
+      "sourceFile": "src/TimeRangeSelector.tsx",
+      "purpose": "LIVE 토글 · 이전/다음 이동 · 듀얼 datetime(`start`~`end`) 입력 · duration 태그 ·\n달력 버튼을 한 박스에 묶은 시간 범위 셀렉터. datetime 은 `YYYY-MM-DD HH:MM` 으로\n정규화 표시(month/day/hour/minute 2자리, year 4자리 자동 padding, numeric 폰트로\n자리수 정렬). 이동/달력/LIVE 동작은 `onLive`/`onPrev`/`onNext`/`onPickDate` 콜백으로 외부화.",
+      "whenToUse": [
+        "시작~종료 절대 시간 범위를 직접 입력/이동해야 하는 옵션바 \"시간\" 항목.",
+        "LIVE 와 과거 범위 조회를 한 컨트롤에서 전환해야 할 때."
+      ],
+      "whenNotToUse": [
+        "LIVE 현재 시각 + polling 만 compact 하게 보여주면 충분 → [[LiveTimerCompact]].",
+        "옵션바 전체 행 구성 → [[OptionbarPage]] (이 컴포넌트를 항목으로 품을 수 있음).",
+        "일반 텍스트/숫자 입력 → [[TextField]]."
+      ],
+      "compositionRules": [
+        "단일 border-divider + rounded 4 박스, LIVE 버튼과 datetime 영역을 1px divider 로 분할.",
+        "`start`/`end` 는 padding 무관 date parts 입력, 표시 시 `pad2`/`pad4` 자동 적용.",
+        "duration 태그는 #00B543 알약. 아이콘은 라이브 SVG·토큰 색 그대로."
+      ],
+      "example": "```tsx\n<TimeRangeSelector\n  start={{ year: \"2026\", month: \"05\", day: \"15\", hour: \"13\", minute: \"27\" }}\n  end={{ year: \"2026\", month: \"05\", day: \"15\", hour: \"13\", minute: \"37\" }}\n  durationLabel=\"10분\"\n  onLive={goLive}\n  onPickDate={openCalendar}\n/>\n```",
+      "dont": [
+        "LIVE 현재 시각 + polling 만 compact 하게 보여주면 충분 → [[LiveTimerCompact]].",
+        "옵션바 전체 행 구성 → [[OptionbarPage]] (이 컴포넌트를 항목으로 품을 수 있음).",
+        "일반 텍스트/숫자 입력 → [[TextField]]."
+      ]
+    },
+    {
+      "name": "Toast",
+      "layer": "Primitives",
+      "sourceFile": "src/Toast.tsx",
+      "purpose": "화면 상단 중앙에 띄우는 짧은 결과 알림. `createPortal` 로 `document.body` 에\n렌더되어 어떤 레이아웃 위에도 떠 있고, `durationMs` 후 자동으로 닫힘.\nvariant(success/info/warning/error) 별 색 도트 + 한 줄 메시지 + 선택 action.",
+      "whenToUse": [
+        "액션 완료의 가벼운 확인 (알림 규칙 등록 완료, 저장됨 등)",
+        "위젯 안 결과가 표시된 뒤 위젯 밖에서 한 번 더 시각 확인이 필요할 때"
+      ],
+      "whenNotToUse": [
+        "사용자의 확인/선택을 강제로 막아야 하는 흐름 → [[Modal]]",
+        "길고 상세한 결과·설명 → 위젯 본체에 표시 (toast 는 한 줄만)",
+        "마우스 hover 시 보조 설명 → [[Tooltip]]"
+      ],
+      "compositionRules": [
+        "**정책 feedback-decision-priorities**: 위젯 메시지와 정보 중복을 피해 toast 는",
+        "controlled: `open` 으로 표시 제어, `onClose` 로 닫힘 반영(자동/수동/action 공통).",
+        "`durationMs=0` 이면 자동 dismiss 없이 수동 닫기(× / action)만.",
+        "action 클릭 시 `onAction` 후 자동으로 `onClose` 호출.",
+        "`role=\"status\"` + `aria-live=\"polite\"` 로 스크린리더 알림."
+      ],
+      "example": "```tsx\n<Toast\n  open={saved}\n  variant=\"success\"\n  message=\"알림 규칙이 등록되었습니다\"\n  actionLabel=\"보기\"\n  onAction={goToRule}\n  onClose={() => setSaved(false)}\n/>\n```",
+      "dont": [
+        "사용자의 확인/선택을 강제로 막아야 하는 흐름 → [[Modal]]",
+        "길고 상세한 결과·설명 → 위젯 본체에 표시 (toast 는 한 줄만)",
+        "마우스 hover 시 보조 설명 → [[Tooltip]]"
+      ]
+    },
+    {
+      "name": "Tooltip",
+      "layer": "Primitives",
+      "sourceFile": "src/Tooltip.tsx",
+      "purpose": "hover/focus 시 트리거 옆에 짧은 보조 정보 표시. 폼 helper, DataTable 행 hover 상세,\n헤더 아이콘 설명 등 페이지 전반의 microcopy 채널.",
+      "whenToUse": [
+        "아이콘 only 버튼의 라벨 (ARIA + 시각 양쪽)",
+        "짧은 helper text (1-2 문장)",
+        "hover 시 추가 메타 (생성 시각, 권한, 단위 설명 등)"
+      ],
+      "whenNotToUse": [
+        "클릭 액션을 담아야 함 → `Popover` (별도 컴포넌트)",
+        "긴 본문 (3 문장+) → `AiInsightSection` 또는 inline 본문",
+        "모달 같은 무거운 컨테이너 → `Modal`"
+      ],
+      "compositionRules": [
+        "토큰만 — bg는 #1E1E1E (text-strong) 톤, fg는 #FFF (시인성)",
+        "트리거는 children 한 개. 키보드(`Tab` focus + `Escape`) 지원",
+        "4 방향(top/right/bottom/left) — top default",
+        "delay (hover 200ms / focus 즉시) 으로 spam 방지"
+      ],
+      "example": "```tsx\n<Tooltip content=\"평일 09–19시 알림만 ON\">\n  <button>?</button>\n</Tooltip>\n\n<Tooltip content=\"권한이 없습니다\" placement=\"bottom\">\n  <Button disabled>삭제</Button>\n</Tooltip>\n```",
+      "dont": [
+        "클릭 액션을 담아야 함 → `Popover` (별도 컴포넌트)",
+        "긴 본문 (3 문장+) → `AiInsightSection` 또는 inline 본문",
+        "모달 같은 무거운 컨테이너 → `Modal`"
+      ]
+    },
+    {
+      "name": "WeekHourMatrix",
+      "layer": "Primitives",
+      "sourceFile": "src/WeekHourMatrix.tsx",
+      "purpose": "7행(요일) × 24열(시간) boolean 격자를 토글 버튼으로 표현. 각 셀 ON/OFF 로\n해당 요일·시간대에 알림을 수신할지 설정. read-only / 편집 두 모드 지원.",
+      "whenToUse": [
+        "경고 알림 > 이벤트 수신 설정 > 요일·시간별 알림 설정",
+        "보고서 전송 시간대 등 \"요일×시간\" 빈도/스케줄 설정 화면"
+      ],
+      "whenNotToUse": [
+        "시계열 추이 그래프 → [[MiniLineChart]]",
+        "단일 시각 한 개 선택(시작 시각 등) → [[Select]] / [[TimeRangeSelector]]",
+        "자유 텍스트·숫자 입력 → [[TextField]]"
+      ],
+      "compositionRules": [
+        "`weekdays` 는 7×24 그리드 — `weekdays[d][h]` 가 행·열 인덱스. 행/열 라벨 정합을",
+        "**시간 헤더는 6시간 간격(0/6/12/18)만** 표기 — 24개 라벨은 셀 폭보다 넓어 겹침.",
+        "`onToggle` 미지정이면 read-only (버튼 disabled). 지정 시 셀 클릭으로 토글.",
+        "색은 ON `--color-primary`, OFF `--color-surface-100` 토큰 기반(테두리는 hex stub).",
+        "각 셀은 `aria-pressed` + 한국어 `aria-label`(요일·시·수신여부)로 접근성 제공."
+      ],
+      "example": "```tsx\n<WeekHourMatrix\n  caption=\"요일·시간별 알림 설정\"\n  weekdays={grid}\n  onToggle={(d, h, next) => setCell(d, h, next)}\n/>\n```",
+      "dont": [
+        "시계열 추이 그래프 → [[MiniLineChart]]",
+        "단일 시각 한 개 선택(시작 시각 등) → [[Select]] / [[TimeRangeSelector]]",
+        "자유 텍스트·숫자 입력 → [[TextField]]"
+      ]
+    }
+  ]
+}

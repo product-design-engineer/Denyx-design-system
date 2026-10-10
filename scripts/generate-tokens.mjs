@@ -10,7 +10,7 @@
  *   node scripts/generate-tokens.mjs --check     # generate + git diff --exit-code (CI 용)
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -60,16 +60,22 @@ function parseCssVars(css) {
   let light = new Map();
   let dark = new Map();
 
-  // Find :root block
-  const rootIdx = css.search(/:root\s*\{/);
-  if (rootIdx !== -1) {
-    light = parseProps(extractBlock(css, rootIdx));
+  // Find ALL :root blocks (multiple after @import resolution)
+  const rootRe = /:root\s*\{/g;
+  let rootMatch;
+  while ((rootMatch = rootRe.exec(css)) !== null) {
+    for (const [k, v] of parseProps(extractBlock(css, rootMatch.index))) {
+      light.set(k, v);
+    }
   }
 
-  // Find .dark block
-  const darkIdx = css.search(/\.dark[\s,]/);
-  if (darkIdx !== -1) {
-    dark = parseProps(extractBlock(css, darkIdx));
+  // Find ALL .dark blocks
+  const darkRe = /\.dark[\s,][^{]*\{/g;
+  let darkMatch;
+  while ((darkMatch = darkRe.exec(css)) !== null) {
+    for (const [k, v] of parseProps(extractBlock(css, darkMatch.index))) {
+      dark.set(k, v);
+    }
   }
 
   return { light, dark };
@@ -486,7 +492,17 @@ export const WIDGET_FONT_NUM = tokens.font.family.numeric.value;
 
 /* ── Main ─────────────────────────────────────────────────────────────── */
 
-const css = readFileSync(TOKENS_CSS, "utf-8");
+/** @import 를 해석하여 단일 CSS 문자열로 합본 */
+function resolveImports(filePath) {
+  const src = readFileSync(filePath, "utf-8");
+  return src.replace(/@import\s+['"]([^'"]+)['"]\s*;/g, (_, rel) => {
+    const resolved = resolve(dirname(filePath), rel);
+    if (existsSync(resolved)) return readFileSync(resolved, "utf-8");
+    return "";
+  });
+}
+
+const css = resolveImports(TOKENS_CSS);
 const { light } = parseCssVars(css);
 
 const output = generateTs(light);
