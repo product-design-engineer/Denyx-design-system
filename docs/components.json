@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-10T10:38:56.453Z",
+  "generated": "2026-10-10T10:46:28.676Z",
   "description": "자동 생성 — 직접 편집 금지. `node scripts/build-components-json.mjs` 로 재생성.",
-  "count": 71,
+  "count": 77,
   "components": [
     {
       "name": "ActionMenuItem",
@@ -415,6 +415,32 @@
       ]
     },
     {
+      "name": "Breadcrumb",
+      "layer": "Primitives",
+      "sourceFile": "src/Breadcrumb.tsx",
+      "purpose": "경로 탐색 네비게이션. 현재 위치의 계층 구조를 보여주고 상위로 이동 가능.\n마지막 항목은 현재 페이지(링크 아님).",
+      "whenToUse": [
+        "다단계 네비게이션 (목록 → 상세).",
+        "서브페이지 위치 표시."
+      ],
+      "whenNotToUse": [
+        "홈 페이지 (계층 없음).",
+        "워크플로 단계 → 별도 Stepper 사용."
+      ],
+      "compositionRules": [
+        "`items` 배열 빈 경우 렌더 안 함.",
+        "마지막 항목은 자동으로 현재 페이지 처리 (링크 없음, bold).",
+        "`renderLink` 로 SPA 라우터 대응 (React Router Link 등).",
+        "색은 토큰만 — 인라인 hex 금지."
+      ],
+      "example": "```tsx\n<Breadcrumb items={[\n  { label: \"대시보드\", href: \"/\" },\n  { label: \"GPU 모니터링\", href: \"/gpu\" },\n  { label: \"인스턴스 상세\" },\n]} />\n```",
+      "dont": [
+        "홈 페이지 (계층 없음).",
+        "워크플로 단계 → 별도 Stepper 사용.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ]
+    },
+    {
       "name": "Button",
       "layer": "Primitives",
       "sourceFile": "src/Button.tsx",
@@ -442,6 +468,32 @@
         "icon-only 압축 버튼 (size 16-20px) → 인라인 OK.",
         "모든 색은 토큰 (`var(--color-primary)` 등) — 인라인 hex 금지.",
         "사이즈는 spec 4 단계만 — custom px 금지."
+      ]
+    },
+    {
+      "name": "CardHead",
+      "layer": "Primitives",
+      "sourceFile": "src/CardHead.tsx",
+      "purpose": "카드/위젯 상단 헤더. 제목(좌) + 탭(중앙, 선택) + 메타(우) 한 줄 구성.\n대시보드 위젯·패널의 공통 헤더 패턴.",
+      "whenToUse": [
+        "위젯/패널 상단에 제목 + 탭 전환 + 메타 정보가 필요할 때.",
+        "카드 안에서 뷰를 전환할 때 (차트 종류, 기간 등)."
+      ],
+      "whenNotToUse": [
+        "페이지 헤더 → [[PageHeader]] 사용.",
+        "독립 탭 네비게이션 → [[Tabs]] 사용."
+      ],
+      "compositionRules": [
+        "제목 + 탭 + 메타 모두 한 줄에 맞아야 함 — 줄바꿈 금지.",
+        "탭이 크면(underline 등) 제목 아래 별도 행으로 분리.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ],
+      "example": "```tsx\n<CardHead\n  title=\"GPU 사용량\"\n  tabs={{ items: [{ value: \"chart\", label: \"차트\" }, { value: \"table\", label: \"테이블\" }], value: view, onChange: setView }}\n  meta={<TimeChip value=\"최근 1시간\" />}\n/>\n```",
+      "dont": [
+        "페이지 헤더 → [[PageHeader]] 사용.",
+        "독립 탭 네비게이션 → [[Tabs]] 사용.",
+        "제목 + 탭 + 메타 모두 한 줄에 맞아야 함 — 줄바꿈 금지.",
+        "색은 토큰만 — 인라인 hex 금지."
       ]
     },
     {
@@ -696,6 +748,35 @@
       ]
     },
     {
+      "name": "Disclosure",
+      "layer": "Primitives",
+      "sourceFile": "src/Disclosure.tsx",
+      "purpose": "접기/펼치기 섹션. 헤더 한 줄은 항상 보이고, 내용은 펼쳤을 때만 표시.\n네이티브 `aria-expanded` + 키보드(Enter/Space) 자동 지원.",
+      "whenToUse": [
+        "고급 설정·필터 옵션 접기.",
+        "카드 안 상세 정보 토글.",
+        "FAQ 아코디언."
+      ],
+      "whenNotToUse": [
+        "상호 배타적 섹션 → [[Tabs]] 사용.",
+        "오버레이 → [[Modal]] 사용.",
+        "1-2줄 짧은 설명 → [[Tooltip]] 사용."
+      ],
+      "compositionRules": [
+        "헤더에 \"보기/숨기기\" 텍스트 금지 — 화살표 + aria-expanded 가 처리.",
+        "색은 토큰만 — 인라인 hex 금지.",
+        "controlled(`open`) / uncontrolled(`defaultOpen`) 모두 지원."
+      ],
+      "example": "```tsx\n<Disclosure summary=\"고급 설정\">\n  <p>타임아웃: 30초</p>\n</Disclosure>\n```",
+      "dont": [
+        "상호 배타적 섹션 → [[Tabs]] 사용.",
+        "오버레이 → [[Modal]] 사용.",
+        "1-2줄 짧은 설명 → [[Tooltip]] 사용.",
+        "헤더에 \"보기/숨기기\" 텍스트 금지 — 화살표 + aria-expanded 가 처리.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ]
+    },
+    {
       "name": "DsReadOnlyNotice",
       "layer": "Shell",
       "sourceFile": "src/DsReadOnlyNotice.tsx",
@@ -912,6 +993,35 @@
         "**AI 위젯 토글** → [[AiAssistantButton]].",
         "**AI 송신** → [[AiSendButton]].",
         "**48px 헤더 밖** 에서의 pill 버튼 — 높이/패딩이 헤더 전용 spec."
+      ]
+    },
+    {
+      "name": "ListRow",
+      "layer": "Primitives",
+      "sourceFile": "src/ListRow.tsx",
+      "purpose": "리스트의 한 행. 제목 + 뱃지 + 설명 + 우측 메타 구성.\n전체 행 클릭으로 상세 진입. 테이블과 달리 컬럼 정렬 없음.",
+      "whenToUse": [
+        "가변 길이 목록 (리포트·예약·알림 목록).",
+        "클릭 → 상세 패턴."
+      ],
+      "whenNotToUse": [
+        "컬럼 비교 → [[DataTable]] 사용.",
+        "사이드바 네비게이션 → [[SidebarMenuItem]] 사용.",
+        "액션 메뉴 → [[ActionMenuItem]] 사용."
+      ],
+      "compositionRules": [
+        "`title`은 이름만 (상태 표시 금지 — `badge` 사용).",
+        "`description` 1줄 truncate.",
+        "`selected` 시 primary-bg 배경 + primary 보더.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ],
+      "example": "```tsx\n<ListRow\n  title=\"GPU 사용량 리포트\"\n  badge={<Chip variant=\"soft\" tone=\"primary\" size=\"sm\">신규</Chip>}\n  description=\"2026-10-10 생성 · 인스턴스 12대\"\n  meta=\"3분 전\"\n  onClick={() => navigate(`/reports/${id}`)}\n/>\n```",
+      "dont": [
+        "컬럼 비교 → [[DataTable]] 사용.",
+        "사이드바 네비게이션 → [[SidebarMenuItem]] 사용.",
+        "액션 메뉴 → [[ActionMenuItem]] 사용.",
+        "`title`은 이름만 (상태 표시 금지 — `badge` 사용).",
+        "색은 토큰만 — 인라인 hex 금지."
       ]
     },
     {
@@ -1636,6 +1746,34 @@
       ]
     },
     {
+      "name": "StatCard",
+      "layer": "Primitives",
+      "sourceFile": "src/StatCard.tsx",
+      "purpose": "대시보드 KPI 요약 카드. 큰 숫자 + 라벨 + 트렌드 아이콘으로 핵심 지표를 한눈에 표시.\n3~6개를 가로로 나열하여 대시보드 상단 요약 바 구성.",
+      "whenToUse": [
+        "대시보드 상단 KPI 요약 (총 GPU, 활성, 유휴 등).",
+        "3~6개 카드를 가로 배치."
+      ],
+      "whenNotToUse": [
+        "시계열 트렌드 → [[MiniLineChart]] 사용.",
+        "카테고리 분포 → 차트 사용.",
+        "상세 데이터 → [[DataTable]] 사용."
+      ],
+      "compositionRules": [
+        "tone 으로 좌측 인디케이터 색 결정.",
+        "value 는 numeric 폰트 + bold. unit 은 tertiary.",
+        "trend 는 ▲(success) / ▼(error) / ─(tertiary).",
+        "색은 토큰만 — 인라인 hex 금지."
+      ],
+      "example": "```tsx\n<StatCard label=\"활성 GPU\" value=\"847\" unit=\"대\" tone=\"success\" trend=\"up\" />\n<StatCard label=\"유휴 GPU\" value=\"12\" unit=\"대\" tone=\"warning\" trend=\"down\" />\n```",
+      "dont": [
+        "시계열 트렌드 → [[MiniLineChart]] 사용.",
+        "카테고리 분포 → 차트 사용.",
+        "상세 데이터 → [[DataTable]] 사용.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ]
+    },
+    {
       "name": "SubHeaderBar",
       "layer": "Primitives",
       "sourceFile": "src/SubHeaderBar.tsx",
@@ -1788,6 +1926,31 @@
       "dont": [
         "일반 ON/OFF 토글 → [[Switch]] 직접 사용.",
         "3개 이상 테마(시스템 포함) → 별도 SegmentedControl."
+      ]
+    },
+    {
+      "name": "TimeChip",
+      "layer": "Primitives",
+      "sourceFile": "src/TimeChip.tsx",
+      "purpose": "시간 값 표시 칩. 라벨 + 값 + 노트를 일관된 시각으로 보여줌.\n수치는 numeric 폰트, 텍스트는 korean 폰트 자동 적용.",
+      "whenToUse": [
+        "독립 시간 값 표시 (분석 기준 시각, 차트 범위, 이벤트 시각).",
+        "stale 타임스탬프 경고 (tone=\"warning\")."
+      ],
+      "whenNotToUse": [
+        "인라인 텍스트 (\"03:20에 시작\") → 일반 텍스트.",
+        "시간 입력/선택 → [[TimeRangeSelector]] 사용."
+      ],
+      "compositionRules": [
+        "사이즈 고정 20px (Chip md 정렬).",
+        "value 는 numeric 폰트 + medium weight.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ],
+      "example": "```tsx\n<TimeChip label=\"기준\" value=\"2026-10-10 14:30\" />\n<TimeChip value=\"5분 전\" tone=\"warning\" note=\"stale\" />\n```",
+      "dont": [
+        "인라인 텍스트 (\"03:20에 시작\") → 일반 텍스트.",
+        "시간 입력/선택 → [[TimeRangeSelector]] 사용.",
+        "색은 토큰만 — 인라인 hex 금지."
       ]
     },
     {
