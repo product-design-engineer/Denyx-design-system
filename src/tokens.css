@@ -13,12 +13,15 @@
    이 블록은 소비자가 tokens.css 를 직접 import 할 때의 fallback.
    ────────────────────────────────────────────────────── */
 :root {
-  /* Primary — 주요 강조색 (Semantic). 색상값·도메인명을 이름에 두지 않는 일반 작명.
-     2026-07-06 리네이밍: brand-blue 계열 → primary 계열. */
+  /* @group-role 주요 강조색 — CTA·선택 상태·포커스 링 | @use 버튼 CTA·링크·활성 탭·포커스 보더 | @avoid 본문 텍스트(대비 미달) */
   --color-primary: #296CF2;
+  /* @role hover/pressed 강조색 */
   --color-primary-strong: #1B5CD9;
+  /* @role 보조 강조 (아이콘·배지 보조색) */
   --color-primary-soft: #3DA9FF;
+  /* @role 선택/활성 배경 표면 */
   --color-primary-bg: #D6E1FF;
+  /* @role 선택/활성 배경 표면 (더 연한 변형) */
   --color-primary-bg-subtle: #C2D5FC;
 
   /* @deprecated → --color-primary 계열 (2026-07-06 리네이밍, 2주 deprecation 후 제거) */
@@ -28,34 +31,38 @@
   --color-brand-blue-bg: var(--color-primary-bg);
   --color-brand-blue-bg-2: var(--color-primary-bg-subtle);
 
-  /* Status */
+  /* @group-role 상태 표시 원색 — 배지·도트·보더 | @avoid 배경(대비 미달, soft 변형 사용) */
   --color-status-success: #00B442;
   --color-status-warning: #FFA012;
   --color-status-error: #f34646;
 
-  /* Surface */
+  /* @group-role 중립 표면 배경 — 섹션 구분·호버·줄무늬 행 */
   --color-surface-50: #F5F5F5;
   --color-surface-100: #F1F2F4;
   --color-surface-200: #EAEAEA;
 
-  /* Base surface (semantic) — page background + card.
-     라이트 기본값은 흰색(기존 동작 불변). 다크 값은 파일 하단 `.dark` 블록에서 오버라이드. */
+  /* @role 앱 셸 페이지 바닥 배경 | @use DashboardLayout 최외곽 | @avoid 카드/패널(--color-card 사용) */
   --color-bg: #FFFFFF;
+  /* @role 부유 표면 — 카드·헤더·사이드바·입력·드롭다운 | @avoid 페이지 바닥(--color-bg 사용) */
   --color-card: #FFFFFF;
 
-  /* Text */
+  /* @group-role 레거시 텍스트 계층 (text-primary/secondary/tertiary/disabled 우선 사용) */
   --color-text-strong: #1E1E1E;
   --color-text-body: #2D2D2D;
   --color-text-muted: #4C4C4C;
   --color-text-subtle: #757575;
 
-  /* Borders */
+  /* @group-role 보더 — 컴포넌트 구분선·입력 테두리 */
+  /* @role 기본 보더 | @use 카드·입력·테이블 보더 */
   --color-border-default: #EAEAEA;
+  /* @role 약한 보더 | @use 내부 구분선·서브섹션 경계 */
   --color-border-soft: #F0F0F0;
+  /* @role 강조 보더 | @use hover 보더·선택 상태 보더 */
   --color-border-strong: #E6E6E6;
+  /* @role 분리선 | @use 영역 간 강한 분리 (사이드바/헤더 경계) */
   --color-border-divider: #ADADAD;
 
-  /* Accent — AI 그라데이션 stops (Semantic). 2026-07-06 리네이밍: denyx-* → accent 계열. */
+  /* @group-role AI 브랜드 그라데이션 정지점 | @use AI 심볼·그라데이션 보더·위젯 강조 | @avoid 일반 UI 색상(--color-primary 사용) */
   --color-accent-start: #004BE0;
   --color-accent: #8B52FF;
   --color-accent-deep: #4F5BD5;
@@ -65,10 +72,13 @@
   --color-denyx-purple: var(--color-accent);
   --color-denyx-purple-deep: var(--color-accent-deep);
 
-  /* Brand gradient · full radius · sm shadow · white (Switch/ThemeToggle 등 참조) */
+  /* @role AI 브랜드 그라데이션 (버튼·보더) */
   --gradient-brand: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  /* @role 완전 원형 라운딩 | @use 칩·뱃지·아바타 */
   --radius-full: 9999px;
+  /* @role 미세 그림자 — 컨트롤 (스위치 노브·버튼) */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+  /* @role 고정 흰색 — 컬러 배경 위 전경 전용 | @avoid 표면 배경(--color-card 사용) */
   --color-white: #fff;
 
   /* ──────────────────────────────────────────────────────────────────────
@@ -80,8 +90,7 @@
    *  신규 컴포넌트의 인라인 스타일/신규 유틸부터 이 토큰을 참조.
    * ────────────────────────────────────────────────────────────────────── */
 
-  /* Spacing — 실측: 6px×57 · 8px×54 · 4px×49 · 16px×23 · 2px×20 · 12px×16.
-     10px(×11)·14px(×5)은 스케일 외 실측값 — 신규 사용 시 인접 스케일 우선. */
+  /* @group-role 간격 스케일 — padding·margin·gap | @use 신규 컴포넌트 인라인 스타일 */
   --spacing-2xs: 2px;
   --spacing-xs: 4px;
   --spacing-sm: 6px;
@@ -92,9 +101,7 @@
   --spacing-3xl: 24px;
   --spacing-4xl: 32px;
 
-  /* Radius — 실측: 4px×22 · 8px×15 · 2px×8 · 6px×13 · 24px×3 · full×23.
-     md/lg/xl 은 denyx-ds.css 기존 rem 값(0.375/0.5/0.75rem = 6/8/12px)과 동치 — px 승격.
-     3px 등 스케일 사이 미세값은 토큰화하지 않음 (allowlist, §3.3). full 은 위(기존) 정의. */
+  /* @group-role 라운딩 스케일 — border-radius | @use 카드·버튼·입력·칩 */
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 6px;
@@ -102,11 +109,12 @@
   --radius-xl: 12px;
   --radius-2xl: 24px;
 
-  /* Shadow / Elevation — sm(기존·컨트롤) → md(드롭다운·팝오버) → lg(모달·다이얼로그).
-     실측 최빈값 승격: md = 0 4px 16px(×3) · lg = 0 8px 24px(×2). */
+  /* @role 중간 그림자 — 드롭다운·팝오버·토스트 */
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  /* @role 깊은 그림자 — 모달·다이얼로그 */
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
 
+  /* @role 기본 폰트 스택 — html/body 기본 */
   --font-sans: "Noto Sans KR", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
 
   /* ──────────────────────────────────────────────────────────────────────
@@ -127,12 +135,13 @@
    *  Sync 대상: src/widget/_tokens.ts 의 value 필드 (display 용) + denyx-ds.css.
    * ────────────────────────────────────────────────────────────────────── */
 
-  /* Font Family */
+  /* @group-role 폰트 패밀리 */
+  /* @role 한국어 본문 | @use 기본 본문·라벨·헤딩 */
   --font-family-korean: "Noto Sans", "Noto Sans KR", sans-serif;
+  /* @role 숫자 전용 (tabular-nums) | @use 메트릭·타이머·테이블 수치 */
   --font-family-numeric: Roboto, "Noto Sans", sans-serif;
 
-  /* Type Scale — Hybrid (Dense 1px + Display 2배수 인접).
-     text-* utility(denyx-ds.css)의 font-size 값. */
+  /* @group-role 타입 스케일 — Dense 1px 간격(9-14px) + Display 2배수(16-48px) */
   --text-chart: 9px;
   --text-xs: 10px;
   --text-sm: 11px;
@@ -145,12 +154,12 @@
   --text-4xl: 32px;
   --text-5xl: 48px;
 
-  /* Font Weight — 3 단계 (font-{medium|bold} utility 값). */
+  /* @group-role 폰트 웨이트 3단계 */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
-  /* Line Height — 6 단계 (leading-{none|tight|...} utility 값). */
+  /* @group-role 행간 6단계 */
   --leading-none: 1;
   --leading-tight: 1.2;
   --leading-snug: 1.3;
@@ -158,73 +167,61 @@
   --leading-relaxed: 1.5;
   --leading-loose: 1.6;
 
-  /* Letter Spacing (Tracking) — 4 단계 (tracking-* utility 값. -0.1px default 는 한국어 본문 최적). */
+  /* @group-role 자간 4단계 — 한국어 본문 최적 -0.1px 기본 */
   --tracking-display: -0.3px;
   --tracking-metric: -0.2px;
   --tracking-default: -0.1px;
   --tracking-caps: 0.3px;
 
-  /* Text Color Hierarchy — 4 단계.
-     prototype 실측 빈도 기준: primary 154, secondary 75, tertiary 63, disabled 6.
-     기존 --color-text-strong/body/muted/subtle 과 별개로 design system 전용. */
+  /* @group-role 텍스트 계층 4단계 — 본문·라벨·캡션·비활성 | @use 모든 텍스트 색상 */
   --color-text-primary: #222;
   --color-text-secondary: #4c4c4c;
   --color-text-tertiary: #757575;
   --color-text-disabled: #adadad;
 
-  /* AI Surface (Intent) — 카드/패널 배경. 낮은 채도, 콘텐츠 가독성 보장.
-     tokens.color.surface TS 와 동일값. */
+  /* @group-role AI 의미 배경 — 카드/패널 표면. 낮은 채도, 가독성 보장 */
   --color-surface-critical: #ffe8e8;
   --color-surface-warning: #fff7e0;
   --color-surface-info: #e8f4ff;
   --color-surface-muted: #f1f2f4;
   --color-surface-neutral: #f1f2f4;
 
-  /* Indicator (Intent) — 도트/스트로크/강조. 높은 채도, 시각 신호.
-     tokens.color.indicator TS 와 동일값. */
+  /* @group-role AI 의미 인디케이터 — 도트·스트로크·강조. 높은 채도 */
   --color-indicator-critical: #E53935;
   --color-indicator-warning: #F0B400;
   --color-indicator-info: #296CF2;
   --color-indicator-muted: #757575;
   --color-indicator-neutral: #757575;
 
-  /* Label (Intent) — 분류 배지의 기본 한국어 라벨.
-     tokens.label TS 와 동일값. CSS 에 텍스트 값을 두는 것은 참조 목적. */
+  /* @group-role AI 의미 라벨 — 분류 배지 텍스트 (참조 목적) */
   --label-critical: "고활용";
   --label-warning: "활용";
   --label-info: "저활용";
   --label-muted: "완전 유휴";
   --label-neutral: "";
 
-  /* Extended Gray Scale — text 4 단계 외 UI 회색 (1-5 callsite ad-hoc).
-     side-effect 없이 토큰 binding 유지를 위해 정확값 보존. */
+  /* @group-role 확장 회색 — text 계층 외 ad-hoc UI 회색 (1-5 callsite) */
   --color-gray-mid: #8b8b8b;
   --color-gray-soft: #a0a3a6;
   --color-gray-pale: #bdbdbd;
 
-  /* Extended Tracking — 정밀 ad-hoc 값. */
+  /* @role 정밀 자간 — AiCaption 전용 ad-hoc */
   --tracking-precision: -0.48px;
 
-  /* Pixel Line-Heights — 의미 단위(none/tight/...) 와 별개의 literal px.
-     특정 vertical alignment 정렬 (LIVE timer 16px row 등) 에 사용. */
+  /* @group-role px 행간 — vertical alignment 정밀 정렬 (LIVE timer 등) */
   --leading-px-0: 0;
   --leading-px-12: 12px;
   --leading-px-16: 16px;
   --leading-px-18: 18px;
   --leading-px-20: 20px;
 
-  /* Font Family Variants — 한국어 KR-only / Inter / JP 등 특수 stack. */
+  /* @group-role 폰트 패밀리 변형 — KR-only·Inter·JP 등 특수 스택 */
   --font-family-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   --font-family-korean-kr-only: "Noto Sans KR", sans-serif;
   --font-family-korean-inter: Inter, "Noto Sans KR", sans-serif;
   --font-family-numeric-kr: Roboto, "Noto Sans KR", sans-serif;
   --font-family-numeric-jp: Roboto, NotoSansJP, NotoSans, sans-serif;
-  /* ──────────────────────────────────────────────────────────────────────
-   *  Extended Palette — Chart series / status / brand 추가 인라인 색.
-   *  Side-effect 없이 inline `color: "#hex"` 모두 token binding 으로 통일.
-   *  Hex-suffix 이름 (deterministic 매핑). Chart 데이터 변경 시 컴포넌트 보정 없이
-   *  팔레트만 갱신하면 됨.
-   * ────────────────────────────────────────────────────────────────────── */
+  /* @group-role 확장 팔레트 — 차트 시리즈·상태·브랜드 인라인 색 토큰화. hex-suffix 이름 */
   --color-palette-0078dc: #0078dc;
   --color-palette-00beb8: #00beb8;
   --color-palette-10b981: #10b981;
@@ -266,7 +263,7 @@
   --color-palette-ffe4cc: #ffe4cc;
   --color-palette-fff176: #fff176;
 
-  /* ── Component tokens: DateTimeBlock ── */
+  /* @group-role DateTimeBlock 내부 레이아웃 토큰 */
   --wds-datetime-year-w: 28px;
   --wds-datetime-field-w: 16px;
   --wds-datetime-space-w: 6px;
