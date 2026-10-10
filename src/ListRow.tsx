@@ -23,9 +23,9 @@
  * @example
  * ```tsx
  * <ListRow
- *   title="GPU 사용량 리포트"
+ *   title="월간 매출 리포트"
  *   badge={<Chip variant="soft" tone="primary" size="sm">신규</Chip>}
- *   description="2026-10-10 생성 · 인스턴스 12대"
+ *   description="2026-10-10 생성 · 항목 12건"
  *   meta="3분 전"
  *   onClick={() => navigate(`/reports/${id}`)}
  * />

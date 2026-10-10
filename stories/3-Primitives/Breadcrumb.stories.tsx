@@ -16,13 +16,13 @@ const meta: Meta<typeof Breadcrumb> = {
 export default meta;
 type Story = StoryObj<typeof Breadcrumb>;
 
-/** 3단계 경로 — 대시보드 > GPU 모니터링 > 인스턴스 상세. */
+/** 3단계 경로 — 대시보드 > 프로젝트 관리 > 작업 상세. */
 export const Default: Story = {
   args: {
     items: [
       { label: "대시보드", href: "/" },
-      { label: "GPU 모니터링", href: "/gpu" },
-      { label: "인스턴스 상세" },
+      { label: "프로젝트 관리", href: "/projects" },
+      { label: "작업 상세" },
     ],
   },
 };

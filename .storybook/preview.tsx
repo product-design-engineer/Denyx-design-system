@@ -3,6 +3,8 @@ import { withThemeByClassName } from '@storybook/addon-themes';
 // No-Tailwind 내재화 CSS — 토큰(:root) + 유틸리티 클래스 + 키프레임 자체완결.
 // Tailwind 런타임 의존 0%. 소비자도 이 파일을 import.
 import '../src/denyx-ds.css';
+// Core-only 모드: Brand/Status 색을 gray fallback 으로 리셋 (기본 활성).
+import './addon-override.css';
 
 /**
  * Storybook 10 preview — 모든 story 에 공통 적용되는 parameters / decorators.
@@ -51,6 +53,23 @@ const preview: Preview = {
       },
     },
   },
+  globalTypes: {
+    colorAddon: {
+      name: 'Color Addon',
+      description: 'Brand/Status 컬러 Addon 토글. Off = Core 그레이스케일, On = 풀컬러.',
+      toolbar: {
+        icon: 'paintbrush',
+        items: [
+          { value: 'off', title: 'Core Only (Grayscale)' },
+          { value: 'on', title: 'Full Color (Brand + Status)' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: {
+    colorAddon: 'off',
+  },
   decorators: [
     // 우측 상단 툴바에 Light/Dark 토글 추가 — <html> 에 `.dark` 클래스를 토글한다.
     // denyx-ds.css 의 `.dark` 토큰이 cascade 되어 모든 story 가 다크로 전환된다.
@@ -59,6 +78,14 @@ const preview: Preview = {
       defaultTheme: 'light',
       parentSelector: 'html',
     }),
+    // Color Addon 토글 — Off(기본) = 그레이스케일, On = 풀컬러.
+    (Story, context) => {
+      const addonOff = context.globals.colorAddon !== 'on';
+      if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('data-color-addon', addonOff ? 'off' : 'on');
+      }
+      return Story();
+    },
   ],
 };
 

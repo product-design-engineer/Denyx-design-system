@@ -9,7 +9,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "**WDS Color 토큰 전체 카탈로그.**\n\n" +
+          "**Color 토큰 전체 카탈로그.**\n\n" +
           "단일 출처: `src/tokens.css` 의 `:root` 블록. 파생 utility class 는 `denyx-ds.css` 에 일반 CSS 로 정의 (Tailwind 없음).\n\n" +
           "구성:\n" +
           "- **Surface (Intent)** — `tokens.color.surface.*` 5 톤 위젯 카드 배경\n" +

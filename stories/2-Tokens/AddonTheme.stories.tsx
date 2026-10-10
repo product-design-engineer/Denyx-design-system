@@ -40,8 +40,8 @@ const meta: Meta = {
           "**컬러 토큰 Addon 구조 데모.**\n\n" +
           "DS Core는 그레이스케일(중립색)만 보유. Brand·Status·Chart Addon이 색을 주입.\n\n" +
           "- **Core only** — gray fallback으로 렌더. 읽을 수 있지만 브랜드 아이덴티티 없음.\n" +
-          "- **Core + Denyx Brand** — 현재 Denyx 정본 (primary=#296CF2, accent=#8B52FF).\n" +
-          "- **Core + Alt Brand** — 다른 Brand Addon 예시 (primary=#10B981, accent=#F59E0B).\n\n" +
+          "- **Core + Brand A** — Blue/Purple 테마 (primary=#296CF2, accent=#8B52FF).\n" +
+          "- **Core + Brand B** — Emerald/Amber 테마 (primary=#10B981, accent=#F59E0B).\n\n" +
           "핵심: **컴포넌트 코드 변경 없이 CSS 변수만 교체.**\n\n" +
           "파일 구조: `src/tokens/core.css` + `src/tokens/brand.css` + `src/tokens/status.css` + `src/tokens/chart.css`",
       },
@@ -67,8 +67,8 @@ const BRANDS = {
       "--gradient-brand": "linear-gradient(90deg, #757575, #9e9e9e)",
     },
   },
-  denyx: {
-    label: "Denyx Brand (정본)",
+  brandA: {
+    label: "Brand A (Blue/Purple)",
     vars: {
       "--color-primary": "#296CF2",
       "--color-primary-strong": "#1B5CD9",
@@ -81,8 +81,8 @@ const BRANDS = {
       "--gradient-brand": "linear-gradient(90deg, #296CF2, #8B52FF)",
     },
   },
-  alt: {
-    label: "Alt Brand (Emerald + Amber)",
+  brandB: {
+    label: "Brand B (Emerald/Amber)",
     vars: {
       "--color-primary": "#10B981",
       "--color-primary-strong": "#059669",
@@ -99,10 +99,12 @@ const BRANDS = {
 
 type BrandKey = keyof typeof BRANDS;
 
+// Storybook toolbar Color Addon 을 "on" 으로 전환하여 풀컬러 데모 활성화
+
 /* ── 데모 컴포넌트 ──────────────────────────────────────── */
 
 function ThemeDemo() {
-  const [brand, setBrand] = useState<BrandKey>("denyx");
+  const [brand, setBrand] = useState<BrandKey>("brandA");
   const current = BRANDS[brand];
 
   return (

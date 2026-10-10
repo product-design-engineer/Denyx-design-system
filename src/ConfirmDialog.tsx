@@ -24,8 +24,8 @@
  * <ConfirmDialog
  *   open={showConfirm}
  *   title="플랜에서 제외"
- *   target="GPU-A100 인스턴스 3대"
- *   outcomes={[{ text: "모니터링 데이터가 삭제됩니다", tone: "critical" }]}
+ *   target="프로젝트 'Alpha' 외 2건"
+ *   outcomes={[{ text: "관련 데이터가 삭제됩니다", tone: "critical" }]}
  *   confirmLabel="제외"
  *   tone="critical"
  *   onConfirm={handleExclude}

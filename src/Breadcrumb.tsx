@@ -23,8 +23,8 @@
  * ```tsx
  * <Breadcrumb items={[
  *   { label: "대시보드", href: "/" },
- *   { label: "GPU 모니터링", href: "/gpu" },
- *   { label: "인스턴스 상세" },
+ *   { label: "프로젝트 관리", href: "/projects" },
+ *   { label: "작업 상세" },
  * ]} />
  * ```
  */

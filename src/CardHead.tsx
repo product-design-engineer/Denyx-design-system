@@ -21,7 +21,7 @@
  * @example
  * ```tsx
  * <CardHead
- *   title="GPU 사용량"
+ *   title="팀 현황"
  *   tabs={{ items: [{ value: "chart", label: "차트" }, { value: "table", label: "테이블" }], value: view, onChange: setView }}
  *   meta={<TimeChip value="최근 1시간" />}
  * />

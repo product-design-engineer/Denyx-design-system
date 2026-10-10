@@ -6,7 +6,7 @@
  * 3~6개를 가로로 나열하여 대시보드 상단 요약 바 구성.
  *
  * ## When to use
- * - 대시보드 상단 KPI 요약 (총 GPU, 활성, 유휴 등).
+ * - 대시보드 상단 KPI 요약 (매출, 사용자, 전환율 등).
  * - 3~6개 카드를 가로 배치.
  *
  * ## When NOT to use
@@ -22,8 +22,8 @@
  *
  * @example
  * ```tsx
- * <StatCard label="활성 GPU" value="847" unit="대" tone="success" trend="up" />
- * <StatCard label="유휴 GPU" value="12" unit="대" tone="warning" trend="down" />
+ * <StatCard label="활성 사용자" value="847" unit="명" tone="success" trend="up" />
+ * <StatCard label="비활성 사용자" value="12" unit="명" tone="warning" trend="down" />
  * ```
  */
 
