@@ -41,15 +41,39 @@ Primitives ──→ Composite ──→ Shell
 - Component 토큰(3계층)은 variant×tone 조합이 복잡한 것만 선택 도입 (`--wds-btn-*`).
 - `--color-palette-*` (hex suffix) 는 차트 시리즈 전용 Global. 컴포넌트에서 직접 참조 가능 (차트 한정).
 
-### 토큰 단일 출처 파이프라인
+### 토큰 Addon 구조 (2026-10-10 신설)
+
+컬러 토큰은 4파일 Addon 구조. Core는 그레이스케일(중립색)만 보유, Brand/Status/Chart Addon이 색을 주입.
 
 ```
-src/tokens.css  ─── 유일한 진실 ───→  scripts/generate-tokens.mjs
-                                          ↓
-                                   src/widget/_tokens.ts (자동 생성)
+src/tokens/
+  core.css    ── 그레이스케일 23색 + 구조 66 = 89 tokens + gray fallback
+  brand.css   ── primary·accent·gradient 9 tokens (제품 아이덴티티)
+  status.css  ── status·indicator·surface-intent 12 tokens (상태 표현)
+  chart.css   ── palette 36 tokens (차트 전용, 테마 불변)
+
+src/tokens.css  ── @import 합본 (하위호환)
+                ──→ scripts/generate-tokens.mjs → src/widget/_tokens.ts (자동 생성)
+                ──→ scripts/build-tokens-json.mjs → docs/tokens.json (자동 생성)
 ```
 
-- **`tokens.css`가 유일한 출처.** 토큰 추가·변경·삭제는 이 파일에서만.
+**소비자 import:**
+```css
+/* 기존 방식 (불변) */
+@import '@denyx/design-system/tokens.css';
+
+/* Addon 선택 로드 */
+@import '@denyx/design-system/tokens/core.css';
+@import '@denyx/design-system/tokens/brand.css';
+@import '@denyx/design-system/tokens/status.css';
+
+/* 테마 교체 — brand.css 만 다른 파일로 교체 */
+@import '@denyx/design-system/tokens/core.css';
+@import '@custom-product/brand.css';
+```
+
+- **Core에 gray fallback 포함** — Addon 없이도 읽을 수 있는 UI 보장. Brand/Status 로드 시 덮어씀.
+- **`pnpm lint:addon`** — Core 그레이스케일 순수성 · Addon 간 변수 중복 없음 · .dark 자기 완결 검증.
 - `_tokens.ts`는 **자동 생성물** — 직접 수정 금지. `node scripts/generate-tokens.mjs` 로 재생성.
 - `pnpm check:tokens` — CI에서 drift 감지 (생성 후 git diff).
 - `storybook` / `build-storybook` 실행 시 자동으로 `generate:tokens` 선행.

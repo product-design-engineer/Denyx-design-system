@@ -1,6 +1,23 @@
 # Tokens
 
-> 원본: `src/widget/_tokens.ts` (위젯 Tone 토큰). 색·타입 등 메인 토큰의 단일 출처는 `src/tokens.css` 의 `:root` (순수 CSS, Tailwind 없음).
+> 원본: `src/tokens/` 4파일 Addon 구조. 합본: `src/tokens.css` (`@import`). 위젯 TS 미러: `src/widget/_tokens.ts` (자동 생성).
+
+## Addon 구조
+
+컬러 토큰은 4파일로 분리. Core는 그레이스케일(중립색)만 보유, Addon이 색을 주입.
+
+| 파일 | 내용 | 로드 조건 |
+|---|---|---|
+| `src/tokens/core.css` | 그레이스케일 23색 + 구조 66 = 89 tokens + gray fallback | **항상** (필수) |
+| `src/tokens/brand.css` | primary·accent·gradient 9 tokens | 기본 포함, 테마 교체 시 대체 |
+| `src/tokens/status.css` | status·indicator·surface-intent 12 tokens | 기본 포함, 커스터마이징 가능 |
+| `src/tokens/chart.css` | palette 36 tokens (테마 불변) | 차트 사용 시만 |
+
+**테마 교체 = brand.css 교체.** 컴포넌트 코드 변경 없이 CTA·포커스·AI 그라데이션 색이 바뀜.
+
+Core에 gray fallback 포함 → Addon 없이도 읽을 수 있는 UI 보장.
+
+---
 
 위젯 안에서 분류/상태 색상이 필요한 **모든** 컴포넌트는 이 토큰을 사용합니다. 인라인 색상 리터럴(`#E53935` 등)을 컴포넌트 내부에 적지 마세요 — 토큰을 추가하거나 기존 톤을 재사용하세요.
 
