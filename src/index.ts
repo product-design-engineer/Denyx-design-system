@@ -12,19 +12,35 @@
 
 // ─── Primitives — 자립 렌더. DS 컴포넌트 import 없음 ─────────────────
 //   General
+export { default as ActionMenuItem } from "./ActionMenuItem";
+export type { ActionMenuItemProps, ActionMenuItemTone } from "./ActionMenuItem";
+export { default as Autocomplete } from "./Autocomplete";
+export type { AutocompleteProps, AutocompleteOption, AutocompleteSize } from "./Autocomplete";
 export { default as Button } from "./Button";
 export type { ButtonProps, ButtonVariant, ButtonSize, ButtonTone } from "./Button";
 export { default as Checkbox } from "./Checkbox";
+export { default as ConfirmDialog } from "./ConfirmDialog";
+export type { ConfirmDialogProps, ConfirmDialogTone, ConfirmDialogOutcome } from "./ConfirmDialog";
 export type { CheckboxProps, CheckboxSize } from "./Checkbox";
 export { default as Chip } from "./Chip";
 export type { ChipProps, ChipVariant, ChipTone, ChipSize } from "./Chip";
 export { default as DataTable } from "./DataTable";
 export type { DataTableColumn, DataTableProps } from "./DataTable";
+export { default as EmptyState } from "./EmptyState";
+export type { EmptyStateProps, EmptyStateSize } from "./EmptyState";
 export { default as LiveTimerCompact } from "./LiveTimerCompact";
 export { default as MiniLineChart } from "./MiniLineChart";
 export { default as Modal } from "./Modal";
 export type { ModalProps, ModalSize } from "./Modal";
+export { default as Notice } from "./Notice";
+export type { NoticeProps, NoticeTone, NoticeVariant } from "./Notice";
+export { default as Pagination } from "./Pagination";
+export type { PaginationProps } from "./Pagination";
+export { default as RadioGroup } from "./RadioGroup";
+export type { RadioGroupProps, RadioGroupItem, RadioGroupDirection } from "./RadioGroup";
 export { default as Select } from "./Select";
+export { default as Slider } from "./Slider";
+export type { SliderProps } from "./Slider";
 export type { SelectProps, SelectSize, SelectOption } from "./Select";
 export { default as Switch } from "./Switch";
 export type { SwitchProps, SwitchSize } from "./Switch";

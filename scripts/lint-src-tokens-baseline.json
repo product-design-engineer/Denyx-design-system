@@ -12,6 +12,9 @@
     "raw-color": 6,
     "raw-spacing": 3
   },
+  "src/ConfirmDialog.tsx": {
+    "raw-color": 1
+  },
   "src/DashboardBuildingProgress.tsx": {
     "raw-color": 2,
     "raw-radius": 1
