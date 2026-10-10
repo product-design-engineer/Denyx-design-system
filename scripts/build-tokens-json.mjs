@@ -20,6 +20,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CSS_PATH = join(ROOT, "src/tokens.css");
+const TOKENS_DIR = join(ROOT, "src/tokens");
 
 const walk = (dir, out = []) => {
   if (!existsSync(dir)) return out;
@@ -30,12 +31,37 @@ const walk = (dir, out = []) => {
   return out;
 };
 
-const css = readFileSync(CSS_PATH, "utf8");
+/** @import 를 해석하여 단일 CSS 문자열로 합본 */
+function resolveImports(filePath) {
+  const src = readFileSync(filePath, "utf8");
+  return src.replace(/@import\s+['"]([^'"]+)['"]\s*;/g, (_, rel) => {
+    const resolved = join(dirname(filePath), rel);
+    if (existsSync(resolved)) return readFileSync(resolved, "utf8");
+    return "";
+  });
+}
+
+const css = resolveImports(CSS_PATH);
 const lines = css.split("\n");
 
-/* ── .dark 블록 경계 ──────────────────────────────────── */
+/* ── .dark 블록 범위 수집 (여러 파일에서 분산된 .dark 블록) ── */
 
-const darkStart = lines.findIndex((l) => /^\.dark\b/.test(l));
+const darkRanges = []; // [start, end] 쌍
+{
+  let i = 0;
+  while (i < lines.length) {
+    if (/^\.dark\b/.test(lines[i]) || /^\[data-theme/.test(lines[i])) {
+      const start = i;
+      let depth = 0;
+      for (let j = i; j < lines.length; j++) {
+        if (lines[j].includes("{")) depth++;
+        if (lines[j].includes("}")) depth--;
+        if (depth === 0 && j > start) { darkRanges.push([start, j]); i = j + 1; break; }
+      }
+    } else { i++; }
+  }
+}
+const isDarkLine = (i) => darkRanges.some(([s, e]) => i >= s && i <= e);
 
 /* ── @role/@use/@avoid 주석 파싱 ──────────────────────── */
 
@@ -117,15 +143,27 @@ lines.forEach((ln, i) => {
   const value = raw.slice(0, raw.indexOf(";") >= 0 ? raw.indexOf(";") : undefined).replace(/\s+/g, " ").trim();
   if (!value) return;
 
-  if (darkStart >= 0 && i > darkStart) {
-    if (!darkValues.has(name)) darkValues.set(name, value);
+  if (isDarkLine(i)) {
+    darkValues.set(name, value); // 마지막 .dark 선언이 이김
     return;
   }
-  if (tokens.has(name)) return;
-
   const above = commentAbove(i).replace("@group-role", "@role");
   const own = parseAnnotation(above) ?? parseAnnotation(ln.split(";")[1] ?? "");
   const meta = own ?? inherited ?? null;
+
+  // 같은 변수가 여러 파일에 선언되면 마지막(Addon)이 이김 — 값 + @role 모두 덮어씀
+  const existing = tokens.get(name);
+  if (existing) {
+    existing.value = value;
+    existing.aliasOf = value.match(/^var\((--[a-z0-9-]+)/)?.[1] ?? null;
+    if (meta?.role) {
+      existing.role = meta.role;
+      existing.use = meta?.use ?? existing.use;
+      existing.avoid = meta?.avoid ?? existing.avoid;
+      existing.inheritedFrom = own ? null : inherited ? "group" : null;
+    }
+    return;
+  }
 
   tokens.set(name, {
     name,

@@ -1,0 +1,46 @@
+/*
+ * chart.css — Chart Addon 토큰.
+ *
+ * 차트 시리즈 전용 확장 팔레트 (hex-suffix 이름).
+ * 테마 불변 — 다크 override 없음.
+ * 차트를 사용하지 않는 소비자는 이 파일을 로드하지 않아도 됨.
+ */
+:root {
+  /* @group-role 확장 팔레트 — 차트 시리즈·상태·브랜드 인라인 색 토큰화. hex-suffix 이름 */
+  --color-palette-0078dc: #0078dc;
+  --color-palette-00beb8: #00beb8;
+  --color-palette-10b981: #10b981;
+  --color-palette-1b9bd0: #1b9bd0;
+  --color-palette-1f3c88: #1f3c88;
+  --color-palette-2ec4b6: #2ec4b6;
+  --color-palette-3c4ec1: #3c4ec1;
+  --color-palette-4f65b5: #4f65b5;
+  --color-palette-4fc3f7: #4fc3f7;
+  --color-palette-57ca7e: #57ca7e;
+  --color-palette-5cc97d: #5cc97d;
+  --color-palette-71df8b: #71df8b;
+  --color-palette-81c784: #81c784;
+  --color-palette-85c2fa: #85c2fa;
+  --color-palette-a0a65a: #a0a65a;
+  --color-palette-a8d8ff: #a8d8ff;
+  --color-palette-b7dbff: #b7dbff;
+  --color-palette-ba68c8: #ba68c8;
+  --color-palette-c44cd8: #c44cd8;
+  --color-palette-d4f0e5: #d4f0e5;
+  --color-palette-dcefff: #dcefff;
+  --color-palette-e040b8: #e040b8;
+  --color-palette-e0d6f5: #e0d6f5;
+  --color-palette-e5564e: #e5564e;
+  --color-palette-e8d6f0: #e8d6f0;
+  --color-palette-f34747: #f34747;
+  --color-palette-f5c84a: #f5c84a;
+  --color-palette-fb88e1: #fb88e1;
+  --color-palette-ff8800: #ff8800;
+  --color-palette-ff8c2d: #ff8c2d;
+  --color-palette-ffa1a1: #ffa1a1;
+  --color-palette-ffb74d: #ffb74d;
+  --color-palette-ffc300: #ffc300;
+  --color-palette-ffc771: #ffc771;
+  --color-palette-ffe4cc: #ffe4cc;
+  --color-palette-fff176: #fff176;
+}

@@ -14,6 +14,10 @@
       "default": "./src/widget/index.ts"
     },
     "./tokens.css": "./src/tokens.css",
+    "./tokens/core.css": "./src/tokens/core.css",
+    "./tokens/brand.css": "./src/tokens/brand.css",
+    "./tokens/status.css": "./src/tokens/status.css",
+    "./tokens/chart.css": "./src/tokens/chart.css",
     "./style.css": "./src/denyx-ds.css",
     "./denyx-ds.css": "./src/denyx-ds.css"
   },

@@ -1,0 +1,222 @@
+/*
+ * core.css — DS Core 토큰 (그레이스케일 + 구조).
+ *
+ * 모든 컴포넌트의 필수 의존. Addon 없이도 읽을 수 있는 UI 를 보장한다.
+ * 컬러는 중립색(회색·흰색·검정)만 — 브랜드·상태·차트 색은 Addon 파일에서 제공.
+ *
+ * Brand/Status Addon 미로드 시 gray fallback 으로 렌더.
+ */
+:root {
+  /* ── Base Surface ─────────────────────────────────────── */
+  /* @role 앱 셸 페이지 바닥 배경 | @use DashboardLayout 최외곽 | @avoid 카드/패널(--color-card 사용) */
+  --color-bg: #FFFFFF;
+  /* @role 부유 표면 — 카드·헤더·사이드바·입력·드롭다운 | @avoid 페이지 바닥(--color-bg 사용) */
+  --color-card: #FFFFFF;
+
+  /* ── Neutral Surface ──────────────────────────────────── */
+  /* @group-role 중립 표면 배경 — 섹션 구분·호버·줄무늬 행 */
+  --color-surface-50: #F5F5F5;
+  --color-surface-100: #F1F2F4;
+  --color-surface-200: #EAEAEA;
+  /* @role 비활성·idle 표면 (neutral gray) */
+  --color-surface-muted: #f1f2f4;
+  --color-surface-neutral: #f1f2f4;
+
+  /* ── Text Hierarchy ───────────────────────────────────── */
+  /* @group-role 텍스트 계층 4단계 — 본문·라벨·캡션·비활성 | @use 모든 텍스트 색상 */
+  --color-text-primary: #222;
+  --color-text-secondary: #4c4c4c;
+  --color-text-tertiary: #757575;
+  --color-text-disabled: #adadad;
+
+  /* @group-role 레거시 텍스트 계층 (text-primary/secondary/tertiary/disabled 우선 사용) */
+  --color-text-strong: #1E1E1E;
+  --color-text-body: #2D2D2D;
+  --color-text-muted: #4C4C4C;
+  --color-text-subtle: #757575;
+
+  /* ── Borders ──────────────────────────────────────────── */
+  /* @group-role 보더 — 컴포넌트 구분선·입력 테두리 */
+  /* @role 기본 보더 | @use 카드·입력·테이블 보더 */
+  --color-border-default: #EAEAEA;
+  /* @role 약한 보더 | @use 내부 구분선·서브섹션 경계 */
+  --color-border-soft: #F0F0F0;
+  /* @role 강조 보더 | @use hover 보더·선택 상태 보더 */
+  --color-border-strong: #E6E6E6;
+  /* @role 분리선 | @use 영역 간 강한 분리 (사이드바/헤더 경계) */
+  --color-border-divider: #ADADAD;
+
+  /* ── Extended Gray ────────────────────────────────────── */
+  /* @group-role 확장 회색 — text 계층 외 ad-hoc UI 회색 (1-5 callsite) */
+  --color-gray-mid: #8b8b8b;
+  --color-gray-soft: #a0a3a6;
+  --color-gray-pale: #bdbdbd;
+
+  /* ── Fixed Colors ─────────────────────────────────────── */
+  /* @role 고정 흰색 — 컬러 배경 위 전경 전용 | @avoid 표면 배경(--color-card 사용) */
+  --color-white: #fff;
+
+  /* ── Neutral Indicator ────────────────────────────────── */
+  /* @group-role 중립 인디케이터 — 비활성 도트·스트로크 */
+  --color-indicator-muted: #757575;
+  --color-indicator-neutral: #757575;
+
+  /* ── Brand Fallback (gray, Addon 로드 시 덮어씀) ──────── */
+  --color-primary: #757575;
+  --color-primary-strong: #616161;
+  --color-primary-soft: #9e9e9e;
+  --color-primary-bg: #f1f2f4;
+  --color-primary-bg-subtle: #e8e8e8;
+  --color-accent-start: #616161;
+  --color-accent: #757575;
+  --color-accent-deep: #616161;
+  --gradient-brand: linear-gradient(90deg, #757575, #9e9e9e);
+
+  /* ── Status Fallback (gray, Addon 로드 시 덮어씀) ─────── */
+  --color-status-success: #757575;
+  --color-status-warning: #9e9e9e;
+  --color-status-error: #616161;
+  --color-indicator-critical: #616161;
+  --color-indicator-warning: #9e9e9e;
+  --color-indicator-info: #757575;
+  --color-surface-critical: #f1f2f4;
+  --color-surface-warning: #f5f5f5;
+  --color-surface-info: #f1f2f4;
+  --label-critical: "고활용";
+  --label-warning: "활용";
+  --label-info: "저활용";
+  --label-muted: "완전 유휴";
+  --label-neutral: "";
+
+  /* ══════════════════════════════════════════════════════════
+   *  Structure Tokens — Typography · Spacing · Radius · Shadow
+   * ══════════════════════════════════════════════════════════ */
+
+  /* ── Font Family ──────────────────────────────────────── */
+  /* @role 기본 폰트 스택 — html/body 기본 */
+  --font-sans: "Noto Sans KR", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  /* @group-role 폰트 패밀리 */
+  /* @role 한국어 본문 | @use 기본 본문·라벨·헤딩 */
+  --font-family-korean: "Noto Sans", "Noto Sans KR", sans-serif;
+  /* @role 숫자 전용 (tabular-nums) | @use 메트릭·타이머·테이블 수치 */
+  --font-family-numeric: Roboto, "Noto Sans", sans-serif;
+
+  /* ── Type Scale ───────────────────────────────────────── */
+  /* @group-role 타입 스케일 — Dense 1px 간격(9-14px) + Display 2배수(16-48px) */
+  --text-chart: 9px;
+  --text-xs: 10px;
+  --text-sm: 11px;
+  --text-base: 12px;
+  --text-md: 13px;
+  --text-lg: 14px;
+  --text-xl: 16px;
+  --text-2xl: 20px;
+  --text-3xl: 24px;
+  --text-4xl: 32px;
+  --text-5xl: 48px;
+
+  /* ── Font Weight ──────────────────────────────────────── */
+  /* @group-role 폰트 웨이트 3단계 */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* ── Line Height ──────────────────────────────────────── */
+  /* @group-role 행간 6단계 */
+  --leading-none: 1;
+  --leading-tight: 1.2;
+  --leading-snug: 1.3;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.5;
+  --leading-loose: 1.6;
+
+  /* ── Letter Spacing ───────────────────────────────────── */
+  /* @group-role 자간 4단계 — 한국어 본문 최적 -0.1px 기본 */
+  --tracking-display: -0.3px;
+  --tracking-metric: -0.2px;
+  --tracking-default: -0.1px;
+  --tracking-caps: 0.3px;
+  /* @role 정밀 자간 — AiCaption 전용 ad-hoc */
+  --tracking-precision: -0.48px;
+
+  /* ── Pixel Line-Heights ───────────────────────────────── */
+  /* @group-role px 행간 — vertical alignment 정밀 정렬 (LIVE timer 등) */
+  --leading-px-0: 0;
+  --leading-px-12: 12px;
+  --leading-px-16: 16px;
+  --leading-px-18: 18px;
+  --leading-px-20: 20px;
+
+  /* ── Font Family Variants ─────────────────────────────── */
+  /* @group-role 폰트 패밀리 변형 — KR-only·Inter·JP 등 특수 스택 */
+  --font-family-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-family-korean-kr-only: "Noto Sans KR", sans-serif;
+  --font-family-korean-inter: Inter, "Noto Sans KR", sans-serif;
+  --font-family-numeric-kr: Roboto, "Noto Sans KR", sans-serif;
+  --font-family-numeric-jp: Roboto, NotoSansJP, NotoSans, sans-serif;
+
+  /* ── Spacing ──────────────────────────────────────────── */
+  /* @group-role 간격 스케일 — padding·margin·gap | @use 신규 컴포넌트 인라인 스타일 */
+  --spacing-2xs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 6px;
+  --spacing-md: 8px;
+  --spacing-lg: 12px;
+  --spacing-xl: 16px;
+  --spacing-2xl: 20px;
+  --spacing-3xl: 24px;
+  --spacing-4xl: 32px;
+
+  /* ── Radius ───────────────────────────────────────────── */
+  /* @group-role 라운딩 스케일 — border-radius | @use 카드·버튼·입력·칩 */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 24px;
+  /* @role 완전 원형 라운딩 | @use 칩·뱃지·아바타 */
+  --radius-full: 9999px;
+
+  /* ── Shadow / Elevation ───────────────────────────────── */
+  /* @role 미세 그림자 — 컨트롤 (스위치 노브·버튼) */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+  /* @role 중간 그림자 — 드롭다운·팝오버·토스트 */
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  /* @role 깊은 그림자 — 모달·다이얼로그 */
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* ── Component Tokens ─────────────────────────────────── */
+  /* @group-role DateTimeBlock 내부 레이아웃 토큰 */
+  --wds-datetime-year-w: 28px;
+  --wds-datetime-field-w: 16px;
+  --wds-datetime-space-w: 6px;
+}
+
+/* ── Dark Theme — Core overrides ────────────────────────── */
+.dark, [data-theme="dark"] {
+  --color-bg: #0E1116;
+  --color-card: #181C22;
+  --color-surface-50: #14181E;
+  --color-surface-100: #1B2026;
+  --color-surface-200: #232932;
+  --color-surface-muted: #1B2026;
+  --color-surface-neutral: #1B2026;
+
+  --color-border-default: #2A2F39;
+  --color-border-soft: #21262E;
+  --color-border-strong: #353B46;
+  --color-border-divider: #4A515C;
+
+  --color-text-primary: #E9EBEE;
+  --color-text-secondary: #B7BDC6;
+  --color-text-tertiary: #8B929C;
+  --color-text-disabled: #5C636E;
+  --color-text-strong: #F0F2F4;
+  --color-text-body: #E2E5E9;
+  --color-text-muted: #B7BDC6;
+  --color-text-subtle: #8B929C;
+
+  --color-indicator-muted: #8B929C;
+  --color-indicator-neutral: #8B929C;
+}
