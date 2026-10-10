@@ -35,6 +35,7 @@
     "lint:docstrings": "node scripts/check-docstrings.mjs",
     "lint:coverage": "node scripts/check-catalog-coverage.mjs",
     "lint:gates": "node scripts/check-gates.mjs",
+    "lint:addon": "node scripts/check-token-addon.mjs",
     "lint:token-docs": "node scripts/check-token-docs.mjs",
     "build:tokens-json": "node scripts/build-tokens-json.mjs",
     "build:components-json": "node scripts/build-components-json.mjs",
@@ -45,7 +46,7 @@
     "build-storybook": "node scripts/generate-tokens.mjs && node scripts/build-design.mjs && storybook build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm typecheck && pnpm lint:src && pnpm lint:docstrings && pnpm lint:coverage && pnpm lint:token-docs && pnpm lint:gates && pnpm test",
+    "check": "pnpm typecheck && pnpm lint:src && pnpm lint:docstrings && pnpm lint:coverage && pnpm lint:token-docs && pnpm lint:addon && pnpm lint:gates && pnpm test",
     "chromatic": "npx chromatic --exit-zero-on-changes"
   },
   "peerDependencies": {

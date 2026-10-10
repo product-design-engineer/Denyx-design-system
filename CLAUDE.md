@@ -249,10 +249,11 @@ AI 위젯 영역의 모든 컴포넌트는 다음 primitive 를 **반드시 comp
 | 4. Docstring 표준 | check-docstrings.mjs | `pnpm lint:docstrings` | 4섹션 docstring 누락 (Purpose / When to use / When NOT to use / Composition rules + @example) |
 | 5. 카탈로그 커버리지 | check-catalog-coverage.mjs | `pnpm lint:coverage` | 공개 export 컴포넌트의 story 누락 |
 | 6. 토큰 의미 커버리지 | check-token-docs.mjs | `pnpm lint:token-docs` | @role 주석 없는 토큰 |
-| 7. Gate roster 검산 | check-gates.mjs | `pnpm lint:gates` | 게이트 배선 누락·스크립트 미등록·justification 부재 |
-| 8. 시각 회귀 | Chromatic | `pnpm chromatic` | 픽셀 수준 UI 변경 |
+| 7. Addon 구조 무결성 | check-token-addon.mjs | `pnpm lint:addon` | Core 그레이스케일 순수성·Addon 간 변수 중복·.dark 자기 완결 |
+| 8. Gate roster 검산 | check-gates.mjs | `pnpm lint:gates` | 게이트 배선 누락·스크립트 미등록·justification 부재 |
+| 9. 시각 회귀 | Chromatic | `pnpm chromatic` | 픽셀 수준 UI 변경 |
 
-**통합 검증:** `pnpm check` (typecheck + lint:src + lint:docstrings + lint:coverage + lint:token-docs + lint:gates + test)
+**통합 검증:** `pnpm check` (typecheck + lint:src + lint:docstrings + lint:coverage + lint:token-docs + lint:addon + lint:gates + test)
 
 ### Gate roster — 게이트 명부 단일 원천 (2026-10-10 신설)
 

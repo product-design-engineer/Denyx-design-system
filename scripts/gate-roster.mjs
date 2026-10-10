@@ -66,6 +66,16 @@ export const GATE_ROSTER = [
       "story 없어 docstring lint·시각 스냅샷·Chromatic 에서 동시에 빠지는 컴포넌트",
   },
   {
+    id: "token-addon",
+    name: "Addon 파일 구조 무결성",
+    status: "auto",
+    script: "scripts/check-token-addon.mjs",
+    pipeline: null,
+    invariant:
+      "R1 변수명 Addon 간 중복 없음 · R2 Core 그레이스케일 순수성 (chromatic 값 차단) · R3 .dark 자기 완결 (자기 :root 변수만 override).",
+    prevents: "Core 에 브랜드색 유입 · Addon 간 변수 충돌 · .dark 고아 override",
+  },
+  {
     id: "unit-test",
     name: "렌더 + 스냅샷 테스트",
     status: "auto",
