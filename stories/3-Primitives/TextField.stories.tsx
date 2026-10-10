@@ -63,7 +63,7 @@ export const Sizes: Story = {
 /** leadingIcon — 검색 패턴. */
 export const WithLeadingIcon: Story = {
   args: {
-    placeholder: "제목, 메시지, 프로젝트, 에이전트",
+    placeholder: "제목, 내용, 태그",
     size: "sm",
     leadingIcon: (
       <svg viewBox="0 0 16 16" width={12} height={12} fill="none" aria-hidden>
@@ -172,7 +172,7 @@ export const ClearableSearch: Story = {
             value={q}
             onChange={setQ}
             clearable
-            placeholder="제목, 메시지, 프로젝트, 에이전트"
+            placeholder="제목, 내용, 태그"
             leadingIcon={
               <svg viewBox="0 0 16 16" width={12} height={12} fill="none" aria-hidden>
                 <circle cx={7} cy={7} r={5} stroke="currentColor" strokeWidth={1.5} />

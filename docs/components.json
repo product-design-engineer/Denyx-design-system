@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-10T10:46:28.676Z",
+  "generated": "2026-10-10T12:21:51.461Z",
   "description": "자동 생성 — 직접 편집 금지. `node scripts/build-components-json.mjs` 로 재생성.",
   "count": 77,
   "components": [
@@ -433,7 +433,7 @@
         "`renderLink` 로 SPA 라우터 대응 (React Router Link 등).",
         "색은 토큰만 — 인라인 hex 금지."
       ],
-      "example": "```tsx\n<Breadcrumb items={[\n  { label: \"대시보드\", href: \"/\" },\n  { label: \"GPU 모니터링\", href: \"/gpu\" },\n  { label: \"인스턴스 상세\" },\n]} />\n```",
+      "example": "```tsx\n<Breadcrumb items={[\n  { label: \"대시보드\", href: \"/\" },\n  { label: \"프로젝트 관리\", href: \"/projects\" },\n  { label: \"작업 상세\" },\n]} />\n```",
       "dont": [
         "홈 페이지 (계층 없음).",
         "워크플로 단계 → 별도 Stepper 사용.",
@@ -488,7 +488,7 @@
         "탭이 크면(underline 등) 제목 아래 별도 행으로 분리.",
         "색은 토큰만 — 인라인 hex 금지."
       ],
-      "example": "```tsx\n<CardHead\n  title=\"GPU 사용량\"\n  tabs={{ items: [{ value: \"chart\", label: \"차트\" }, { value: \"table\", label: \"테이블\" }], value: view, onChange: setView }}\n  meta={<TimeChip value=\"최근 1시간\" />}\n/>\n```",
+      "example": "```tsx\n<CardHead\n  title=\"팀 현황\"\n  tabs={{ items: [{ value: \"chart\", label: \"차트\" }, { value: \"table\", label: \"테이블\" }], value: view, onChange: setView }}\n  meta={<TimeChip value=\"최근 1시간\" />}\n/>\n```",
       "dont": [
         "페이지 헤더 → [[PageHeader]] 사용.",
         "독립 탭 네비게이션 → [[Tabs]] 사용.",
@@ -571,7 +571,7 @@
         "`tone=\"critical\"` 이면 확인 버튼이 빨간색.",
         "Modal + Button 조합이지만 DS 컴포넌트를 import 하지 않고 인라인 구현 (Primitives 계층)."
       ],
-      "example": "```tsx\n<ConfirmDialog\n  open={showConfirm}\n  title=\"플랜에서 제외\"\n  target=\"GPU-A100 인스턴스 3대\"\n  outcomes={[{ text: \"모니터링 데이터가 삭제됩니다\", tone: \"critical\" }]}\n  confirmLabel=\"제외\"\n  tone=\"critical\"\n  onConfirm={handleExclude}\n  onClose={() => setShowConfirm(false)}\n/>\n```",
+      "example": "```tsx\n<ConfirmDialog\n  open={showConfirm}\n  title=\"플랜에서 제외\"\n  target=\"프로젝트 'Alpha' 외 2건\"\n  outcomes={[{ text: \"관련 데이터가 삭제됩니다\", tone: \"critical\" }]}\n  confirmLabel=\"제외\"\n  tone=\"critical\"\n  onConfirm={handleExclude}\n  onClose={() => setShowConfirm(false)}\n/>\n```",
       "dont": [
         "가벼운 확인 → Toast actionLabel 사용.",
         "폼 입력이 필요 → [[Modal]] 직접 사용.",
@@ -824,7 +824,7 @@
         "`action` 슬롯에 Button 전달 (CTA).",
         "보더 없음 — 수직 패딩만으로 빈 공간 표현."
       ],
-      "example": "```tsx\n<EmptyState\n  title=\"등록된 인스턴스가 없습니다\"\n  description=\"인스턴스를 추가하여 모니터링을 시작하세요\"\n  action={<Button variant=\"contained\" tone=\"primary\" size=\"md\">인스턴스 추가</Button>}\n/>\n```",
+      "example": "```tsx\n<EmptyState\n  title=\"등록된 항목이 없습니다\"\n  description=\"새 항목을 추가하여 시작하세요\"\n  action={<Button variant=\"contained\" tone=\"primary\" size=\"md\">항목 추가</Button>}\n/>\n```",
       "dont": [
         "로딩 중 → 스피너/스켈레톤 사용.",
         "에러 → [[Notice]] tone=\"critical\" 사용."
@@ -1015,7 +1015,7 @@
         "`selected` 시 primary-bg 배경 + primary 보더.",
         "색은 토큰만 — 인라인 hex 금지."
       ],
-      "example": "```tsx\n<ListRow\n  title=\"GPU 사용량 리포트\"\n  badge={<Chip variant=\"soft\" tone=\"primary\" size=\"sm\">신규</Chip>}\n  description=\"2026-10-10 생성 · 인스턴스 12대\"\n  meta=\"3분 전\"\n  onClick={() => navigate(`/reports/${id}`)}\n/>\n```",
+      "example": "```tsx\n<ListRow\n  title=\"월간 매출 리포트\"\n  badge={<Chip variant=\"soft\" tone=\"primary\" size=\"sm\">신규</Chip>}\n  description=\"2026-10-10 생성 · 항목 12건\"\n  meta=\"3분 전\"\n  onClick={() => navigate(`/reports/${id}`)}\n/>\n```",
       "dont": [
         "컬럼 비교 → [[DataTable]] 사용.",
         "사이드바 네비게이션 → [[SidebarMenuItem]] 사용.",
@@ -1127,7 +1127,7 @@
         "`variant=\"card\"` (독립 카드) / `\"bare\"` (다른 카드 안에서 보더 없이).",
         "`action` 슬롯에 Button 전달 가능."
       ],
-      "example": "```tsx\n<Notice tone=\"warning\" title=\"인스턴스 3대 미응답\" description=\"최근 5분간 heartbeat 없음\" />\n<Notice tone=\"critical\" variant=\"bare\" title=\"삭제된 데이터는 복구할 수 없습니다\" />\n```",
+      "example": "```tsx\n<Notice tone=\"warning\" title=\"결제 수단 만료 예정\" description=\"등록된 카드가 10일 후 만료됩니다\" />\n<Notice tone=\"critical\" variant=\"bare\" title=\"삭제된 데이터는 복구할 수 없습니다\" />\n```",
       "dont": [
         "일시적 피드백 → [[Toast]] 사용.",
         "모달 차단 → [[Modal]] 사용.",
@@ -1751,7 +1751,7 @@
       "sourceFile": "src/StatCard.tsx",
       "purpose": "대시보드 KPI 요약 카드. 큰 숫자 + 라벨 + 트렌드 아이콘으로 핵심 지표를 한눈에 표시.\n3~6개를 가로로 나열하여 대시보드 상단 요약 바 구성.",
       "whenToUse": [
-        "대시보드 상단 KPI 요약 (총 GPU, 활성, 유휴 등).",
+        "대시보드 상단 KPI 요약 (매출, 사용자, 전환율 등).",
         "3~6개 카드를 가로 배치."
       ],
       "whenNotToUse": [
@@ -1765,7 +1765,7 @@
         "trend 는 ▲(success) / ▼(error) / ─(tertiary).",
         "색은 토큰만 — 인라인 hex 금지."
       ],
-      "example": "```tsx\n<StatCard label=\"활성 GPU\" value=\"847\" unit=\"대\" tone=\"success\" trend=\"up\" />\n<StatCard label=\"유휴 GPU\" value=\"12\" unit=\"대\" tone=\"warning\" trend=\"down\" />\n```",
+      "example": "```tsx\n<StatCard label=\"활성 사용자\" value=\"847\" unit=\"명\" tone=\"success\" trend=\"up\" />\n<StatCard label=\"비활성 사용자\" value=\"12\" unit=\"명\" tone=\"warning\" trend=\"down\" />\n```",
       "dont": [
         "시계열 트렌드 → [[MiniLineChart]] 사용.",
         "카테고리 분포 → 차트 사용.",

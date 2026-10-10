@@ -40,9 +40,9 @@ export const Default: Story = {
           <ConfirmDialog
             open={open}
             title="플랜에서 제외"
-            target="GPU-A100 인스턴스 3대"
+            target="프로젝트 'Alpha' 외 2건"
             outcomes={[
-              { text: "모니터링 데이터가 삭제됩니다", tone: "critical" },
+              { text: "관련 데이터가 삭제됩니다", tone: "critical" },
               { text: "과금이 즉시 중단됩니다" },
             ]}
             confirmLabel="제외"
@@ -98,7 +98,7 @@ export const PrimaryTone: Story = {
 export const Loading: Story = {
   args: {
     open: true,
-    title: "인스턴스 삭제",
+    title: "프로젝트 삭제",
     target: "dev-worker-04",
     outcomes: [{ text: "연결된 볼륨 데이터가 영구 삭제됩니다", tone: "critical" as const }],
     confirmLabel: "삭제",

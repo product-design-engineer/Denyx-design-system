@@ -19,8 +19,8 @@ type Story = StoryObj<typeof EmptyState>;
 /** 기본 — 초기 상태 안내 + CTA. */
 export const Default: Story = {
   args: {
-    title: "등록된 인스턴스가 없습니다",
-    description: "인스턴스를 추가하여 모니터링을 시작하세요.",
+    title: "등록된 항목이 없습니다",
+    description: "새 항목을 추가하여 시작하세요.",
     action: (
       <button
         type="button"
@@ -36,7 +36,7 @@ export const Default: Story = {
           cursor: "pointer",
         }}
       >
-        인스턴스 추가
+        항목 추가
       </button>
     ),
   },

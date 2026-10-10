@@ -20,9 +20,9 @@ type Story = StoryObj<typeof ListRow>;
 /** 뱃지 + 설명 + 메타 — 전체 슬롯 사용. */
 export const Default: Story = {
   args: {
-    title: "GPU 사용량 리포트",
+    title: "월간 매출 리포트",
     badge: <Chip variant="soft" tone="primary" size="sm">신규</Chip>,
-    description: "2026-10-10 생성 \u00b7 인스턴스 12대",
+    description: "2026-10-10 생성 \u00b7 항목 12건",
     meta: "3분 전",
     onClick: () => {},
   },

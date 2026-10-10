@@ -20,8 +20,8 @@ type Story = StoryObj<typeof Notice>;
 export const Default: Story = {
   args: {
     tone: "warning",
-    title: "인스턴스 3대 미응답",
-    description: "최근 5분간 heartbeat 수신 없음. 대시보드에서 상태를 확인하세요.",
+    title: "결제 수단 만료 예정",
+    description: "등록된 카드가 10일 후 만료됩니다. 결제 설정에서 갱신하세요.",
   },
 };
 

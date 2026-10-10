@@ -24,7 +24,7 @@ export const Default: Story = {
     const [view, setView] = useState("chart");
     return (
       <CardHead
-        title="GPU 사용량"
+        title="팀 현황"
         tabs={{
           items: [
             { value: "chart", label: "차트" },
@@ -42,6 +42,6 @@ export const Default: Story = {
 /** 제목만 — 탭/메타 없음. */
 export const TitleOnly: Story = {
   args: {
-    title: "인스턴스 현황",
+    title: "프로젝트 현황",
   },
 };

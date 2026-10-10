@@ -19,9 +19,9 @@ type Story = StoryObj<typeof StatCard>;
 /** success + up 트렌드 — 기본 사용. */
 export const Default: Story = {
   args: {
-    label: "활성 GPU",
+    label: "활성 사용자",
     value: "847",
-    unit: "대",
+    unit: "명",
     tone: "success",
     trend: "up",
   },
@@ -31,11 +31,11 @@ export const Default: Story = {
 export const AllTones: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 12 }}>
-      <StatCard label="총 GPU" value="1,024" unit="대" tone="info" trend="stable" />
-      <StatCard label="활성 GPU" value="847" unit="대" tone="success" trend="up" />
-      <StatCard label="유휴 GPU" value="165" unit="대" tone="neutral" trend="stable" />
-      <StatCard label="경고 GPU" value="9" unit="대" tone="warning" trend="up" />
-      <StatCard label="장애 GPU" value="3" unit="대" tone="critical" trend="down" />
+      <StatCard label="총 사용자" value="1,024" unit="명" tone="info" trend="stable" />
+      <StatCard label="활성 사용자" value="847" unit="명" tone="success" trend="up" />
+      <StatCard label="비활성 사용자" value="165" unit="명" tone="neutral" trend="stable" />
+      <StatCard label="주의 필요" value="9" unit="건" tone="warning" trend="up" />
+      <StatCard label="오류 발생" value="3" unit="건" tone="critical" trend="down" />
     </div>
   ),
 };

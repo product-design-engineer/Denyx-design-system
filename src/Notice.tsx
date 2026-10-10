@@ -21,7 +21,7 @@
  *
  * @example
  * ```tsx
- * <Notice tone="warning" title="인스턴스 3대 미응답" description="최근 5분간 heartbeat 없음" />
+ * <Notice tone="warning" title="결제 수단 만료 예정" description="등록된 카드가 10일 후 만료됩니다" />
  * <Notice tone="critical" variant="bare" title="삭제된 데이터는 복구할 수 없습니다" />
  * ```
  */

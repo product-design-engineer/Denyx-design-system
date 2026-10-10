@@ -66,13 +66,13 @@ export const WithDisabledOptions: Story = {
             value={query}
             onChange={setQuery}
             options={[
-              { value: "a", label: "프로덕션 클러스터", description: "ap-northeast-2" },
-              { value: "b", label: "스테이징 클러스터", description: "ap-northeast-2", disabled: true },
-              { value: "c", label: "개발 클러스터", description: "us-west-2" },
+              { value: "a", label: "마케팅팀", description: "12명" },
+              { value: "b", label: "디자인팀", description: "8명", disabled: true },
+              { value: "c", label: "개발팀", description: "25명" },
             ]}
             onSelect={() => {}}
-            placeholder="클러스터 검색"
-            label="대상 클러스터"
+            placeholder="팀 검색"
+            label="대상 팀"
           />
         </div>
       );

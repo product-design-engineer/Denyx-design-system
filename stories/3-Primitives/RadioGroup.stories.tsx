@@ -70,13 +70,13 @@ export const WithDescriptions: Story = {
       return (
         <RadioGroup
           items={[
-            { value: "standard", label: "Standard", description: "범용 GPU · 시간당 ₩1,200" },
-            { value: "performance", label: "Performance", description: "고성능 GPU · 시간당 ₩3,500" },
-            { value: "enterprise", label: "Enterprise", description: "전용 클러스터 · 별도 견적", disabled: true },
+            { value: "standard", label: "Standard", description: "기본 요금제 · 월 ₩29,000" },
+            { value: "performance", label: "Performance", description: "프로 요금제 · 월 ₩79,000" },
+            { value: "enterprise", label: "Enterprise", description: "엔터프라이즈 · 별도 견적", disabled: true },
           ]}
           value={value}
           onChange={setValue}
-          label="인스턴스 등급"
+          label="요금제 선택"
         />
       );
     };
