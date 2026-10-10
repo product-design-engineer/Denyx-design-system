@@ -97,14 +97,6 @@
     --color-primary-bg: #D6E1FF;
     --color-primary-bg-subtle: #C2D5FC;
 
-    /* @deprecated → --color-primary 계열 (2026-07-06 리네이밍) */
-    --color-brand-blue: var(--color-primary);
-    --color-brand-blue-deep: var(--color-primary-strong);
-    --color-brand-blue-soft: var(--color-primary-soft);
-    --color-brand-blue-bg: var(--color-primary-bg);
-    --color-brand-blue-bg-2: var(--color-primary-bg-subtle);
-
-    
     --color-status-success: #00B442;
     --color-status-warning: #FFA012;
     --color-status-error: #f34646;
@@ -142,12 +134,6 @@
     --color-accent: #8B52FF;
     --color-accent-deep: #4F5BD5;
 
-    /* @deprecated → --color-accent 계열 (2026-07-06 리네이밍) */
-    --color-denyx-blue: var(--color-accent-start);
-    --color-denyx-purple: var(--color-accent);
-    --color-denyx-purple-deep: var(--color-accent-deep);
-
-    
     --color-gray-mid: #8b8b8b;
     --color-gray-soft: #a0a3a6;
     --color-gray-pale: #bdbdbd;

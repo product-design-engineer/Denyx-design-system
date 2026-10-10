@@ -24,13 +24,6 @@
   /* @role 선택/활성 배경 표면 (더 연한 변형) */
   --color-primary-bg-subtle: #C2D5FC;
 
-  /* @deprecated → --color-primary 계열 (2026-07-06 리네이밍, 2주 deprecation 후 제거) */
-  --color-brand-blue: var(--color-primary);
-  --color-brand-blue-deep: var(--color-primary-strong);
-  --color-brand-blue-soft: var(--color-primary-soft);
-  --color-brand-blue-bg: var(--color-primary-bg);
-  --color-brand-blue-bg-2: var(--color-primary-bg-subtle);
-
   /* @group-role 상태 표시 원색 — 배지·도트·보더 | @avoid 배경(대비 미달, soft 변형 사용) */
   --color-status-success: #00B442;
   --color-status-warning: #FFA012;
@@ -66,11 +59,6 @@
   --color-accent-start: #004BE0;
   --color-accent: #8B52FF;
   --color-accent-deep: #4F5BD5;
-
-  /* @deprecated → --color-accent 계열 (2026-07-06 리네이밍, 2주 deprecation 후 제거) */
-  --color-denyx-blue: var(--color-accent-start);
-  --color-denyx-purple: var(--color-accent);
-  --color-denyx-purple-deep: var(--color-accent-deep);
 
   /* @role AI 브랜드 그라데이션 (버튼·보더) */
   --gradient-brand: linear-gradient(90deg, var(--color-primary), var(--color-accent));
