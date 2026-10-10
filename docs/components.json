@@ -1,8 +1,34 @@
 {
-  "generated": "2026-10-10T10:12:08.666Z",
+  "generated": "2026-10-10T10:38:56.453Z",
   "description": "자동 생성 — 직접 편집 금지. `node scripts/build-components-json.mjs` 로 재생성.",
-  "count": 63,
+  "count": 71,
   "components": [
+    {
+      "name": "ActionMenuItem",
+      "layer": "Primitives",
+      "sourceFile": "src/ActionMenuItem.tsx",
+      "purpose": "액션 메뉴 패널의 한 행. 액션을 시작(navigate/execute)하는 목적이며 값 선택이 아님.\n체크마크 없음 — 라벨은 동사형(\"삭제\", \"복제\", \"내보내기\").",
+      "whenToUse": [
+        "테이블 행·카드의 ⋯ 컨텍스트 메뉴 항목.",
+        "드롭다운 액션 목록."
+      ],
+      "whenNotToUse": [
+        "값 선택 → [[Select]] 또는 [[FilterDropdown]] 사용.",
+        "네비게이션 메뉴 → [[SidebarMenuItem]] 사용."
+      ],
+      "compositionRules": [
+        "`tone=\"critical\"` 이면 라벨 빨간색 (삭제 등 위험 동작).",
+        "한 메뉴 안에서 아이콘은 전부 넣거나 전부 뺌 — 혼합 금지.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ],
+      "example": "```tsx\n<ActionMenuItem label=\"복제\" icon={<CopyIcon />} onSelect={handleDuplicate} />\n<ActionMenuItem label=\"삭제\" tone=\"critical\" onSelect={handleDelete} />\n```",
+      "dont": [
+        "값 선택 → [[Select]] 또는 [[FilterDropdown]] 사용.",
+        "네비게이션 메뉴 → [[SidebarMenuItem]] 사용.",
+        "한 메뉴 안에서 아이콘은 전부 넣거나 전부 뺌 — 혼합 금지.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ]
+    },
     {
       "name": "AiActionChip",
       "layer": "Primitives",
@@ -331,6 +357,33 @@
       ]
     },
     {
+      "name": "Autocomplete",
+      "layer": "Primitives",
+      "sourceFile": "src/Autocomplete.tsx",
+      "purpose": "대량 옵션에서 타이핑으로 좁혀 선택하는 자동완성 입력.\n네이티브 TextField + 드롭다운 리스트 조합.",
+      "whenToUse": [
+        "옵션이 20개 이상이라 드롭다운으로 보기 어려울 때.",
+        "사용자가 검색어를 입력하여 옵션을 필터링해야 할 때."
+      ],
+      "whenNotToUse": [
+        "5개 이하 고정 옵션 → [[Select]] 사용.",
+        "자유 텍스트 입력 (옵션 없음) → [[TextField]] 사용.",
+        "복수 선택 → [[FilterDropdown]] 사용."
+      ],
+      "compositionRules": [
+        "색은 토큰만 (card · border-default · shadow-md · primary-bg) — 인라인 hex 금지.",
+        "컴포넌트는 선택을 기억하지 않음 — 호출측이 `onSelect`에서 결정.",
+        "`filter` prop false 로 서버 사이드 필터링 가능."
+      ],
+      "example": "```tsx\n<Autocomplete\n  value={query}\n  onChange={setQuery}\n  options={users}\n  onSelect={(opt) => setSelectedUser(opt.value)}\n  placeholder=\"이름 또는 이메일 검색\"\n/>\n```",
+      "dont": [
+        "5개 이하 고정 옵션 → [[Select]] 사용.",
+        "자유 텍스트 입력 (옵션 없음) → [[TextField]] 사용.",
+        "복수 선택 → [[FilterDropdown]] 사용.",
+        "색은 토큰만 (card · border-default · shadow-md · primary-bg) — 인라인 hex 금지."
+      ]
+    },
+    {
       "name": "BottomRailItem",
       "layer": "Primitives",
       "sourceFile": "src/BottomRailItem.tsx",
@@ -445,6 +498,33 @@
         "본문 텍스트 강조 → 인라인 `<strong>` / 색 utility",
         "버튼 → `Button`",
         "색은 토큰 (brand-blue / status-warning / status-error / surface-100 등) — 직접 hex 금지"
+      ]
+    },
+    {
+      "name": "ConfirmDialog",
+      "layer": "Primitives",
+      "sourceFile": "src/ConfirmDialog.tsx",
+      "purpose": "되돌릴 수 없는 동작(삭제·적용·배포) 전 확인 다이얼로그.\n본문에 **무엇을**(target) + **결과**(outcomes)를 보여줌.",
+      "whenToUse": [
+        "데이터 삭제, 설정 적용 등 되돌릴 수 없는 동작 전.",
+        "사용자가 결과를 인지해야 하는 중요 액션."
+      ],
+      "whenNotToUse": [
+        "가벼운 확인 → Toast actionLabel 사용.",
+        "폼 입력이 필요 → [[Modal]] 직접 사용.",
+        "정보 전달만 → [[Notice]] 사용."
+      ],
+      "compositionRules": [
+        "`confirmLabel`은 동사(\"삭제\", \"적용\") — \"확인\" 금지.",
+        "`tone=\"critical\"` 이면 확인 버튼이 빨간색.",
+        "Modal + Button 조합이지만 DS 컴포넌트를 import 하지 않고 인라인 구현 (Primitives 계층)."
+      ],
+      "example": "```tsx\n<ConfirmDialog\n  open={showConfirm}\n  title=\"플랜에서 제외\"\n  target=\"GPU-A100 인스턴스 3대\"\n  outcomes={[{ text: \"모니터링 데이터가 삭제됩니다\", tone: \"critical\" }]}\n  confirmLabel=\"제외\"\n  tone=\"critical\"\n  onConfirm={handleExclude}\n  onClose={() => setShowConfirm(false)}\n/>\n```",
+      "dont": [
+        "가벼운 확인 → Toast actionLabel 사용.",
+        "폼 입력이 필요 → [[Modal]] 직접 사용.",
+        "정보 전달만 → [[Notice]] 사용.",
+        "`confirmLabel`은 동사(\"삭제\", \"적용\") — \"확인\" 금지."
       ]
     },
     {
@@ -642,6 +722,31 @@
         "**일반 확인/경고 모달** → [[Modal]].",
         "**토스트 알림** (비파괴적 안내) → [[Toast]].",
         "색은 토큰 (`text-primary` · `text-secondary` · `bg-card`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "EmptyState",
+      "layer": "Primitives",
+      "sourceFile": "src/EmptyState.tsx",
+      "purpose": "빈 목록/테이블/패널 플레이스홀더. \"아직 없음\"(생성 유도)과 \"필터 결과 없음\"(확장 유도)을 구분.\n중앙 정렬, 수직 패딩으로 빈 공간을 의미 있게 채움.",
+      "whenToUse": [
+        "DataTable 검색 결과 0건.",
+        "아직 데이터가 없는 초기 상태.",
+        "패널/카드 안 빈 상태."
+      ],
+      "whenNotToUse": [
+        "로딩 중 → 스피너/스켈레톤 사용.",
+        "에러 → [[Notice]] tone=\"critical\" 사용."
+      ],
+      "compositionRules": [
+        "아이콘 기본 없음 — 필요 시 `icon` prop 전달.",
+        "`action` 슬롯에 Button 전달 (CTA).",
+        "보더 없음 — 수직 패딩만으로 빈 공간 표현."
+      ],
+      "example": "```tsx\n<EmptyState\n  title=\"등록된 인스턴스가 없습니다\"\n  description=\"인스턴스를 추가하여 모니터링을 시작하세요\"\n  action={<Button variant=\"contained\" tone=\"primary\" size=\"md\">인스턴스 추가</Button>}\n/>\n```",
+      "dont": [
+        "로딩 중 → 스피너/스켈레톤 사용.",
+        "에러 → [[Notice]] tone=\"critical\" 사용."
       ]
     },
     {
@@ -894,6 +999,33 @@
       ]
     },
     {
+      "name": "Notice",
+      "layer": "Primitives",
+      "sourceFile": "src/Notice.tsx",
+      "purpose": "페이지 흐름 안에서 상태를 알리는 알림 카드. 좌측 3px 컬러 바로 tone 표시.\nToast(자동 소멸)와 달리 영구 표시 — 사용자가 닫거나 상태가 변할 때까지 유지.",
+      "whenToUse": [
+        "인라인 안내/경고/에러 메시지 (폼 상단, 페이지 안내 등).",
+        "상태 알림이 페이지에 고정되어야 할 때."
+      ],
+      "whenNotToUse": [
+        "일시적 피드백 → [[Toast]] 사용.",
+        "모달 차단 → [[Modal]] 사용.",
+        "되돌릴 수 없는 동작 확인 → [[ConfirmDialog]] 사용."
+      ],
+      "compositionRules": [
+        "좌측 bar 색 = tone 토큰. 인라인 hex 금지.",
+        "`variant=\"card\"` (독립 카드) / `\"bare\"` (다른 카드 안에서 보더 없이).",
+        "`action` 슬롯에 Button 전달 가능."
+      ],
+      "example": "```tsx\n<Notice tone=\"warning\" title=\"인스턴스 3대 미응답\" description=\"최근 5분간 heartbeat 없음\" />\n<Notice tone=\"critical\" variant=\"bare\" title=\"삭제된 데이터는 복구할 수 없습니다\" />\n```",
+      "dont": [
+        "일시적 피드백 → [[Toast]] 사용.",
+        "모달 차단 → [[Modal]] 사용.",
+        "되돌릴 수 없는 동작 확인 → [[ConfirmDialog]] 사용.",
+        "좌측 bar 색 = tone 토큰. 인라인 hex 금지."
+      ]
+    },
+    {
       "name": "OptionbarInstanceSelector",
       "layer": "Primitives",
       "sourceFile": "src/OptionbarInstanceSelector.tsx",
@@ -1079,6 +1211,31 @@
       ]
     },
     {
+      "name": "Pagination",
+      "layer": "Primitives",
+      "sourceFile": "src/Pagination.tsx",
+      "purpose": "페이지 네비게이션 컨트롤. DataTable 하단에 배치하여 대량 데이터를 페이지 단위로 탐색.\n좌측 요약(\"총 N건 · 페이지당 M건\") + 우측 네비게이션(이전/페이지번호/다음).",
+      "whenToUse": [
+        "DataTable 100+ 행에서 페이지 분할이 필요할 때.",
+        "서버 사이드 페이지네이션 UI."
+      ],
+      "whenNotToUse": [
+        "무한 스크롤 → 스크롤 이벤트 직접 처리.",
+        "5건 이하 목록 → 페이지 분할 불필요."
+      ],
+      "compositionRules": [
+        "항상 표시 — 단일 페이지여도 컨트롤 노출 (이전/다음 비활성, 1페이지 활성).",
+        "8페이지 초과 시 ellipsis 축약 (앞 5 + ... + 마지막).",
+        "색은 토큰만 — 인라인 hex 금지."
+      ],
+      "example": "```tsx\n<Pagination page={3} totalPages={12} pageSize={20} total={235} onChange={setPage} />\n```",
+      "dont": [
+        "무한 스크롤 → 스크롤 이벤트 직접 처리.",
+        "5건 이하 목록 → 페이지 분할 불필요.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ]
+    },
+    {
       "name": "PresetSelect",
       "layer": "Primitives",
       "sourceFile": "src/PresetSelect.tsx",
@@ -1133,6 +1290,33 @@
         "**조직/프로젝트 스위처** → [[SidebarOrgSwitcher]] / [[SidebarProjectSwitcher]].",
         "`hideProductRail=true` 화면 (관리 콘솔 등 제품 네비 불필요) — Sidebar 가 레일 전체를 숨김.",
         "강조 배경은 토큰 (`--color-primary-bg`) — 인라인 hex 금지."
+      ]
+    },
+    {
+      "name": "RadioGroup",
+      "layer": "Primitives",
+      "sourceFile": "src/RadioGroup.tsx",
+      "purpose": "상호 배타적 단일 선택 라디오 그룹. 2~5개 옵션을 모두 펼쳐 보여줌.\n네이티브 `<input type=\"radio\">` 기반 — 키보드(←→↑↓), 스크린리더 자동 지원.",
+      "whenToUse": [
+        "상호 배타적 선택이 필요하고 옵션이 2~5개일 때.",
+        "모든 옵션을 한눈에 비교해야 할 때."
+      ],
+      "whenNotToUse": [
+        "6개 이상 옵션 → [[Select]] 사용.",
+        "복수 선택 → [[Checkbox]] 사용.",
+        "토글(on/off 2개) → [[Switch]] 사용."
+      ],
+      "compositionRules": [
+        "색은 토큰만 (primary · border-strong · card) — 인라인 hex 금지.",
+        "`name` prop으로 같은 화면의 다른 RadioGroup과 구분.",
+        "`description`은 짧은 한 줄 보조 텍스트."
+      ],
+      "example": "```tsx\n<RadioGroup\n  items={[\n    { value: \"daily\", label: \"일별\" },\n    { value: \"weekly\", label: \"주별\" },\n    { value: \"monthly\", label: \"월별\" },\n  ]}\n  value={period}\n  onChange={setPeriod}\n/>\n```",
+      "dont": [
+        "6개 이상 옵션 → [[Select]] 사용.",
+        "복수 선택 → [[Checkbox]] 사용.",
+        "토글(on/off 2개) → [[Switch]] 사용.",
+        "색은 토큰만 (primary · border-strong · card) — 인라인 hex 금지."
       ]
     },
     {
@@ -1398,6 +1582,31 @@
         "**본문 메뉴 항목** → [[SidebarMenuItem]].",
         "색은 토큰 (`text-secondary` · `bg-card` · `border-color-var-color-border-default`) — 인라인 hex 금지.",
         "`productIcon` 생략 시 좌측은 **12px 스페이서** (빈 40px 박스 금지 — 빈 아이콘 영역 방지 정책)."
+      ]
+    },
+    {
+      "name": "Slider",
+      "layer": "Primitives",
+      "sourceFile": "src/Slider.tsx",
+      "purpose": "단축 슬라이더 입력. 연속(min/max/step) 또는 이산(stops) 두 모드 지원.\n네이티브 `<input type=\"range\">` 기반 — 키보드·접근성 자동 지원.",
+      "whenToUse": [
+        "수치 범위 선택 (임계값, 볼륨, 비율 등).",
+        "이산 값 선택 (요금제 단계, 사전 정의된 값)."
+      ],
+      "whenNotToUse": [
+        "정확한 수치 입력 → [[TextField]] type=\"number\" 사용.",
+        "날짜/시간 범위 → [[TimeRangeSelector]] 사용."
+      ],
+      "compositionRules": [
+        "트랙/썸 색은 토큰만 (primary · surface-200 · card) — 인라인 hex 금지.",
+        "`stops` 모드: 값 간격 무관하게 등간격 마크 표시.",
+        "`markLabel` 로 눈금 아래 라벨 커스텀."
+      ],
+      "example": "```tsx\n<Slider min={0} max={100} value={volume} onChange={setVolume} />\n<Slider stops={[0, 10_000, 50_000, 200_000]} value={limit} onChange={setLimit}\n  markLabel={(v) => `${(v / 10000).toFixed(0)}만`} />\n```",
+      "dont": [
+        "정확한 수치 입력 → [[TextField]] type=\"number\" 사용.",
+        "날짜/시간 범위 → [[TimeRangeSelector]] 사용.",
+        "트랙/썸 색은 토큰만 (primary · surface-200 · card) — 인라인 hex 금지."
       ]
     },
     {
