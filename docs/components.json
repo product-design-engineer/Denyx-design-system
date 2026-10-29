@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-10T12:21:51.461Z",
+  "generated": "2026-10-29T13:28:57.094Z",
   "description": "자동 생성 — 직접 편집 금지. `node scripts/build-components-json.mjs` 로 재생성.",
-  "count": 77,
+  "count": 78,
   "components": [
     {
       "name": "ActionMenuItem",
@@ -720,6 +720,31 @@
       ]
     },
     {
+      "name": "DateTimePicker",
+      "layer": "Primitives",
+      "sourceFile": "src/DateTimePicker.tsx",
+      "purpose": "날짜 + 시각을 함께 선택하는 팝오버. 월간 캘린더 그리드 + 시:분:초 입력.\nLiveTimerCompact 중지 모드에서 시작/종료 시각 편집에 사용.",
+      "whenToUse": [
+        "날짜와 시각을 동시에 선택해야 할 때.",
+        "LiveTimerCompact 의 paused 모드에서 범위 편집."
+      ],
+      "whenNotToUse": [
+        "날짜만 선택 → 별도 DatePicker (추후).",
+        "기간 프리셋 (최근 1시간 등) → [[TimeRangeSelector]] 사용."
+      ],
+      "compositionRules": [
+        "색은 토큰만 — 인라인 hex 금지.",
+        "팝오버 위치는 호출측이 absolute 컨테이너로 제어.",
+        "오늘 날짜 = primary 강조. 선택 날짜 = primary 배경."
+      ],
+      "example": "```tsx\n<DateTimePicker value={new Date()} onChange={setDate} onClose={() => setOpen(false)} />\n```",
+      "dont": [
+        "날짜만 선택 → 별도 DatePicker (추후).",
+        "기간 프리셋 (최근 1시간 등) → [[TimeRangeSelector]] 사용.",
+        "색은 토큰만 — 인라인 hex 금지."
+      ]
+    },
+    {
       "name": "DenyxAiWidget",
       "layer": "Shell",
       "sourceFile": "src/DenyxAiWidget.tsx",
@@ -1028,24 +1053,26 @@
       "name": "LiveTimerCompact",
       "layer": "Primitives",
       "sourceFile": "src/LiveTimerCompact.tsx",
-      "purpose": "LIVE 모니터링의 현재 시각 + polling 진행을 32px compact 박스로 표시.\n좌측 pause/play 버튼(`onTogglePause`) + 우측 타이머 박스(LIVE 배지 + 시각 + 선택적\nduration 알약/달력)로 구성. `time` 미지정 시 시스템 시각으로 자동 tick 하며,\n`refreshIntervalMs`(기본 5000ms) 주기로 배경 progress fill 이 좌→우로 채워지고 cycle\n마다 리셋된다. `paused=true` 면 시계·progress 모두 정지.",
+      "purpose": "라이브 모드: 현재 시각(YYYY-MM-DD HH:MM:SS) + polling progress + pause 버튼.\n중지 모드: 시작~종료 범위 표시. 각 날짜/시각 클릭 시 DateTimePicker 팝오버.\n중지 기본값 = 중지 시점(종료) + 5분 전(시작).",
       "whenToUse": [
-        "옵션바 \"시간\" 항목에서 LIVE 현재 시각 + polling cycle 을 compact 하게 보여줄 때.",
-        "[[OptionbarPage]] 의 시간 슬롯 등 세로 공간이 한정된 자리."
+        "옵션바에서 LIVE 현재 시각 + polling cycle 을 compact 하게 보여줄 때.",
+        "중지 후 시작~종료 범위를 편집해야 할 때."
       ],
       "whenNotToUse": [
-        "시작~종료 절대 범위 입력/이동이 필요 → [[TimeRangeSelector]].",
-        "옵션바 전체 행 구성 → [[OptionbarPage]]."
+        "기간 프리셋만 필요 → [[TimeRangeSelector]].",
+        "옵션바 전체 행 → [[OptionbarPage]]."
       ],
       "compositionRules": [
-        "높이 32px 고정, pause(좌)·timer(우) 가 chained 보더로 한 알약처럼 붙음.",
-        "`durationLabel` 만 있으면 캘린더 자리에 #00B543 알약 표시. `showCalendar` 로",
-        "색은 토큰(var(--color-status-success) 등) — LIVE 텍스트·progress fill 라이브 값 유지."
+        "높이 32px 고정, pause(좌)·timer(우) chained 보더.",
+        "라이브: 녹색 LIVE 배지 + 현재 시각 + polling progress fill.",
+        "중지: 시작/종료 날짜시각 + 각각 클릭 시 DateTimePicker 팝오버.",
+        "색은 토큰만 — 인라인 hex 금지."
       ],
-      "example": "```tsx\n<LiveTimerCompact paused={paused} onTogglePause={togglePause} durationLabel=\"10분\" />\n<LiveTimerCompact time=\"12:01:35\" refreshIntervalMs={3000} showCalendar onOpenCalendar={open} />\n```",
+      "example": "```tsx\n<LiveTimerCompact paused={paused} onTogglePause={togglePause} />\n<LiveTimerCompact paused onRangeChange={({ start, end }) => setRange({ start, end })} />\n```",
       "dont": [
-        "시작~종료 절대 범위 입력/이동이 필요 → [[TimeRangeSelector]].",
-        "옵션바 전체 행 구성 → [[OptionbarPage]]."
+        "기간 프리셋만 필요 → [[TimeRangeSelector]].",
+        "옵션바 전체 행 → [[OptionbarPage]].",
+        "색은 토큰만 — 인라인 hex 금지."
       ]
     },
     {

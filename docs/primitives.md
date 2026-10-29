@@ -1,10 +1,10 @@
-# Primitives — 9 컴포넌트 (일반 폼/표시)
+# Primitives — 29 컴포넌트 (General)
 
-> 원본: `src/` (interfacedesigner/Denyx-design-system)
+> 원본: `src/` (product-design-engineer/Denyx-design-system)
 
 가장 작은 단위의 재사용 컴포넌트들. **새 화면을 만들 때 인라인 form/feedback UI 를 새로 짜지 마세요. 이들을 조립하세요.**
 
-- **일반 폼/표시 (9)** — 페이지·다이얼로그 어디서나 — Checkbox · Tooltip · Chip · FilterChip · TextField · Select · Tabs · Modal · FilterDropdown
+- **General (29)** — 페이지·다이얼로그 어디서나 — ActionMenuItem · Autocomplete · Breadcrumb · Button · CardHead · Checkbox · Chip · ConfirmDialog · DataTable · DateTimePicker · Disclosure · EmptyState · ListRow · LiveTimerCompact · MiniLineChart · Modal · Notice · Pagination · RadioGroup · Select · Slider · StatCard · Switch · Tabs · TextField · ThemeToggle · TimeChip · Toast · Tooltip
 
 > **AI 카드 빌딩 블록(AiCard · AiCaption · AiSectionHeading · AiToneBadge · AiBulletList)은 Primitives 가 아니라 `Denyx AI` 카테고리**입니다 (Storybook `Denyx AI/Primitives`). 카탈로그: [widget-components.md](./widget-components.md). 아래 "AI 카드 빌딩 블록" 상세는 참고용으로 유지.
 
