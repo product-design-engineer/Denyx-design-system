@@ -103,7 +103,7 @@ src/tokens.css  ── @import 합본 (하위호환)
 
 ### Primitives — 자립 렌더. DS 컴포넌트를 import 하지 않음
 
-General: Button, Checkbox, Chip, DataTable, LiveTimerCompact, MiniLineChart, Modal, Select, Switch, Tabs, TextField, ThemeToggle, Toast, Tooltip
+General: ActionMenuItem, Autocomplete, Breadcrumb, Button, CardHead, Checkbox, Chip, ConfirmDialog, DataTable, DateTimePicker, Disclosure, EmptyState, ListRow, LiveTimerCompact, MiniLineChart, Modal, Notice, Pagination, RadioGroup, Select, Slider, StatCard, Switch, Tabs, TextField, ThemeToggle, TimeChip, Toast, Tooltip
 
 Parts (Chrome): AiSymbol, BottomRailItem, DashboardBuildingProgress, DataTableRow, DateTimeBlock, WeekHourMatrix, FilterChipItem, FilterDropdownOptionItem, HeaderPillButton, OptionbarInstanceSelector, OptionbarItem, OptionbarValueDisplay, PageHeaderNotificationItem, PageHeaderProfileMenuItem, PresetSelect, ProductRailItem, SidebarCopyright, SidebarLogoHeader, SidebarMenuItem, SidebarOrgSwitcher, SidebarProjectSwitcher, Stage, SubHeaderBar, TabButton, TimeRangeSelector
 
